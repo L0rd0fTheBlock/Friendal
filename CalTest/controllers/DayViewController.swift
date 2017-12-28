@@ -62,9 +62,9 @@ class DayViewController: UITableViewController {
                     cell.selectionStyle = .default
                     
                     cell.isTitle = true
-                    cell.setEvent(forEvent: event)
-                     isSet = true
-                    cell.eventLabel.text = event.title
+                    //cell.setEvent(forEvent: event)
+                     //isSet = true
+                   // cell.eventLabel.text = event.title
                 }else if(Int(String(start![0]))! < index && Int(String(end![0]))! > index){//event has started
                     cell.selectionStyle = .default
                     
@@ -72,8 +72,8 @@ class DayViewController: UITableViewController {
                     if(Int(String(end![0]))! > index){//event has not ended
                         cell.selectionStyle = .default
                         cell.isTitle = false
-                        cell.setEvent(forEvent: event)
-                        isSet = true
+                      //  cell.setEvent(forEvent: event)
+                       // isSet = true
                         
                     }
                 }
@@ -83,7 +83,7 @@ class DayViewController: UITableViewController {
                     
                     cell.isTitle = false
                     if(!isSet){
-                        cell.setEvent(forEvent: event)
+                       // cell.setEvent(forEvent: event)
                     }
                     let end = event.end?.components(separatedBy: ":").flatMap { Int($0.trimmingCharacters(in: .whitespaces)) }
                     if(end![1] == 00){
