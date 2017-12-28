@@ -11,7 +11,7 @@ import FacebookCore
 
 class CalendarHandler{
     
-    let BASE_URL = "http://90.221.70.251"
+    let BASE_URL = "http://90.221.83.199"
     //let BASE_URL = "http://192.168.0.67"
     
     func getCalMonth(forMonth: String, ofYear: String, withUser: String, completion: @escaping ([CalendarDay], String) ->()){
