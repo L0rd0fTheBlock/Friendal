@@ -33,12 +33,32 @@ class DayViewController: UITableViewController {
         view.backgroundColor = .white
         //view.addSubview(tableView)
         //tableView.frame = CGRect(x: 0, y: 10, width: view.frame.width, height: view.frame.height)
-        for event in (today?.events)!{
-            drawEvent(event)
+        
+        
+        
+        for (index, event) in (today?.events.enumerated())!{
+            
+            //TODO: implement overlapping events
+            
+            drawEvent(event, willOverlap: false)
+        }
+        
+        for i in -1...23 {
+            drawTime(i)
         }
     }
     
-    func drawEvent(_ event:Event){
+    func drawTime(_ index: Int){
+        if(index == -1){
+            print("doing nothing")
+        }else{
+            let label = UILabel(frame: CGRect(x: 0, y: (50 * (index+1)) - 25, width: 30, height: 50)  )
+            label.text = String(format: "%02d", index)
+            tableView.addSubview(label)
+        }
+    }
+    
+    func drawEvent(_ event:Event, willOverlap: Bool?){
         
         let start = makeMinutes(from: event.start!)
         let end = makeMinutes(from: event.end!)
@@ -91,55 +111,14 @@ class DayViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! TimeTableViewCell
-        cell.awakeFromNib()
-        cell.selectionStyle = .none
-        let index = indexPath.row - 1
-        if(indexPath.row == 0){
-            cell.label.text = ""
-        }else{
-            cell.label.text = String(format: "%02d", index)
-            for event in (today?.events)!{
-               var isSet = false
-                let start = event.start?.split(separator: ":")
-                let end = event.end?.split(separator: ":")
-                if(start![0] == String(format: "%02d", index)){//event is starting
-                    cell.selectionStyle = .default
-                    
-                    cell.isTitle = true
-                    //cell.setEvent(forEvent: event)
-                     //isSet = true
-                   // cell.eventLabel.text = event.title
-                }else if(Int(String(start![0]))! < index && Int(String(end![0]))! > index){//event has started
-                    cell.selectionStyle = .default
-                    
-                    cell.isTitle = false
-                    if(Int(String(end![0]))! > index){//event has not ended
-                        cell.selectionStyle = .default
-                        cell.isTitle = false
-                      //  cell.setEvent(forEvent: event)
-                       // isSet = true
-                        
-                    }
-                }
-                
-                
-                if(Int(String(end![0]))! == index){//event has ended
-                    
-                    cell.isTitle = false
-                    if(!isSet){
-                       // cell.setEvent(forEvent: event)
-                    }
-                    let end = event.end?.components(separatedBy: ":").flatMap { Int($0.trimmingCharacters(in: .whitespaces)) }
-                    if(end![1] == 00){
-                        cell.eventLabel.backgroundColor = .white
-                    }else{
-                        let eventwidth = cell.frame.width - CGFloat(50)
-                        let eventY = (cell.frame.height/CGFloat(60/Int(end![1])))*CGFloat(-1)
-                        cell.eventLabel.frame = CGRect(x: 30, y: eventY, width: eventwidth, height: cell.frame.height)
-                    }
-                }//end if event has ended
-            }//end for
-        }//end if cell not 0
+//        cell.awakeFromNib()
+//        cell.selectionStyle = .none
+//        let index = indexPath.row - 1
+//        if(indexPath.row == 0){
+//            cell.label.text = ""
+//        }else{
+//            cell.label.text = String(format: "%02d", index)
+//        }
         return cell
     }//end function
     
