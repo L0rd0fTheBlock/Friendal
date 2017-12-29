@@ -34,13 +34,46 @@ class DayViewController: UITableViewController {
         //view.addSubview(tableView)
         //tableView.frame = CGRect(x: 0, y: 10, width: view.frame.width, height: view.frame.height)
         
-        
-        
         for (index, event) in (today?.events.enumerated())!{
             
             //TODO: implement overlapping events
+            var overlap = 1
+            var shift = 0
+            let start = makeMinutes(from: event.start!)
+            let end = makeMinutes(from: event.end!)
+            let id = event.id
             
-            drawEvent(event, willOverlap: false)
+            for event in (today?.events)!{
+                //print("checking overlap on: " + id)
+                //print("event: " + event.id)
+                if(event.id == id){
+                   // print("skipping")
+                }else{
+                    if(makeMinutes(from: event.start!) >= start && makeMinutes(from: event.start!) <= end){
+                        //print("event started during parent")
+                        overlap = overlap + 1
+                    }else if(makeMinutes(from: event.end!) >= start && makeMinutes(from: event.start!) <= end){//if ends after event starts and starts before the event ends
+                        overlap = overlap + 1
+                      //  print("event ends after parent starts and starts before the parent ends")
+                    }
+                }
+            }
+            
+            if(index > 0){
+                
+                let count = index - 1
+                
+                for i in 0...count{
+                    let event = today?.events[i]
+                    if(start <= makeMinutes(from: (event?.start!)!) && end >= makeMinutes(from: (event?.start!)!)){
+                        shift = shift + 1
+                    }else if(start > makeMinutes(from: (event?.start!)!) && start < makeMinutes(from: (event?.end!)!)){
+                        shift = shift + 1
+                    }
+                }
+            }
+            
+            drawEvent(event, overlaps: overlap, shiftBy: shift)
         }
         
         for i in -1...23 {
@@ -55,26 +88,38 @@ class DayViewController: UITableViewController {
             let label = UILabel(frame: CGRect(x: 0, y: (50 * (index+1)) - 25, width: 30, height: 50)  )
             label.text = String(format: "%02d", index)
             tableView.addSubview(label)
+            print("added: " + String(describing: index))
+            print("at: " + String(describing: (50 * (index+1))))
         }
     }
     
-    func drawEvent(_ event:Event, willOverlap: Bool?){
+    func drawEvent(_ event:Event, overlaps:Int, shiftBy:Int){
         
         let start = makeMinutes(from: event.start!)
         let end = makeMinutes(from: event.end!)
         
         let tableLength = 50*25
-        let breakdown = CGFloat(tableLength) / CGFloat(1440) //split the table into it's minutes
+        let breakdown = CGFloat(tableLength) / CGFloat(1500) //split the table into it's minutes
         
-        let startPoint: CGFloat = breakdown * CGFloat(start) // multiplyy by the start time to push the event down the view
+        let startPoint: CGFloat = breakdown * CGFloat(start + 60) // multiplyy by the start time to push the event down the view
+        let duration = CGFloat(end) - CGFloat(start)
         
+        let endpoint = breakdown * duration
+        
+        let eventWidth = (tableView.frame.width - 30) / CGFloat(overlaps)
+        
+        let shift = eventWidth * CGFloat(shiftBy)
 //        print(start)
 //        print(end)
 //        print(CGFloat(end) - CGFloat(start))
-//        print(startPoint)
+        print("===================")
+        print(startPoint)
+        print("===================")
 //        print(startPoint + CGFloat(end))
+//        print(endpoint)
+        //print(shiftBy)
         
-        let frame = CGRect(x: CGFloat(30), y: startPoint, width: tableView.frame.width - 30, height: CGFloat(end) - CGFloat(start))
+        let frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
         
         let eventView = UIView(frame: frame)
         
