@@ -68,11 +68,11 @@ class DayViewController: UITableViewController {
         
         let startPoint: CGFloat = breakdown * CGFloat(start) // multiplyy by the start time to push the event down the view
         
-        print(start)
-        print(end)
-        print(CGFloat(end) - CGFloat(start))
-        print(startPoint)
-        print(startPoint + CGFloat(end))
+//        print(start)
+//        print(end)
+//        print(CGFloat(end) - CGFloat(start))
+//        print(startPoint)
+//        print(startPoint + CGFloat(end))
         
         let frame = CGRect(x: CGFloat(30), y: startPoint, width: tableView.frame.width - 30, height: CGFloat(end) - CGFloat(start))
         
@@ -83,6 +83,17 @@ class DayViewController: UITableViewController {
         label.text = event.title
         
         label.backgroundColor = UIColor.orange
+        
+        let border = CALayer()
+        
+        let width = CGFloat(3)
+        border.borderColor = UIColor.orange.cgColor
+        border.cornerRadius = 0
+        border.frame = CGRect(x: 0, y: 0 + width, width: width, height: eventView.frame.height)
+        border.borderWidth = width
+        eventView.layer.addSublayer(border)
+        eventView.layer.masksToBounds = true
+        
         
         eventView.backgroundColor = UIColor.yellow.withAlphaComponent(0.55)
         label.textAlignment = .center
