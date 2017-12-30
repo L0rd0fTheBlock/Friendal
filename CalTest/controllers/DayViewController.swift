@@ -23,20 +23,16 @@ class DayViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        tableView.register(TimeTableViewCell.self, forCellReuseIdentifier: cellID)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.dataSource = self
         tableView.delegate = self
-       // tableView.isUserInteractionEnabled = false
-        //tableView.allowsSelection = false
+        tableView.allowsSelection = false
     }
     func setupView(){
         view.backgroundColor = .white
-        //view.addSubview(tableView)
-        //tableView.frame = CGRect(x: 0, y: 10, width: view.frame.width, height: view.frame.height)
         
         for (index, event) in (today?.events.enumerated())!{
             
-            //TODO: implement overlapping events
             var overlap = 1
             var shift = 0
             let start = makeMinutes(from: event.start!)
@@ -132,24 +128,10 @@ class DayViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! TimeTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
+        
         return cell
     }//end function
-    
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-//        let cell = tableView.cellForRow(at: indexPath) as! TimeTableViewCell
-//
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        let eventView = EventViewController()
-//
-//        if(cell.event != nil){
-//            eventView.event = cell.event
-//            eventView.today = self
-//            navigationController?.pushViewController(eventView, animated: true)
-//        }
-    }
     
     //MARK: Helper functions
     
