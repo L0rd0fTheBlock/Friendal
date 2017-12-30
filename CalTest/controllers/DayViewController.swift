@@ -23,21 +23,103 @@ class DayViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        tableView.register(TimeTableViewCell.self, forCellReuseIdentifier: cellID)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.dataSource = self
         tableView.delegate = self
-       // tableView.isUserInteractionEnabled = false
-        //tableView.allowsSelection = false
+        tableView.allowsSelection = false
     }
     func setupView(){
         view.backgroundColor = .white
-        //view.addSubview(tableView)
-        //tableView.frame = CGRect(x: 0, y: 10, width: view.frame.width, height: view.frame.height)
+        
+        for (index, event) in (today?.events.enumerated())!{
+            
+            var overlap = 1
+            var shift = 0
+            let start = makeMinutes(from: event.start!)
+            let end = makeMinutes(from: event.end!)
+            let id = event.id
+            
+            for event in (today?.events)!{
+                if(event.id == id){
+                }else{
+                    if(makeMinutes(from: event.start!) >= start && makeMinutes(from: event.start!) <= end){
+                        overlap = overlap + 1
+                    }else if(makeMinutes(from: event.end!) >= start && makeMinutes(from: event.start!) <= end){//if ends after event starts and starts before the event ends
+                        overlap = overlap + 1
+                    }
+                }
+            }
+            
+            if(index > 0){
+                
+                let count = index - 1
+                
+                for i in 0...count{
+                    let event = today?.events[i]
+                    if(start <= makeMinutes(from: (event?.start!)!) && end >= makeMinutes(from: (event?.start!)!)){
+                        shift = shift + 1
+                    }else if(start > makeMinutes(from: (event?.start!)!) && start < makeMinutes(from: (event?.end!)!)){
+                        shift = shift + 1
+                    }
+                }
+            }
+            
+            drawEvent(event, overlaps: overlap, shiftBy: shift)
+        }
+        
+        for i in -1...23 {
+            drawTime(i)
+        }
     }
+    
+    func drawTime(_ index: Int){
+        if(index == -1){
+        }else{
+            let label = UILabel(frame: CGRect(x: 0, y: (50 * (index+1)) - 25, width: 30, height: 50)  )
+            label.text = String(format: "%02d", index)
+            tableView.addSubview(label)
+        }
+    }
+    
+    func drawEvent(_ event:Event, overlaps:Int, shiftBy:Int){
+        
+        let start = makeMinutes(from: event.start!)
+        let end = makeMinutes(from: event.end!)
+        
+        let tableLength = 50*25
+        let breakdown = CGFloat(tableLength) / CGFloat(1500) //split the table into it's minutes
+        
+        let startPoint: CGFloat = breakdown * CGFloat(start + 60) // multiply by the start time to push the event down the view
+        let duration = CGFloat(end) - CGFloat(start)
+        
+        let endpoint = breakdown * duration
+        
+        let eventWidth = (tableView.frame.width - 30) / CGFloat(overlaps)
+        
+        let shift = eventWidth * CGFloat(shiftBy)
+        var frame: CGRect
+        if(shiftBy > 0){
+            frame = CGRect(x: CGFloat(30 + (5*shiftBy)) + shift, y: startPoint, width: eventWidth, height: endpoint)
+            
+        }else{
+            frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
+            
+        }
+        
+        let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
+        tableView.addSubview(eventView)
+        
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
         tableView.reloadData()
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,71 +128,23 @@ class DayViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! TimeTableViewCell
-        cell.awakeFromNib()
-        cell.selectionStyle = .none
-        let index = indexPath.row - 1
-        if(indexPath.row == 0){
-            cell.label.text = ""
-        }else{
-            cell.label.text = String(format: "%02d", index)
-            for event in (today?.events)!{
-               var isSet = false
-                let start = event.start?.split(separator: ":")
-                let end = event.end?.split(separator: ":")
-                if(start![0] == String(format: "%02d", index)){//event is starting
-                    cell.selectionStyle = .default
-                    
-                    cell.isTitle = true
-                    cell.setEvent(forEvent: event)
-                     isSet = true
-                    cell.eventLabel.text = event.title
-                }else if(Int(String(start![0]))! < index && Int(String(end![0]))! > index){//event has started
-                    cell.selectionStyle = .default
-                    
-                    cell.isTitle = false
-                    if(Int(String(end![0]))! > index){//event has not ended
-                        cell.selectionStyle = .default
-                        cell.isTitle = false
-                        cell.setEvent(forEvent: event)
-                        isSet = true
-                        
-                    }
-                }
-                
-                
-                if(Int(String(end![0]))! == index){//event has ended
-                    
-                    cell.isTitle = false
-                    if(!isSet){
-                        cell.setEvent(forEvent: event)
-                    }
-                    let end = event.end?.components(separatedBy: ":").flatMap { Int($0.trimmingCharacters(in: .whitespaces)) }
-                    if(end![1] == 00){
-                        cell.eventLabel.backgroundColor = .white
-                    }else{
-                        let eventwidth = cell.frame.width - CGFloat(50)
-                        let eventY = (cell.frame.height/CGFloat(60/Int(end![1])))*CGFloat(-1)
-                        cell.eventLabel.frame = CGRect(x: 30, y: eventY, width: eventwidth, height: cell.frame.height)
-                    }
-                }//end if event has ended
-            }//end for
-        }//end if cell not 0
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
+        
         return cell
     }//end function
     
+    //MARK: Helper functions
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func makeMinutes(from: String) -> Int{
         
-        let cell = tableView.cellForRow(at: indexPath) as! TimeTableViewCell
+        let time = from.split(separator: ":")
         
-        tableView.deselectRow(at: indexPath, animated: true)
-        let eventView = EventViewController()
+        let htm:Int = Int(String(describing: time[0]))! * 60 //hour to minutes
         
-        if(cell.event != nil){
-            eventView.event = cell.event
-            eventView.today = self
-            navigationController?.pushViewController(eventView, animated: true)
-        }
+        let minutes = htm + Int(String(describing: time[1]))!
+        
+        return minutes
+        
     }
+    
 }

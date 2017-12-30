@@ -20,6 +20,7 @@ class CalendarHandler{
             var month: Array<CalendarDay> = []
             var m = ""
             let url = URL(string: self.BASE_URL + "/calendar/getmonth.php?month=" + forMonth  + "&year=" + ofYear + "&user=" + withUser)
+            print(url?.absoluteString)
             let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
