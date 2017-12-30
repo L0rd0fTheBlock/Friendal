@@ -11,6 +11,8 @@ import UIKit
 class EventContainerView: UIView {
 
     let label:UILabel = UILabel()
+    var event:Event?
+    var today: DayViewController? = nil
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -19,8 +21,12 @@ class EventContainerView: UIView {
     }
     */
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(withFrame: CGRect, forEvent: Event, today: DayViewController) {
+        event = forEvent
+        self.today = today
+        super.init(frame: withFrame)
+        
+        
         
         label.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 30)
         backgroundColor = UIColor.yellow.withAlphaComponent(0.55)
@@ -38,10 +44,36 @@ class EventContainerView: UIView {
         
         label.textAlignment = .center
         
+        label.text = event?.title
+        
         addSubview(label)
+        
+        let tapper = UITapGestureRecognizer(target: self, action: #selector(didTap))
+        tapper.isEnabled = true
+        
+        addGestureRecognizer(tapper)
     }
+    
+    
 
     required init?(coder aDecoder: NSCoder) {
+        event = nil
         super.init(coder: aDecoder)
     }
+    
+    
+    @objc
+    func didTap(){
+        print("tap")
+        print(event?.title)
+        
+        let eventView = EventViewController()
+        
+        if(event != nil){
+            eventView.event = event
+            eventView.today = today
+            today?.navigationController?.pushViewController(eventView, animated: true)
+        }
+    }
+    
 }

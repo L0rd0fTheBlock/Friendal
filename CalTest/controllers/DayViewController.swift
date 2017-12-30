@@ -110,8 +110,7 @@ class DayViewController: UITableViewController {
             
         }
         
-        let eventView = EventContainerView(frame: frame)
-        eventView.label.text = event.title
+        let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
         tableView.addSubview(eventView)
         
     }
@@ -140,16 +139,16 @@ class DayViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let cell = tableView.cellForRow(at: indexPath) as! TimeTableViewCell
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-        let eventView = EventViewController()
-        
-        if(cell.event != nil){
-            eventView.event = cell.event
-            eventView.today = self
-            navigationController?.pushViewController(eventView, animated: true)
-        }
+//        let cell = tableView.cellForRow(at: indexPath) as! TimeTableViewCell
+//
+//        tableView.deselectRow(at: indexPath, animated: true)
+//        let eventView = EventViewController()
+//
+//        if(cell.event != nil){
+//            eventView.event = cell.event
+//            eventView.today = self
+//            navigationController?.pushViewController(eventView, animated: true)
+//        }
     }
     
     //MARK: Helper functions
