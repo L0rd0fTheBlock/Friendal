@@ -13,6 +13,8 @@ class CalendarNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationBar.barTintColor = UIColor(rgb: 0x01B30A)
+        navigationBar.tintColor = .white
+        
         navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         // Do any additional setup after loading the view.
     }

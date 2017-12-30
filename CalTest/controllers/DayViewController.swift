@@ -44,17 +44,12 @@ class DayViewController: UITableViewController {
             let id = event.id
             
             for event in (today?.events)!{
-                //print("checking overlap on: " + id)
-                //print("event: " + event.id)
                 if(event.id == id){
-                   // print("skipping")
                 }else{
                     if(makeMinutes(from: event.start!) >= start && makeMinutes(from: event.start!) <= end){
-                        //print("event started during parent")
                         overlap = overlap + 1
                     }else if(makeMinutes(from: event.end!) >= start && makeMinutes(from: event.start!) <= end){//if ends after event starts and starts before the event ends
                         overlap = overlap + 1
-                      //  print("event ends after parent starts and starts before the parent ends")
                     }
                 }
             }
@@ -83,13 +78,10 @@ class DayViewController: UITableViewController {
     
     func drawTime(_ index: Int){
         if(index == -1){
-            print("doing nothing")
         }else{
             let label = UILabel(frame: CGRect(x: 0, y: (50 * (index+1)) - 25, width: 30, height: 50)  )
             label.text = String(format: "%02d", index)
             tableView.addSubview(label)
-            print("added: " + String(describing: index))
-            print("at: " + String(describing: (50 * (index+1))))
         }
     }
     
@@ -101,7 +93,7 @@ class DayViewController: UITableViewController {
         let tableLength = 50*25
         let breakdown = CGFloat(tableLength) / CGFloat(1500) //split the table into it's minutes
         
-        let startPoint: CGFloat = breakdown * CGFloat(start + 60) // multiplyy by the start time to push the event down the view
+        let startPoint: CGFloat = breakdown * CGFloat(start + 60) // multiply by the start time to push the event down the view
         let duration = CGFloat(end) - CGFloat(start)
         
         let endpoint = breakdown * duration
@@ -109,42 +101,17 @@ class DayViewController: UITableViewController {
         let eventWidth = (tableView.frame.width - 30) / CGFloat(overlaps)
         
         let shift = eventWidth * CGFloat(shiftBy)
-//        print(start)
-//        print(end)
-//        print(CGFloat(end) - CGFloat(start))
-        print("===================")
-        print(startPoint)
-        print("===================")
-//        print(startPoint + CGFloat(end))
-//        print(endpoint)
-        //print(shiftBy)
+        var frame: CGRect
+        if(shiftBy > 0){
+            frame = CGRect(x: CGFloat(30 + (5*shiftBy)) + shift, y: startPoint, width: eventWidth, height: endpoint)
+            
+        }else{
+            frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
+            
+        }
         
-        let frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
-        
-        let eventView = UIView(frame: frame)
-        
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: eventView.frame.width, height: 30))
-        
-        label.text = event.title
-        
-        label.backgroundColor = UIColor.orange
-        
-        let border = CALayer()
-        
-        let width = CGFloat(3)
-        border.borderColor = UIColor.orange.cgColor
-        border.cornerRadius = 0
-        border.frame = CGRect(x: 0, y: 0 + width, width: width, height: eventView.frame.height)
-        border.borderWidth = width
-        eventView.layer.addSublayer(border)
-        eventView.layer.masksToBounds = true
-        
-        
-        eventView.backgroundColor = UIColor.yellow.withAlphaComponent(0.55)
-        label.textAlignment = .center
-        
-        eventView.addSubview(label)
-        
+        let eventView = EventContainerView(frame: frame)
+        eventView.label.text = event.title
         tableView.addSubview(eventView)
         
     }
@@ -167,14 +134,6 @@ class DayViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! TimeTableViewCell
-//        cell.awakeFromNib()
-//        cell.selectionStyle = .none
-//        let index = indexPath.row - 1
-//        if(indexPath.row == 0){
-//            cell.label.text = ""
-//        }else{
-//            cell.label.text = String(format: "%02d", index)
-//        }
         return cell
     }//end function
     
