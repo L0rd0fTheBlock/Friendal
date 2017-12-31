@@ -14,6 +14,7 @@
 		7D2A498C1FED42A800CDEEB3 /* InviteesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2A498B1FED42A800CDEEB3 /* InviteesTableViewController.swift */; };
 		7D2A498E1FED498D00CDEEB3 /* Invitee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2A498D1FED498D00CDEEB3 /* Invitee.swift */; };
 		7D2A49901FF0335900CDEEB3 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */; };
+		7D3127C31FF98B65009752F0 /* FormToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C21FF98B65009752F0 /* FormToggleCell.swift */; };
 		7D5E0FF31FC9D8BB006A9D75 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF21FC9D8BB006A9D75 /* LoginViewController.swift */; };
 		7D5E0FF51FCA4110006A9D75 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF41FCA4110006A9D75 /* TabBarController.swift */; };
 		7D5F5D851FC207A800129830 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5F5D841FC207A800129830 /* AppDelegate.swift */; };
@@ -71,6 +72,7 @@
 		7D2A498B1FED42A800CDEEB3 /* InviteesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteesTableViewController.swift; sourceTree = "<group>"; };
 		7D2A498D1FED498D00CDEEB3 /* Invitee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitee.swift; sourceTree = "<group>"; };
 		7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendViewController.swift; sourceTree = "<group>"; };
+		7D3127C21FF98B65009752F0 /* FormToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormToggleCell.swift; sourceTree = "<group>"; };
 		7D5E0FF21FC9D8BB006A9D75 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7D5E0FF41FCA4110006A9D75 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7D5F5D811FC207A800129830 /* Friendal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friendal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -226,6 +228,7 @@
 				7DAA49E21FCCCE650056E033 /* FormTextCell.swift */,
 				7DAA49E41FCCCEAB0056E033 /* FormDatePickerCell.swift */,
 				7DCE3F691FCF7F7500322939 /* NotificationRequestViewCell.swift */,
+				7D3127C21FF98B65009752F0 /* FormToggleCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -576,6 +579,7 @@
 				7DCE3F6C1FD07A5600322939 /* NewRequestVC.swift in Sources */,
 				7D2A498E1FED498D00CDEEB3 /* Invitee.swift in Sources */,
 				7D117BAB1FC45DAE009E5932 /* TimeTableViewCell.swift in Sources */,
+				7D3127C31FF98B65009752F0 /* FormToggleCell.swift in Sources */,
 				7DAA49DE1FCCC2990056E033 /* NewEventVC.swift in Sources */,
 				7DAA49E51FCCCEAB0056E033 /* FormDatePickerCell.swift in Sources */,
 				7DCE3F721FD305D500322939 /* CalendarNavigationController.swift in Sources */,
