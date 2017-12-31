@@ -10,17 +10,36 @@ import UIKit
 import FacebookLogin
 
 class SettingsViewController: UITableViewController {
-
+    var me:Person?
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "option")
+        
+        tableView.register(FormToggleCell.self, forCellReuseIdentifier: "toggle")
 
+        tableView.isScrollEnabled = false
+        tableView.allowsSelection = false
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let calHandler = CalendarHandler()
+        
+        calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person) in
+            
+            
+            self.me = Person(id: person["id"]as! String, first: person["first_name"] as! String, last: person["last_name"] as! String)
+            
+            self.tableView.reloadData()
+        })
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,24 +50,77 @@ class SettingsViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 1
+        if(section == 0){
+            return 3
+        }else{
+            return 2
+        }
     }
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if(section == 0){
+            return "My Account"
+        }else{
+            return "Other settings"
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if(indexPath.section == 0){
+            if(indexPath.row == 0){
+                return 100
+            }else{
+                return 50
+            }
+        }else{
+            return 50
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "option", for: indexPath)
+        if(indexPath.section == 0){
+            switch indexPath.row{
+            case 0:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "option", for: indexPath)
+                let name = UILabel(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
+                name.text = me?.name
+                name.textAlignment = .center
+                name.font = UIFont(name: name.font.fontName, size: CGFloat(24))
+                cell.addSubview(name)
+                
+                return cell
+            case 1:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! FormToggleCell
+                
+                cell.title.text = "Make New Events Private: "
+                
+                return cell
+            case 2:
+               let cell = tableView.dequeueReusableCell(withIdentifier: "option", for: indexPath)
+                let loginButton = LoginButton(readPermissions: [ .publicProfile, .userFriends ])
 
-        let loginButton = LoginButton(readPermissions: [ .publicProfile, .userFriends ])
-        loginButton.center = cell.center
-        loginButton.delegate = self
-        cell.addSubview(loginButton)
-
-        return cell
+                loginButton.delegate = self
+                let width = loginButton.frame.width / 2
+                let x = (cell.frame.width / 2) - width
+                loginButton.frame = CGRect(origin: CGPoint(x: x, y: 10), size: loginButton.bounds.size)
+                cell.addSubview(loginButton)
+                
+                return cell
+            default:
+                print("Screwed up a little, no?")
+                return UITableViewCell()
+            }
+        }else if(indexPath.section == 1){
+         //T&C
+        //Bug reports
+            return UITableViewCell()
+        }else{
+            return UITableViewCell()
+        }
     }
 
 
