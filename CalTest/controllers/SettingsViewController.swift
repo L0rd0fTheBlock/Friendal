@@ -14,9 +14,13 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Options"
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "option")
         
-        tableView.register(FormToggleCell.self, forCellReuseIdentifier: "toggle")
+        tableView.register(SettingsToggleCell.self, forCellReuseIdentifier: "toggle")
+        
+        tableView.register(WebViewTableViewCell.self, forCellReuseIdentifier: "web")
 
         tableView.isScrollEnabled = false
         tableView.allowsSelection = false
@@ -94,7 +98,7 @@ class SettingsViewController: UITableViewController {
                 
                 return cell
             case 1:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! FormToggleCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! SettingsToggleCell
                 
                 cell.title.text = "Make New Events Private: "
                 
@@ -117,7 +121,19 @@ class SettingsViewController: UITableViewController {
         }else if(indexPath.section == 1){
          //T&C
         //Bug reports
-            return UITableViewCell()
+            
+            switch indexPath.row{
+            case 0:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "web", for: indexPath) as! WebViewTableViewCell
+                cell.table = self
+                print("cell 0")
+                
+                
+                return cell
+                //navigationController?.present(BugReportViewController(), animated: true, completion: nil)
+            default:
+                return UITableViewCell()
+            }
         }else{
             return UITableViewCell()
         }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FormToggleCell: UITableViewCell {
+class SettingsToggleCell: UITableViewCell {
 
     let toggle = UISwitch()
     let title = UILabel()
@@ -34,7 +34,7 @@ class FormToggleCell: UITableViewCell {
         toggle.frame = CGRect(x: frame.width - 70, y: (frame.height / 2) - subtraction, width: frame.width, height: frame.height)
         
         toggle.addTarget(self, action: #selector(didToggle), for: .touchUpInside)
-        
+        toggle.setOn(Settings.sharedInstance.getPrivacy(), animated: true)
         addSubview(toggle)
         addSubview(title)
     }
@@ -52,6 +52,8 @@ class FormToggleCell: UITableViewCell {
     @objc
     func didToggle(){
         print(toggle.isOn)
+        Settings.sharedInstance.setPrivacy(toggle.isOn)
+        Settings.sharedInstance.save()
     }
 
 }

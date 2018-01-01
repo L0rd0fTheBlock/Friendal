@@ -102,6 +102,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func doLoad(){
         
+        Settings.sharedInstance.load()
+        
         let cal = CalendarHandler()
         
         

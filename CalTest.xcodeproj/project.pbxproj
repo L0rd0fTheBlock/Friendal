@@ -14,7 +14,10 @@
 		7D2A498C1FED42A800CDEEB3 /* InviteesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2A498B1FED42A800CDEEB3 /* InviteesTableViewController.swift */; };
 		7D2A498E1FED498D00CDEEB3 /* Invitee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2A498D1FED498D00CDEEB3 /* Invitee.swift */; };
 		7D2A49901FF0335900CDEEB3 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */; };
-		7D3127C31FF98B65009752F0 /* FormToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C21FF98B65009752F0 /* FormToggleCell.swift */; };
+		7D3127C31FF98B65009752F0 /* SettingsToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C21FF98B65009752F0 /* SettingsToggleCell.swift */; };
+		7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C41FF9A32C009752F0 /* Settings.swift */; };
+		7D3127C71FF9C6CE009752F0 /* BugReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */; };
+		7D4E7BAE1FFA88020085DA33 /* WebViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */; };
 		7D5E0FF31FC9D8BB006A9D75 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF21FC9D8BB006A9D75 /* LoginViewController.swift */; };
 		7D5E0FF51FCA4110006A9D75 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF41FCA4110006A9D75 /* TabBarController.swift */; };
 		7D5F5D851FC207A800129830 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5F5D841FC207A800129830 /* AppDelegate.swift */; };
@@ -72,7 +75,10 @@
 		7D2A498B1FED42A800CDEEB3 /* InviteesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteesTableViewController.swift; sourceTree = "<group>"; };
 		7D2A498D1FED498D00CDEEB3 /* Invitee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invitee.swift; sourceTree = "<group>"; };
 		7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendViewController.swift; sourceTree = "<group>"; };
-		7D3127C21FF98B65009752F0 /* FormToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormToggleCell.swift; sourceTree = "<group>"; };
+		7D3127C21FF98B65009752F0 /* SettingsToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsToggleCell.swift; sourceTree = "<group>"; };
+		7D3127C41FF9A32C009752F0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewController.swift; sourceTree = "<group>"; };
+		7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTableViewCell.swift; sourceTree = "<group>"; };
 		7D5E0FF21FC9D8BB006A9D75 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7D5E0FF41FCA4110006A9D75 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7D5F5D811FC207A800129830 /* Friendal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friendal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -228,7 +234,8 @@
 				7DAA49E21FCCCE650056E033 /* FormTextCell.swift */,
 				7DAA49E41FCCCEAB0056E033 /* FormDatePickerCell.swift */,
 				7DCE3F691FCF7F7500322939 /* NotificationRequestViewCell.swift */,
-				7D3127C21FF98B65009752F0 /* FormToggleCell.swift */,
+				7D3127C21FF98B65009752F0 /* SettingsToggleCell.swift */,
+				7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -256,6 +263,7 @@
 				7DAA49DD1FCCC2990056E033 /* NewEventVC.swift */,
 				7DCE3F6B1FD07A5600322939 /* NewRequestVC.swift */,
 				7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */,
+				7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */,
 			);
 			path = modals;
 			sourceTree = "<group>";
@@ -268,6 +276,7 @@
 				7D88FFD81FCC5E4700E6773E /* Person.swift */,
 				7DE55C271FCF165E00016A83 /* Request.swift */,
 				7D2A498D1FED498D00CDEEB3 /* Invitee.swift */,
+				7D3127C41FF9A32C009752F0 /* Settings.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -574,12 +583,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */,
 				7D5E0FF31FC9D8BB006A9D75 /* LoginViewController.swift in Sources */,
 				7DCE3F741FD3176600322939 /* EventViewController.swift in Sources */,
 				7DCE3F6C1FD07A5600322939 /* NewRequestVC.swift in Sources */,
 				7D2A498E1FED498D00CDEEB3 /* Invitee.swift in Sources */,
 				7D117BAB1FC45DAE009E5932 /* TimeTableViewCell.swift in Sources */,
-				7D3127C31FF98B65009752F0 /* FormToggleCell.swift in Sources */,
+				7D3127C31FF98B65009752F0 /* SettingsToggleCell.swift in Sources */,
 				7DAA49DE1FCCC2990056E033 /* NewEventVC.swift in Sources */,
 				7DAA49E51FCCCEAB0056E033 /* FormDatePickerCell.swift in Sources */,
 				7DCE3F721FD305D500322939 /* CalendarNavigationController.swift in Sources */,
@@ -594,11 +604,13 @@
 				7D90D53F1FD44B7D00FE2E89 /* SettingsViewController.swift in Sources */,
 				7D5F5D851FC207A800129830 /* AppDelegate.swift in Sources */,
 				7DE55C261FCF15F800016A83 /* NotificationViewController.swift in Sources */,
+				7D3127C71FF9C6CE009752F0 /* BugReportViewController.swift in Sources */,
 				7D117BA71FC33EB2009E5932 /* Event.swift in Sources */,
 				7D88FFD91FCC5E4700E6773E /* Person.swift in Sources */,
 				7D74E0C51FC7888D00DB91AF /* CalendarViewCell.swift in Sources */,
 				7D117BA91FC39462009E5932 /* DayViewController.swift in Sources */,
 				7D2A498C1FED42A800CDEEB3 /* InviteesTableViewController.swift in Sources */,
+				7D4E7BAE1FFA88020085DA33 /* WebViewTableViewCell.swift in Sources */,
 				7D2A49901FF0335900CDEEB3 /* InviteFriendViewController.swift in Sources */,
 				7DCE3F6A1FCF7F7500322939 /* NotificationRequestViewCell.swift in Sources */,
 				7D8B86901FF6B91F006D4284 /* EventContainerView.swift in Sources */,

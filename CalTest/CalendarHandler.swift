@@ -346,6 +346,67 @@ class CalendarHandler{
         }//end async
     }//end getInvited
     
+    func getSettings(forUser: String){
+        DispatchQueue.global(qos: .userInteractive).async {
+            
+            let url = URL(string: self.BASE_URL + "/calendar/getUserOptions.php?uid=" + forUser)
+            
+            let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+                if error != nil {
+                    print("ERROR")
+                    print(error!)
+                }else{
+                    
+                    if let content = data{
+                        do{
+                            print(content)
+                            //Array
+                            let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
+                            print(json)
+                            let jdata = json as! Dictionary<String, String>
+                            
+                            Settings.sharedInstance.id = Int(jdata["id"]!)
+                            Settings.sharedInstance.uid = jdata["uid"]!
+                            Settings.sharedInstance.dateFormat = Int(jdata["date_format"]!)!
+                            Settings.sharedInstance.privacy = Int(jdata["default_privacy"]!)!
+                            
+                            print(jdata)
+
+                        }catch{
+                            
+                        }
+                    }
+                }
+            }//end Task
+            task.resume()
+        }//end async
+    }//end getInvited
+    
+    func setSettings(){
+        DispatchQueue.global(qos: .userInteractive).async {
+            let settings = Settings.sharedInstance
+
+            var urlString = self.BASE_URL
+            urlString = urlString + "/calendar/updateUserOptions.php?uid=" + settings.uid
+            urlString = urlString + "&format=" + String(describing: settings.dateFormat)
+            urlString = urlString + "&privacy=" + String(describing: settings.privacy)
+            
+            let url = URL(string: urlString)
+            
+            print(url?.absoluteString)
+            
+            let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+                if error != nil {
+                    print("ERROR")
+                    print(error!)
+                }else{
+                  print("Settings Saved")
+                }
+            }//end Task
+            task.resume()
+        }//end async
+    }//end getInvited
+    
     
     func doGraph(request: String, params: String, completion: @escaping (Dictionary<String, Any>) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
