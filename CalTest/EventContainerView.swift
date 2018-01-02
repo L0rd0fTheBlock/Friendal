@@ -55,7 +55,14 @@ class EventContainerView: UIView {
         label.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 30)
         label.backgroundColor = UIColor.orange
         label.textAlignment = .center
-        label.text = event?.title
+        
+        if(event?.isVisible())!{
+            label.text = event?.title
+        }else{
+            label.text = "Busy"
+        }
+        
+        
         
         addSubview(label)
     }
@@ -71,13 +78,20 @@ class EventContainerView: UIView {
     
     @objc
     func didTap(){
-        
-        let eventView = EventViewController()
-        
-        if(event != nil){
-            eventView.event = event
-            eventView.today = today
-            today?.navigationController?.pushViewController(eventView, animated: true)
+        if(event?.isVisible())!{
+            let eventView = EventViewController()
+            
+            if(event != nil){
+                eventView.event = event
+                eventView.today = today
+                today?.navigationController?.pushViewController(eventView, animated: true)
+            }
+        }else{
+            let alert = UIAlertController(title: "Private Event", message: "You cannot view details about this event.", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(action) in
+                alert.dismiss(animated: true, completion: nil)
+            }) )
+            today?.present(alert, animated: true, completion: nil)
         }
     }
     

@@ -18,6 +18,7 @@
 		7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C41FF9A32C009752F0 /* Settings.swift */; };
 		7D3127C71FF9C6CE009752F0 /* BugReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */; };
 		7D4E7BAE1FFA88020085DA33 /* WebViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */; };
+		7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */; };
 		7D5E0FF31FC9D8BB006A9D75 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF21FC9D8BB006A9D75 /* LoginViewController.swift */; };
 		7D5E0FF51FCA4110006A9D75 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF41FCA4110006A9D75 /* TabBarController.swift */; };
 		7D5F5D851FC207A800129830 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5F5D841FC207A800129830 /* AppDelegate.swift */; };
@@ -79,6 +80,7 @@
 		7D3127C41FF9A32C009752F0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewController.swift; sourceTree = "<group>"; };
 		7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTableViewCell.swift; sourceTree = "<group>"; };
+		7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventToggleCell.swift; sourceTree = "<group>"; };
 		7D5E0FF21FC9D8BB006A9D75 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7D5E0FF41FCA4110006A9D75 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7D5F5D811FC207A800129830 /* Friendal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friendal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -236,6 +238,7 @@
 				7DCE3F691FCF7F7500322939 /* NotificationRequestViewCell.swift */,
 				7D3127C21FF98B65009752F0 /* SettingsToggleCell.swift */,
 				7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */,
+				7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -584,6 +587,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */,
+				7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */,
 				7D5E0FF31FC9D8BB006A9D75 /* LoginViewController.swift in Sources */,
 				7DCE3F741FD3176600322939 /* EventViewController.swift in Sources */,
 				7DCE3F6C1FD07A5600322939 /* NewRequestVC.swift in Sources */,
@@ -775,6 +779,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A832G8D3K3;
 				INFOPLIST_FILE = CalTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.friendal;
 				PRODUCT_NAME = Friendal;
@@ -791,6 +796,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A832G8D3K3;
 				INFOPLIST_FILE = CalTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.friendal;
 				PRODUCT_NAME = Friendal;

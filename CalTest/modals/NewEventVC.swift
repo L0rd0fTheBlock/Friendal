@@ -24,6 +24,7 @@ class NewEventVC: UITableViewController {
         
         tableView.register(FormTextCell.self, forCellReuseIdentifier: "text")
         tableView.register(FormDatePickerCell.self, forCellReuseIdentifier: "date")
+        tableView.register(NewEventToggleCell.self, forCellReuseIdentifier: "toggle")
         
         tableView.rowHeight = 60.0
         
@@ -78,6 +79,10 @@ class NewEventVC: UITableViewController {
         
         event.end = cell2.end
         
+        let cell3 = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! NewEventToggleCell
+        
+        event.setPrivacy(cell3.toggle.isOn)
+        
         if(event.start == event.end){
             present(alert, animated: true, completion: nil)
         }else{
@@ -102,7 +107,7 @@ class NewEventVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 3
+        return 4
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -145,6 +150,10 @@ class NewEventVC: UITableViewController {
             cell.start = formatter.string(from: Date())
             cell.end = formatter.string(from: Date())
             cell.showDate = false
+            return cell
+        case 3:
+            let cell: NewEventToggleCell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! NewEventToggleCell
+            cell.title.text = "Hide Event"
             return cell
         default:
             print("error")

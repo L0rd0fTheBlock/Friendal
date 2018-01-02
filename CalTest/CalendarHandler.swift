@@ -44,7 +44,7 @@ class CalendarHandler{
                                     
                                     if(hasEvent){
                                         for event in day["Events"] as! Array<[String: String]> {
-                                            thisDay.addEvent(event: Event(event["id"]!, title: event["title"]!, date: event["day"]!, month: event["month"]!, year: event["year"]!, start: event["start"]!, end: event["end"]!, count: event["inviteCount"]!, creator: event["UID"]!))
+                                            thisDay.addEvent(event: Event(event["id"]!, title: event["title"]!, date: event["day"]!, month: event["month"]!, year: event["year"]!, start: event["start"]!, end: event["end"]!, count: event["inviteCount"]!, creator: event["UID"]!, privacy: event["make_private"]!))
                                         }
                                     }
                                     month.append(thisDay)
@@ -92,7 +92,8 @@ class CalendarHandler{
                                 let ev = request["0"]! as! Dictionary<String, Any>
                                 let events = ev["events"] as! Array<Dictionary<String, String>>
                                 let anEvent = events[0]
-                                let thisEvent = Event(anEvent["id"]!, title: anEvent["title"]!, date: anEvent["day"]!, month: anEvent["month"]!, year: anEvent["year"]!, start: anEvent["start"]!, end: anEvent["end"]!, count: anEvent["inviteCount"]!, creator: anEvent["UID"]!)
+                                print(anEvent)
+                                let thisEvent = Event(anEvent["id"]!, title: anEvent["title"]!, date: anEvent["day"]!, month: anEvent["month"]!, year: anEvent["year"]!, start: anEvent["start"]!, end: anEvent["end"]!, count: "0", creator: anEvent["UID"]!, privacy: anEvent["make_private"]!)
                                 
                                 if(request["message"] != nil){
                                     requests.append(Request(request["id"] as! String, e: thisEvent, s: request["sender"] as! String, m: request["message"] as! String))
@@ -158,8 +159,10 @@ class CalendarHandler{
         
         postString += "&year=" + event.year!
         
-        postString += "&id=" + (AccessToken.current?.userId)!
+        postString += "&privacy=" + String(describing: event.isHidden())
         
+        postString += "&id=" + (AccessToken.current?.userId)!
+        print(postString)
         request.httpBody = postString.data(using: String.Encoding.utf8)
         
         let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
@@ -270,6 +273,46 @@ class CalendarHandler{
         }//end async
     }//end getGoing
     
+    func isInvitee(_ user: String, forEvent: String, completion: @escaping (Bool) ->()){
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+            print("GETTING IS INVITEE")
+            var invitees: Array<Invitee> = []
+            
+            let url = URL(string: self.BASE_URL + "/calendar/isInvitee.php?eid=" + forEvent + "&uid=" + user)
+            print(url?.absoluteString)
+            let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+                if error != nil {
+                    print("ERROR")
+                    print(error!)
+                }else{
+                    
+                    if let content = data{
+                        do{
+                            
+                            //Array
+                            let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.allowFragments) as AnyObject
+                            
+                            //print(json)
+                            
+                            DispatchQueue.main.async {
+                                if(json as! Int == 1){
+                                    completion(true)
+                                }else{
+                                    completion(false)
+                                }
+                            }
+                        }catch let error{
+                           print(error)
+                        }
+                    }
+                }
+            }//end Task
+            task.resume()
+        }//end async
+        
+    }
+    
     func getNotGoing(forEvent: String, completion: @escaping ([Invitee]) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
             
@@ -362,7 +405,7 @@ class CalendarHandler{
                             print(content)
                             //Array
                             let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
-                            print(json)
+                          //  print(json)
                             let jdata = json as! Dictionary<String, String>
                             
                             Settings.sharedInstance.id = Int(jdata["id"]!)
@@ -370,7 +413,7 @@ class CalendarHandler{
                             Settings.sharedInstance.dateFormat = Int(jdata["date_format"]!)!
                             Settings.sharedInstance.privacy = Int(jdata["default_privacy"]!)!
                             
-                            print(jdata)
+                            //print(jdata)
 
                         }catch{
                             
