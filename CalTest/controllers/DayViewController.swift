@@ -18,6 +18,19 @@ class DayViewController: UITableViewController {
         }
     }
     
+    var allDayLabel: UIView {
+        let adView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 35))
+        let label = UILabel(frame: CGRect(x: 5, y: 0, width: 80, height: 35))
+        label.text = "All-Day"
+        label.textColor = .white
+        
+        adView.backgroundColor = .gray
+        
+        adView.addSubview(label)
+        
+        return adView
+    }
+    
     let cellID: String = "event"
     
     override func viewDidLoad() {
@@ -30,6 +43,7 @@ class DayViewController: UITableViewController {
     }
     func setupView(){
         view.backgroundColor = .white
+        view.addSubview(allDayLabel)
         
         for (index, event) in (today?.events.enumerated())!{
             
@@ -65,13 +79,14 @@ class DayViewController: UITableViewController {
     
     func drawEvent(_ event:Event, overlaps:Int, shiftBy:Int){
         if(event.isAllDay){
-            let eventWidth = tableView.frame.width / CGFloat(overlaps)
-            let shift = eventWidth * CGFloat(shiftBy)
+            let spacer: CGFloat = CGFloat(5) //the space between all day events
+            let eventWidth = (tableView.frame.width - 80) / CGFloat(overlaps)
+            let shift = (eventWidth + spacer) * CGFloat(shiftBy)
             
-           let frame = CGRect(x: CGFloat(shift), y: 0, width: eventWidth, height: 25)
+           let frame = CGRect(x: CGFloat(75 + shift), y: 5, width: eventWidth, height: 25)
             
             let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
-            tableView.addSubview(eventView)
+            allDayLabel.addSubview(eventView)
             
         }else{
             let start = makeMinutes(from: event.start!)
