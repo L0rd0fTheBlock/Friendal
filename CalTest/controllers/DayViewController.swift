@@ -39,33 +39,15 @@ class DayViewController: UITableViewController {
             let end = makeMinutes(from: event.end!)
             let id = event.id
             
-            for event in (today?.events)!{
-                if(event.id == id){
-                }else{
-                    if(makeMinutes(from: event.start!) >= start && makeMinutes(from: event.start!) <= end){
-                        overlap = overlap + 1
-                    }else if(makeMinutes(from: event.end!) >= start && makeMinutes(from: event.start!) <= end){//if ends after event starts and starts before the event ends
-                        overlap = overlap + 1
-                    }
-                }
-            }
             
-            if(index > 0){
-                
-                let count = index - 1
-                
-                for i in 0...count{
-                    let event = today?.events[i]
-                    if(start <= makeMinutes(from: (event?.start!)!) && end >= makeMinutes(from: (event?.start!)!)){
-                        shift = shift + 1
-                    }else if(start > makeMinutes(from: (event?.start!)!) && start < makeMinutes(from: (event?.end!)!)){
-                        shift = shift + 1
-                    }
-                }
+            overlap = calculateOverlap(start: start, end: end, id: id)
+            
+            if(index>0){
+                shift = calculateShift(index, start: start, end: end)
             }
             
             drawEvent(event, overlaps: overlap, shiftBy: shift)
-        }
+        }// end drawdrawEvent loop
         
         for i in -1...23 {
             drawTime(i)
@@ -111,6 +93,37 @@ class DayViewController: UITableViewController {
         
     }
     
+    
+    func calculateShift(_ index: Int, start: Int, end: Int) -> Int{
+        var shift = 0
+        let count = index - 1
+        
+        for i in 0...count{
+            let event = today?.events[i]
+            if(start <= makeMinutes(from: (event?.start!)!) && end >= makeMinutes(from: (event?.start!)!)){
+                shift = shift + 1
+            }else if(start > makeMinutes(from: (event?.start!)!) && start < makeMinutes(from: (event?.end!)!)){
+                shift = shift + 1
+            }
+        }
+        return shift
+    }
+    
+    func calculateOverlap(start: Int, end: Int, id: String) -> Int{
+        var overlap = 1
+        for event in (today?.events)!{
+            if(event.id == id){
+            }else{
+                if(makeMinutes(from: event.start!) >= start && makeMinutes(from: event.start!) <= end){
+                      overlap = overlap + 1
+                    
+                }else if(makeMinutes(from: event.end!) >= start && makeMinutes(from: event.start!) <= end){//if ends after event starts and starts before the event ends
+                    overlap = overlap + 1
+                }
+            }
+        }
+        return overlap
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false

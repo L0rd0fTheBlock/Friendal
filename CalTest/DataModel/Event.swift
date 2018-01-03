@@ -24,6 +24,7 @@ class Event{
     var canInvite: Bool = false
     var isPrivate: Bool = false//false = visible, true = "busy"
     var isUserInvited: Bool = false
+    var isAllDay: Bool = false
     
     init(_ id: String, title: String, date: String, month: String, year: String, start: String, end: String, count: String, creator: String, privacy: String) {
         self.id = id
