@@ -83,6 +83,10 @@ class NewEventVC: UITableViewController {
         
         event.setPrivacy(cell3.toggle.isOn)
         
+        let cell4 = tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as! NewEventToggleCell
+        
+        event.setAllDay(cell4.toggle.isOn)
+        
         if(event.start == event.end){
             present(alert, animated: true, completion: nil)
         }else{
@@ -107,7 +111,7 @@ class NewEventVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 4
+        return 5
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -154,13 +158,16 @@ class NewEventVC: UITableViewController {
         case 3:
             let cell: NewEventToggleCell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! NewEventToggleCell
             cell.title.text = "Hide Event"
+            cell.toggle.setOn(Settings.sharedInstance.getPrivacy(), animated: true)
+            return cell
+        case 4:
+            let cell: NewEventToggleCell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! NewEventToggleCell
+            cell.title.text = "All-Day"
             return cell
         default:
             print("error")
             return UITableViewCell()
         }
-
-        
 
         
     }

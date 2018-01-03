@@ -78,6 +78,9 @@ class DayViewController: UITableViewController {
     }
     
     func drawEvent(_ event:Event, overlaps:Int, shiftBy:Int){
+        print("======")
+        print(event.isAllDay)
+        print("======")
         if(event.isAllDay){
             let spacer: CGFloat = CGFloat(5) //the space between all day events
             let eventWidth = (tableView.frame.width - 80) / CGFloat(overlaps)
@@ -86,7 +89,7 @@ class DayViewController: UITableViewController {
            let frame = CGRect(x: CGFloat(75 + shift), y: 5, width: eventWidth, height: 25)
             
             let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
-            allDayLabel.addSubview(eventView)
+            tableView.addSubview(eventView)
             
         }else{
             let start = makeMinutes(from: event.start!)

@@ -26,7 +26,7 @@ class Event{
     var isUserInvited: Bool = false
     var isAllDay: Bool = true
     
-    init(_ id: String, title: String, date: String, month: String, year: String, start: String, end: String, count: String, creator: String, privacy: String) {
+    init(_ id: String, title: String, date: String, month: String, year: String, start: String, end: String, count: String, creator: String, privacy: String, allDay: String) {
         self.id = id
         self.title = title
         self.date = date
@@ -40,6 +40,7 @@ class Event{
         self.count = count
         
         setPrivacy(Int(privacy)!)
+        setAllDay(Int(allDay)!)
         
         isInvitee()
         
@@ -57,6 +58,16 @@ class Event{
         isPrivate = p
     }
     
+    
+    
+    func isInvitee(){
+        let calHandler = CalendarHandler()
+        calHandler.isInvitee(Settings.sharedInstance.uid, forEvent: id, completion: {(invitee) in
+            print(invitee)
+            self.isUserInvited = invitee
+        })
+    }
+    
     func isVisible() -> Bool{
         if(isPrivate){
             if(isUserInvited){
@@ -67,14 +78,6 @@ class Event{
         }else{
             return true
         }
-    }
-    
-    func isInvitee(){
-        let calHandler = CalendarHandler()
-        calHandler.isInvitee(Settings.sharedInstance.uid, forEvent: id, completion: {(invitee) in
-            print(invitee)
-            self.isUserInvited = invitee
-        })
     }
     
     func isHidden() -> Int{
@@ -88,6 +91,33 @@ class Event{
             return 0
         }
     }
+    
+    func setAllDay(_ isAD: Int){
+        if(isAD == 1){
+            isAllDay = true
+        }else{
+            isAllDay = false
+        }
+    }
+    
+    func setAllDay(_ isAD: Bool){
+        isAllDay = isAD
+    }
+    
+    func getAllDayBool() ->Bool{
+        
+        return isAllDay
+        
+    }
+    
+    func getAllDayInt() ->Int{
+        if(isAllDay){
+            return 1
+        }else{
+            return 0
+        }
+    }
+    
     
     init(){
         id = "0"

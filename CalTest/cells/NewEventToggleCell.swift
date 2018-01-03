@@ -8,20 +8,47 @@
 
 import UIKit
 
-class NewEventToggleCell: SettingsToggleCell {
+class NewEventToggleCell: UITableViewCell {
 
+    let toggle = UISwitch()
+    let title = UILabel()
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        print(toggle.frame.width)
+        print(toggle.frame.height)
+        
+        let subtraction = toggle.frame.height / 2
+        
+        title.frame = CGRect(x: 10, y: 0, width: frame.width - 100, height: frame.height)
+        
+        toggle.frame = CGRect(x: frame.width - 70, y: (frame.height / 2) - subtraction, width: frame.width, height: frame.height)
+        
+        toggle.addTarget(self, action: #selector(didToggle), for: .touchUpInside)
+        addSubview(toggle)
+        addSubview(title)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
     
-    override func didToggle() {
+    @objc
+    func didToggle() {
     
     }
 

@@ -44,7 +44,7 @@ class CalendarHandler{
                                     
                                     if(hasEvent){
                                         for event in day["Events"] as! Array<[String: String]> {
-                                            thisDay.addEvent(event: Event(event["id"]!, title: event["title"]!, date: event["day"]!, month: event["month"]!, year: event["year"]!, start: event["start"]!, end: event["end"]!, count: event["inviteCount"]!, creator: event["UID"]!, privacy: event["make_private"]!))
+                                            thisDay.addEvent(event: Event(event["id"]!, title: event["title"]!, date: event["day"]!, month: event["month"]!, year: event["year"]!, start: event["start"]!, end: event["end"]!, count: event["inviteCount"]!, creator: event["UID"]!, privacy: event["make_private"]!, allDay: event["allDay"]!))
                                         }
                                     }
                                     month.append(thisDay)
@@ -93,7 +93,7 @@ class CalendarHandler{
                                 let events = ev["events"] as! Array<Dictionary<String, String>>
                                 let anEvent = events[0]
                                 print(anEvent)
-                                let thisEvent = Event(anEvent["id"]!, title: anEvent["title"]!, date: anEvent["day"]!, month: anEvent["month"]!, year: anEvent["year"]!, start: anEvent["start"]!, end: anEvent["end"]!, count: "0", creator: anEvent["UID"]!, privacy: anEvent["make_private"]!)
+                                let thisEvent = Event(anEvent["id"]!, title: anEvent["title"]!, date: anEvent["day"]!, month: anEvent["month"]!, year: anEvent["year"]!, start: anEvent["start"]!, end: anEvent["end"]!, count: "0", creator: anEvent["UID"]!, privacy: anEvent["make_private"]!, allDay: anEvent["allDay"]!)
                                 
                                 if(request["message"] != nil){
                                     requests.append(Request(request["id"] as! String, e: thisEvent, s: request["sender"] as! String, m: request["message"] as! String))
@@ -160,6 +160,8 @@ class CalendarHandler{
         postString += "&year=" + event.year!
         
         postString += "&privacy=" + String(describing: event.isHidden())
+        
+        postString += "&allday=" + String(describing: event.getAllDayInt())
         
         postString += "&id=" + (AccessToken.current?.userId)!
         print(postString)
