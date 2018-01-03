@@ -64,33 +64,42 @@ class DayViewController: UITableViewController {
     }
     
     func drawEvent(_ event:Event, overlaps:Int, shiftBy:Int){
-        
-        let start = makeMinutes(from: event.start!)
-        let end = makeMinutes(from: event.end!)
-        
-        let tableLength = 50*25
-        let breakdown = CGFloat(tableLength) / CGFloat(1500) //split the table into it's minutes
-        
-        let startPoint: CGFloat = breakdown * CGFloat(start + 60) // multiply by the start time to push the event down the view
-        let duration = CGFloat(end) - CGFloat(start)
-        
-        let endpoint = breakdown * duration
-        
-        let eventWidth = (tableView.frame.width - 30) / CGFloat(overlaps)
-        
-        let shift = eventWidth * CGFloat(shiftBy)
-        var frame: CGRect
-        if(shiftBy > 0){
-            frame = CGRect(x: CGFloat(30 + (5*shiftBy)) + shift, y: startPoint, width: eventWidth, height: endpoint)
+        if(event.isAllDay){
+            let eventWidth = tableView.frame.width / CGFloat(overlaps)
+            let shift = eventWidth * CGFloat(shiftBy)
+            
+           let frame = CGRect(x: CGFloat(shift), y: 0, width: eventWidth, height: 25)
+            
+            let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
+            tableView.addSubview(eventView)
             
         }else{
-            frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
+            let start = makeMinutes(from: event.start!)
+            let end = makeMinutes(from: event.end!)
             
+            let tableLength = 50*25
+            let breakdown = CGFloat(tableLength) / CGFloat(1500) //split the table into it's minutes
+            
+            let startPoint: CGFloat = breakdown * CGFloat(start + 60) // multiply by the start time to push the event down the view
+            let duration = CGFloat(end) - CGFloat(start)
+            
+            let endpoint = breakdown * duration
+            
+            let eventWidth = (tableView.frame.width - 30) / CGFloat(overlaps)
+            
+            let shift = eventWidth * CGFloat(shiftBy)
+            var frame: CGRect
+            if(shiftBy > 0){
+                frame = CGRect(x: CGFloat(30 + (5*shiftBy)) + shift, y: startPoint, width: eventWidth, height: endpoint)
+                
+            }else{
+                frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
+                
+            }
+            
+            let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
+            tableView.addSubview(eventView)
         }
-        
-        let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
-        tableView.addSubview(eventView)
-        
     }
     
     
