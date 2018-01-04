@@ -31,7 +31,7 @@ class EventViewController: UITableViewController {
         
         delete.addTarget(self, action: #selector(didDelete), for: .touchUpInside)
         
-        delete.frame = CGRect(x: 0, y: view.frame.height/2/*-125*/, width: view.frame.width, height: 50)
+        delete.frame = CGRect(x: 0, y: view.frame.height - 100/*-125*/, width: view.frame.width, height: 50)
         view.addSubview(delete)
         
         tableView.separatorStyle = .none
