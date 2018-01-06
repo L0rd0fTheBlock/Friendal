@@ -11,26 +11,30 @@ import FacebookCore
 
 class CalendarHandler{
     
-    let BASE_URL = "http://90.221.83.199"
+    let BASE_URL = "http://90.217.204.240"
     //let BASE_URL = "http://192.168.0.67"
+    //let BASE_URL = "http://localhost"
     
-    func getCalMonth(forMonth: String, ofYear: String, withUser: String, completion: @escaping ([CalendarDay], String) ->()){
+    func getCalMonth(forMonth: String, ofYear: String, withUser: String, completion: @escaping ([CalendarDay]?, String?, NSError?) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
             
             var month: Array<CalendarDay> = []
             var m = ""
             let url = URL(string: self.BASE_URL + "/calendar/getmonth.php?month=" + forMonth  + "&year=" + ofYear + "&user=" + withUser)
-            print(url?.absoluteString)
             let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
                 if error != nil {
-                    print("ERROR")
-                    print(error!)
+                    print("ERROR in request")
+                    DispatchQueue.main.async {
+                        completion(nil, nil, self.getError(from: error! as NSError))
+                    }
                 }else{
                     
                         if let content = data{
                             do{
                                 //Array
                                 let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
+                                print("json")
+                                print(json)
                                 let jdata = json as! Array<[String: Any]>
                                 for day in jdata {
                                     m = day["month"] as! String
@@ -50,10 +54,15 @@ class CalendarHandler{
                                     month.append(thisDay)
                                 }
                                 DispatchQueue.main.async {
-                                    completion(month, m)
+                                    completion(month, m, nil)
                                 }
-                            }catch{
-                                
+                            }catch let err{
+                                DispatchQueue.main.async {
+                                    print("=================")
+                                    print(err)
+                                    completion(nil, nil, self.getError(from: err as NSError))
+                                    print("=================")
+                                }
                             }
                         }
                     }
@@ -62,7 +71,7 @@ class CalendarHandler{
         }//end async
     }//end getCalMonth
     
-    func getRequests(forUser: String, completion: @escaping ([Request]) ->()){
+    func getRequests(forUser: String, completion: @escaping ([Request]?, NSError?) ->()){
        
         DispatchQueue.global(qos: .userInteractive).async {
             
@@ -72,7 +81,9 @@ class CalendarHandler{
             let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
-                    print(error!)
+                    DispatchQueue.main.async {
+                        completion(nil, self.getError(from: error! as NSError))
+                    }
                 }else{
                     if let content = data{
                         
@@ -103,11 +114,13 @@ class CalendarHandler{
                            
                             }
                             DispatchQueue.main.async {
-                                completion(requests)
+                                completion(requests, nil)
                             }
                     }catch let e{
                          //  print("Error")
-                            print(e)
+                        DispatchQueue.main.async {
+                            completion(nil, self.getError(from: e as NSError))
+                        }
                         }
                     }
                 }
@@ -239,7 +252,7 @@ class CalendarHandler{
         }
     }
     
-    func getGoing(forEvent: String, completion: @escaping ([Invitee]) ->()){
+    func getGoing(forEvent: String, completion: @escaping ([Invitee]?, NSError?) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
             print("GETTING GOING")
             var invitees: Array<Invitee> = []
@@ -249,7 +262,9 @@ class CalendarHandler{
             let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
-                    print(error!)
+                    DispatchQueue.main.async {
+                        completion(nil, self.getError(from: error! as NSError))
+                    }
                 }else{
                    
                     if let content = data{
@@ -263,10 +278,12 @@ class CalendarHandler{
                                 invitees.append(Invitee(invitee["id"] as! String, uid: invitee["uid"] as! String, eventId: invitee["eventID"] as! String, isCancelled: invitee["isCancelled"] as! String) )
                             }
                             DispatchQueue.main.async {
-                                completion(invitees)
+                                completion(invitees, nil)
                             }
-                        }catch{
-                            
+                        }catch let error{
+                            DispatchQueue.main.async {
+                                completion(nil, self.getError(from: error as NSError))
+                            }
                         }
                     }
                 }
@@ -315,7 +332,7 @@ class CalendarHandler{
         
     }
     
-    func getNotGoing(forEvent: String, completion: @escaping ([Invitee]) ->()){
+    func getNotGoing(forEvent: String, completion: @escaping ([Invitee]?, NSError?) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
             
             print("GETTING  NOT GOING")
@@ -327,7 +344,9 @@ class CalendarHandler{
             let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
-                    print(error!)
+                    DispatchQueue.main.async {
+                        completion(nil, self.getError(from: error! as NSError))
+                    }
                 }else{
                     
                     if let content = data{
@@ -341,10 +360,12 @@ class CalendarHandler{
                                 invitees.append(Invitee(invitee["id"] as! String, uid: invitee["uid"] as! String, eventId: invitee["eventID"] as! String))
                             }
                             DispatchQueue.main.async {
-                                completion(invitees)
+                                completion(invitees, nil)
                             }
-                        }catch{
-                            
+                        }catch let error{
+                            DispatchQueue.main.async {
+                                completion(nil, self.getError(from: error as NSError))
+                            }
                         }
                     }
                 }
@@ -353,7 +374,7 @@ class CalendarHandler{
         }//end async
     }//end getNotGoing
     
-    func getInvited(forEvent: String, completion: @escaping ([Invitee]) ->()){
+    func getInvited(forEvent: String, completion: @escaping ([Invitee]?, NSError?) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
             
             print("GETTING INVITED")
@@ -365,7 +386,9 @@ class CalendarHandler{
             let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
-                    print(error!)
+                    DispatchQueue.main.async {
+                        completion(nil, self.getError(from: error! as NSError))
+                    }
                 }else{
                     
                     if let content = data{
@@ -379,10 +402,12 @@ class CalendarHandler{
                                 invitees.append(Invitee(invitee["id"] as! String, uid: invitee["uid"] as! String, eventId: invitee["eventID"] as! String, invitedBy: invitee["sender"] as! String))
                             }
                             DispatchQueue.main.async {
-                                completion(invitees)
+                                completion(invitees, nil)
                             }
-                        }catch{
-                            
+                        }catch let error{
+                            DispatchQueue.main.async {
+                                completion(nil, self.getError(from: error as NSError))
+                            }
                         }
                     }
                 }
@@ -476,6 +501,17 @@ class CalendarHandler{
             })//end request
         }//end async
     }//end doGraph
+    
+    func getError(from: NSError) ->NSError{
+        print("===GETERROR===")
+        if(from.domain == "NSCocoaErrorDomain"){
+            return NSError(domain: "com.makeitfortheweb", code: 101, userInfo: ["message": "An error occured while accessing the calendar."])
+        }else if(from.domain == NSURLErrorDomain && from.code == -1009){
+            return NSError(domain: "com.makeitfortheweb", code: 100, userInfo: ["message": "The Internet connection appears to be offline."])
+        }else{
+            return NSError(domain: "com.makeitfortheweb", code: 001, userInfo: ["message": "An unknown error has occured while maing your request."])
+        }
+    }
 
     
 }//end class

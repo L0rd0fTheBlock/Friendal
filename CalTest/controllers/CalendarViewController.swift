@@ -15,7 +15,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     var dates: Array<CalendarDay> = []
     let cellId = "day"
     var selectedCell: Int = -1
-    
+    let errorLabel = UILabel()
     
     
     var shouldLoadUserCalendar: Bool = true
@@ -42,6 +42,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         
        // navigationController.
+        
+        
         
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapNewEventButton))
         
@@ -102,6 +104,15 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func doLoad(){
         
+        errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
+        errorLabel.textAlignment = .center
+        errorLabel.text = "The calendar is loading."
+        errorLabel.numberOfLines = 0
+        errorLabel.backgroundColor = UIColor.lightGray.withAlphaComponent(CGFloat(0.5))
+        //errorLabel.isHidden = true
+        
+        collectionView.addSubview(errorLabel)
+        
         Settings.sharedInstance.load()
         
         let cal = CalendarHandler()
@@ -116,10 +127,18 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
             user = nonUserUID!
         }
         
-        cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m) in
+        cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
             
-            self.dates = data
-            self.navigationItem.title = m + " " + String(self.year)
+            guard let events = data, let month = m  else{
+                print(error)
+                guard let code = error?.code else{return}
+                self.errorLabel.isHidden = false
+                self.errorLabel.text = (error?.userInfo["message"] as? String)! + " Code: " + String(describing: code)
+                return
+            }
+            self.errorLabel.isHidden = true
+            self.dates = events
+            self.navigationItem.title = month + " " + String(self.year)
             self.collectionView.reloadData()
         })
         setupCalendar()
@@ -171,10 +190,13 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                         user = nonUserUID!
                     }
                     
-                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m) in
-                    
-                        self.dates = data
-                        self.navigationItem.title = m + " " + String(self.year)
+                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
+                        guard let events = data, let month = m  else{
+                            print(error)
+                            return
+                        }
+                        self.dates = events
+                        self.navigationItem.title = month + " " + String(self.year)
                         self.collectionView.reloadData()
                     })
                 }else{
@@ -191,10 +213,15 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                         user = nonUserUID!
                     }
                     
-                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m) in
+                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
                         
-                        self.dates = data
-                        self.navigationItem.title = m + " " + String(self.year)
+                        guard let events = data, let month = m  else{
+                            print(error)
+                            return
+                        }
+                        
+                        self.dates = events
+                        self.navigationItem.title = month + " " + String(self.year)
                         self.collectionView.reloadData()
                     })
                 }
@@ -212,10 +239,15 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                         user = nonUserUID!
                     }
                     
-                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m) in
+                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
                         
-                        self.dates = data
-                        self.navigationItem.title = m + " " + String(self.year)
+                        guard let events = data, let month = m  else{
+                            print(error)
+                            return
+                        }
+                        
+                        self.dates = events
+                        self.navigationItem.title = month + " " + String(self.year)
                         self.collectionView.reloadData()
                     })
                 }else{
@@ -232,10 +264,15 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                         user = nonUserUID!
                     }
                     
-                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m) in
+                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
                         
-                        self.dates = data
-                        self.navigationItem.title = m + " " + String(self.year)
+                        guard let events = data, let month = m  else{
+                            print(error)
+                            return
+                        }
+                        
+                        self.dates = events
+                        self.navigationItem.title = month + " " + String(self.year)
                         self.collectionView.reloadData()
                     })
                 }

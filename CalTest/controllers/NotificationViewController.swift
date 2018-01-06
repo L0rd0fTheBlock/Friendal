@@ -29,9 +29,12 @@ class NotificationViewController: UITableViewController {
         
         let cal = CalendarHandler()
         requests = []
-        cal.getRequests(forUser: (AccessToken.current?.userId)!, completion: { (request) in
+        cal.getRequests(forUser: (AccessToken.current?.userId)!, completion: { (request, error) in
             
-            self.requests = request
+            guard let r = request else{return}
+            
+            self.requests = r
+            
             let calHandler = CalendarHandler()
             
             for request in self.requests{

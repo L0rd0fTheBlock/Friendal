@@ -57,12 +57,12 @@ class InviteesTableViewController: UITableViewController {
         
         let calHandler = CalendarHandler()
         
-        calHandler.getGoing(forEvent: (event?.id)!, completion: {(invitees) in
+        calHandler.getGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
            
             print("======GOING======")
             print(invitees)
-            
-            for invitee in invitees{
+            guard let invite = invitees else{return}
+            for invitee in invite{
                 
                 calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data) in
                     
@@ -89,12 +89,14 @@ class InviteesTableViewController: UITableViewController {
         
         let calHandler = CalendarHandler()
         
-        calHandler.getNotGoing(forEvent: (event?.id)!, completion: {(invitees) in
+        calHandler.getNotGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
             
             print("======NOT GOING======")
             print(invitees)
             
-            for invitee in invitees{
+            guard let invite = invitees else{return}
+            
+            for invitee in invite{
                 
                 calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data) in
                     
@@ -121,10 +123,13 @@ class InviteesTableViewController: UITableViewController {
         
         let calHandler = CalendarHandler()
         
-        calHandler.getInvited(forEvent: (event?.id)!, completion: {(invitees) in
+        calHandler.getInvited(forEvent: (event?.id)!, completion: {(invitees, error) in
             print("======Invited======")
             print(invitees)
-            for invitee in invitees{
+            
+            guard let invite = invitees else{return}
+            
+            for invitee in invite{
                 
                 calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data) in
                     
