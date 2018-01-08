@@ -478,7 +478,7 @@ class CalendarHandler{
     }//end getInvited
     
     
-    func doGraph(request: String, params: String, completion: @escaping (Dictionary<String, Any>) ->()){
+    func doGraph(request: String, params: String, completion: @escaping (Dictionary<String, Any>?, NSError?) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
             
             var graph = GraphRequest.init(graphPath: request)
@@ -491,11 +491,13 @@ class CalendarHandler{
                 case .success(let d):
                     DispatchQueue.main.async {
                         
-                        completion(d.dictionaryValue!)
+                        completion(d.dictionaryValue!, nil)
                     }
                     
                 case .failed(let e):
-                    print(e)
+                    DispatchQueue.main.async {
+                        completion(nil, self.getError(from: e as NSError))
+                    }
                 }//end switch
                 
             })//end request

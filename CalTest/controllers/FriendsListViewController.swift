@@ -12,6 +12,7 @@ import FacebookCore
 class FriendsListViewController: UITableViewController {
 
     var friends: Array<Person> = []
+    let errorLabel = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,13 +53,31 @@ class FriendsListViewController: UITableViewController {
     
     func doLoad(){
         
+        friends.removeAll()
+        errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
+        errorLabel.textAlignment = .center
+        errorLabel.text = "Your Friends List is loading."
+        errorLabel.numberOfLines = 0
+        errorLabel.backgroundColor = UIColor.lightGray.withAlphaComponent(CGFloat(0.5))
+        tableView.addSubview(errorLabel)
+        
         let calHandler = CalendarHandler()
         
-        calHandler.doGraph(request: "me/friends", params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data) in
+        calHandler.doGraph(request: "me/friends", params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
             
+            guard let friends = data else{
+                guard let code = error?.code else{return}
+                
+                self.errorLabel.text = error?.userInfo["message"] as! String + " Code: " + String(describing: code)
+                self.errorLabel.isHidden = false
+                self.tableView.reloadData()
+                return
+                
+            }
             
+            self.errorLabel.isHidden = true
             //if(data[0] != nil){
-            self.friends = self.populateFriends(data: data)
+            self.friends = self.populateFriends(data: friends)
             
             
             for person in self.friends{

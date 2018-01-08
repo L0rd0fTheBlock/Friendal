@@ -103,7 +103,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func doLoad(){
-        
+        dates.removeAll()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
         errorLabel.textAlignment = .center
         errorLabel.text = "The calendar is loading."
@@ -134,6 +134,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                 guard let code = error?.code else{return}
                 self.errorLabel.isHidden = false
                 self.errorLabel.text = (error?.userInfo["message"] as? String)! + " Code: " + String(describing: code)
+                self.collectionView.reloadData()
                 return
             }
             self.errorLabel.isHidden = true

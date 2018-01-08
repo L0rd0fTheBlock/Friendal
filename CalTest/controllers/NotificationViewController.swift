@@ -12,6 +12,7 @@ import FacebookCore
 
 class NotificationViewController: UITableViewController {
 
+    let errorLabel = UILabel()
     var requests: [Request] = []
     
     override func viewDidLoad() {
@@ -26,26 +27,45 @@ class NotificationViewController: UITableViewController {
     }
     
     func loadData(){
+        requests.removeAll()
+        errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
+        errorLabel.textAlignment = .center
+        errorLabel.text = "Your notifications are loading."
+        errorLabel.numberOfLines = 0
+        errorLabel.backgroundColor = UIColor.lightGray.withAlphaComponent(CGFloat(0.5))
+        tableView.addSubview(errorLabel)
         
         let cal = CalendarHandler()
         requests = []
         cal.getRequests(forUser: (AccessToken.current?.userId)!, completion: { (request, error) in
             
-            guard let r = request else{return}
-            
+            guard let r = request else{
+                
+                guard let code = error?.code else{return}
+                
+                self.errorLabel.text = error?.userInfo["message"] as! String + " Code: " + String(describing: code)
+                self.errorLabel.isHidden = false
+                self.tableView.reloadData()
+                return
+                
+            }
+            self.errorLabel.isHidden = true
             self.requests = r
             
             let calHandler = CalendarHandler()
             
             for request in self.requests{
                 
-                calHandler.doGraph(request: "/" + String(request.sender), params: "id, first_name, last_name, picture", completion: {(data) in
+                calHandler.doGraph(request: "/" + String(request.sender), params: "id, first_name, last_name, picture", completion: {(data, error)  in
                     
+                    guard let p = data else{
+                        return
+                    }
                     
-                    let picture = data["picture"]!
+                    let picture = p["picture"]!
                     var pict = picture as! Dictionary<String, Any>
                     let pic = pict["data"] as! Dictionary<String, Any>
-                    let person = Person(id: data["id"] as! String, first: data["first_name"] as! String, last: data["last_name"] as! String, picture: pic)
+                    let person = Person(id: p["id"] as! String, first: p["first_name"] as! String, last: p["last_name"] as! String, picture: pic)
                     
                     request.person = person
                     

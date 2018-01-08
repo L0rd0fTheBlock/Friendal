@@ -64,7 +64,9 @@ class InviteesTableViewController: UITableViewController {
             guard let invite = invitees else{return}
             for invitee in invite{
                 
-                calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data) in
+                calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
+                    
+                    guard let data  = data else{return}
                     
                     let pic = data["picture"] as! Dictionary<String, Any>
                     
@@ -98,7 +100,9 @@ class InviteesTableViewController: UITableViewController {
             
             for invitee in invite{
                 
-                calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data) in
+                calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
+                    
+                    guard let data = data else{return}
                     
                     let pic = data["picture"] as! Dictionary<String, Any>
                     
@@ -131,7 +135,9 @@ class InviteesTableViewController: UITableViewController {
             
             for invitee in invite{
                 
-                calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data) in
+                calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
+                    
+                    guard let data = data else{return}
                     
                     let pic = data["picture"] as! Dictionary<String, Any>
                     
