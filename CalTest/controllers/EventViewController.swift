@@ -19,7 +19,11 @@ class EventViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        hideKeyboardWhenTappedAround()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
         
         let delete = UIButton()
         view.isUserInteractionEnabled = true
@@ -250,5 +254,33 @@ class EventViewController: UITableViewController {
         default:
             return "th"
         }
+    }
+    
+    @objc func keyboardWillShow(){
+        var contentOffset:CGPoint = tableView.contentOffset
+        contentOffset.y  = tableView.contentOffset.y + 200
+        
+        tableView.contentOffset = contentOffset
+    }
+    
+    @objc func keyboardWillHide(){
+        var contentOffset:CGPoint = tableView.contentOffset
+        contentOffset.y  = tableView.contentOffset.y - 200
+        
+        tableView.contentOffset = contentOffset
+    }
+    
+}
+
+
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

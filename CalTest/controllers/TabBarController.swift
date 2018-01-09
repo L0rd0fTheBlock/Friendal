@@ -13,6 +13,8 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        hideKeyboardWhenTappedAround()
+        
         tabBar.barTintColor = UIColor(rgb: 0x01B30A)
         //tabBar.tintColor = UIColor.orange
         tabBar.unselectedItemTintColor = UIColor(rgb:0xE3E3E3)

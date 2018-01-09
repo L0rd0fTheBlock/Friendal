@@ -15,7 +15,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
-        backgroundColor = .gray
+        backgroundColor = .white
         translatesAutoresizingMaskIntoConstraints = false
         delegate = self
         dataSource = self
