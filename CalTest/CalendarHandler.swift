@@ -21,7 +21,10 @@ class CalendarHandler{
             var month: Array<CalendarDay> = []
             var m = ""
             let url = URL(string: self.BASE_URL + "/calendar/getmonth.php?month=" + forMonth  + "&year=" + ofYear + "&user=" + withUser)
-            let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+            
+            let request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+            
+            let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
                 if error != nil {
                     print("ERROR in request")
                     DispatchQueue.main.async {
@@ -66,7 +69,7 @@ class CalendarHandler{
                             }
                         }
                     }
-            }//end Task
+            })//end Task
             task.resume()
         }//end async
     }//end getCalMonth
@@ -151,6 +154,43 @@ class CalendarHandler{
     }//end cancel event
     
 
+    func getEventStatus(_ id: String, completion: @escaping ([Status]?, NSError?) ->()){
+        print("getEventStatus called")
+        let url = URL(string: self.BASE_URL + "/calendar/getStatuses.php?id=" + String(describing: id))
+        
+        let request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+        
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+            print("completion ready")
+            if error != nil {
+                print("ERROR in request")
+                DispatchQueue.main.async {
+                    completion(nil, self.getError(from: error! as NSError))
+                }
+            }else{
+        
+                do{
+                    guard let data = data else{return}
+                    
+                    
+                    let statuses = try
+                        JSONDecoder().decode([Status].self, from: data)
+                    print("====Statuses====")
+                    print(statuses)
+                    DispatchQueue.main.async {
+                       completion(statuses, nil)
+                    }
+                    
+                }catch let error{
+                    print(error)
+                    completion(nil, self.getError(from: error as NSError))
+                }
+        
+            }
+        })
+        task.resume()
+    }
+    
     func saveNewEvent(event: Event, completion: @escaping (String) ->()){
         
         let url = URL(string: self.BASE_URL + "/calendar/addEvent.php")

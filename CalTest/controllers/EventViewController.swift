@@ -34,7 +34,7 @@ class EventViewController: UITableViewController {
         delete.frame = CGRect(x: 0, y: view.frame.height - 100/*-125*/, width: view.frame.width, height: 50)
         view.addSubview(delete)
         
-        tableView.separatorStyle = .none
+       // tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         tableView.isUserInteractionEnabled = true
         
@@ -42,6 +42,7 @@ class EventViewController: UITableViewController {
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didBeginEditing))
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "eventItem")
+        tableView.register(StatusTableViewCell.self, forCellReuseIdentifier: "status")
         self.tabBarController?.tabBar.isHidden = true
         
         alert.addAction(UIAlertAction(title: "I'm Sure", style: .default, handler: { (action: UIAlertAction!) in
@@ -105,61 +106,86 @@ class EventViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 6
+        return 7
     }
 
     
     
-   // override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         //MARK: customize cell sizes for map and address(?)
-        
-   // }
+        print(indexPath.row)
+        switch indexPath.row{
+        case 6:
+            return CGFloat(175)
+        default:
+            return tableView.rowHeight
+        }
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
+        
         if(isEdit){
-            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
+            return cell
         }else{
             switch indexPath.row{
-                
             case 0:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
                 let title = UILabel(frame: CGRect(x: 30, y: 20, width: cell.frame.width, height: cell.frame.height))
                 title.font = UIFont.boldSystemFont(ofSize: 30)
                 title.text = event?.title
                 cell.addSubview(title)
+                return cell
             case 1:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
                 let location = UILabel(frame: CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height))
                 location.text = "Renfrew Town Center"
                 cell.addSubview(location)
+                return cell
             case 2://TODO: Create a cell builder class to clean up this code
-                if(event?.location != nil){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
+                guard let location = event?.location else{
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
+                    return cell
+                }
                     let address = UILabel(frame: CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height))
                     address.text = "Renfrew Town Center"
                     cell.addSubview(address)
-                }
+                    return cell
+                
             case 3:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
                 let date = UILabel(frame: CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height))
                 date.text = (event?.date)! + daySuffix((event?.date)!) + " "
                 date.text = date.text! + dateString((event?.month)!)
                 date.text = date.text! + " " + (event?.year)!
                 cell.addSubview(date)
+                return cell
             case 4:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
                 let start = UILabel(frame: CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height))
                 start.text = "from " + (event?.start)!
                 start.text = start.text! + " to " + (event?.end)!
                 cell.addSubview(start)
+                return cell
             case 5:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
                 let invitees = UILabel(frame: CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height))
                 invitees.text = "Invitees " + (event?.count)!
                 
                 cell.addSubview(invitees)
-            
+                return cell
+            case 6:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "status") as! StatusTableViewCell
+                cell.collectionView.eventID = (event?.id)!
+                cell.collectionView.doLoad()
+                return cell
             default:
                 print("defaulting")
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
+                return cell
             }
         }
-
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
