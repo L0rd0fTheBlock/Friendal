@@ -43,7 +43,7 @@ class NewStatusViewCell: UICollectionViewCell, UITextFieldDelegate {
         post.heightAnchor.constraint(equalToConstant: 40).isActive = true
         post.widthAnchor.constraint(equalToConstant: 75).isActive = true
         post.setTitle("Post", for: .normal)
-        
+        post.addTarget(self, action: #selector(didPost), for: .touchUpInside)
         
         
     }
@@ -52,6 +52,13 @@ class NewStatusViewCell: UICollectionViewCell, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func didPost(){
+        let calHandler = CalendarHandler()
+        
+        calHandler.saveNewStatus(event: (superview as! StatusView).eventID, sender: Settings.sharedInstance.uid, message: status.text!) { (data) in
+            (self.superview as! StatusView).doLoad()
+        }
+    }
     
     
 }

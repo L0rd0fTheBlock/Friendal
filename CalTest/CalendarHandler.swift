@@ -36,8 +36,6 @@ class CalendarHandler{
                             do{
                                 //Array
                                 let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
-                                print("json")
-                                print(json)
                                 let jdata = json as! Array<[String: Any]>
                                 for day in jdata {
                                     m = day["month"] as! String
@@ -61,10 +59,10 @@ class CalendarHandler{
                                 }
                             }catch let err{
                                 DispatchQueue.main.async {
-                                    print("=================")
+
                                     print(err)
                                     completion(nil, nil, self.getError(from: err as NSError))
-                                    print("=================")
+
                                 }
                             }
                         }
@@ -106,7 +104,7 @@ class CalendarHandler{
                                 let ev = request["0"]! as! Dictionary<String, Any>
                                 let events = ev["events"] as! Array<Dictionary<String, String>>
                                 let anEvent = events[0]
-                                print(anEvent)
+                                
                                 let thisEvent = Event(anEvent["id"]!, title: anEvent["title"]!, date: anEvent["day"]!, month: anEvent["month"]!, year: anEvent["year"]!, start: anEvent["start"]!, end: anEvent["end"]!, count: "0", creator: anEvent["UID"]!, privacy: anEvent["make_private"]!, allDay: anEvent["allDay"]!)
                                 
                                 if(request["message"] != nil){
@@ -120,7 +118,7 @@ class CalendarHandler{
                                 completion(requests, nil)
                             }
                     }catch let e{
-                         //  print("Error")
+                        
                         DispatchQueue.main.async {
                             completion(nil, self.getError(from: e as NSError))
                         }
@@ -155,13 +153,11 @@ class CalendarHandler{
     
 
     func getEventStatus(_ id: String, completion: @escaping ([Status]?, NSError?) ->()){
-        print("getEventStatus called")
         let url = URL(string: self.BASE_URL + "/calendar/getStatuses.php?id=" + String(describing: id))
         
         let request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
         
         let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
-            print("completion ready")
             if error != nil {
                 print("ERROR in request")
                 DispatchQueue.main.async {
@@ -175,10 +171,9 @@ class CalendarHandler{
                     
                     let statuses = try
                         JSONDecoder().decode([Status].self, from: data)
-                    print("====Statuses====")
-                    print(statuses)
+                    
                     DispatchQueue.main.async {
-                       completion(statuses, nil)
+                       completion(self.sortByIdReverse(statuses), nil)
                     }
                     
                 }catch let error{
@@ -217,7 +212,6 @@ class CalendarHandler{
         postString += "&allday=" + String(describing: event.getAllDayInt())
         
         postString += "&id=" + (AccessToken.current?.userId)!
-        print(postString)
         request.httpBody = postString.data(using: String.Encoding.utf8)
         
         let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
@@ -225,7 +219,6 @@ class CalendarHandler{
                 print("ERROR")
                 print(error!)
             }else{
-                print("Ready for completion: New Event")
                 completion(String(data: data!, encoding: String.Encoding.utf8)!)
             }
         }//end task
@@ -240,7 +233,6 @@ class CalendarHandler{
         request.httpMethod = "POST"
         
         var postString:String
-        print(event)
         postString = "eventID=" + event
         
         postString += "&id=" + user
@@ -294,7 +286,6 @@ class CalendarHandler{
     
     func getGoing(forEvent: String, completion: @escaping ([Invitee]?, NSError?) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
-            print("GETTING GOING")
             var invitees: Array<Invitee> = []
             
             let url = URL(string: self.BASE_URL + "/calendar/getGoing.php?id=" + forEvent)
@@ -335,11 +326,9 @@ class CalendarHandler{
     func isInvitee(_ user: String, forEvent: String, completion: @escaping (Bool) ->()){
         
         DispatchQueue.global(qos: .userInteractive).async {
-            print("GETTING IS INVITEE")
             var invitees: Array<Invitee> = []
             
             let url = URL(string: self.BASE_URL + "/calendar/isInvitee.php?eid=" + forEvent + "&uid=" + user)
-            print(url?.absoluteString)
             let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
@@ -352,7 +341,6 @@ class CalendarHandler{
                             //Array
                             let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.allowFragments) as AnyObject
                             
-                            //print(json)
                             
                             DispatchQueue.main.async {
                                 if(json as! Int == 1){
@@ -375,7 +363,6 @@ class CalendarHandler{
     func getNotGoing(forEvent: String, completion: @escaping ([Invitee]?, NSError?) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
             
-            print("GETTING  NOT GOING")
             
             var invitees: Array<Invitee> = []
             
@@ -417,7 +404,6 @@ class CalendarHandler{
     func getInvited(forEvent: String, completion: @escaping ([Invitee]?, NSError?) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
             
-            print("GETTING INVITED")
             
             var invitees: Array<Invitee> = []
             
@@ -469,10 +455,8 @@ class CalendarHandler{
                     
                     if let content = data{
                         do{
-                            print(content)
                             //Array
                             let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
-                          //  print(json)
                             let jdata = json as! Dictionary<String, String>
                             
                             Settings.sharedInstance.id = Int(jdata["id"]!)
@@ -480,7 +464,6 @@ class CalendarHandler{
                             Settings.sharedInstance.dateFormat = Int(jdata["date_format"]!)!
                             Settings.sharedInstance.privacy = Int(jdata["default_privacy"]!)!
                             
-                            //print(jdata)
 
                         }catch{
                             
@@ -503,7 +486,6 @@ class CalendarHandler{
             
             let url = URL(string: urlString)
             
-            print(url?.absoluteString)
             
             let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
                 if error != nil {
@@ -516,6 +498,34 @@ class CalendarHandler{
             task.resume()
         }//end async
     }//end getInvited
+    
+    
+    func saveNewStatus(event: String, sender: String, message: String, completion: @escaping (String) ->()){
+        let url = URL(string: self.BASE_URL + "/calendar/addStatus.php")
+        
+        let request = NSMutableURLRequest(url: url!)
+        request.httpMethod = "POST"
+        
+        var postString:String
+        
+        postString = "id=" + event
+        postString += "&message=" + message
+        postString += "&poster=" + (AccessToken.current?.userId)!
+        request.httpBody = postString.data(using: String.Encoding.utf8)
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
+            if error != nil {
+                print("ERROR")
+                print(error!)
+            }else{
+                DispatchQueue.main.async {
+                    completion(String(data: data!, encoding: String.Encoding.utf8)!)
+                }
+                
+            }
+        }//end task
+        task.resume()
+    }//end save Event
     
     
     func doGraph(request: String, params: String, completion: @escaping (Dictionary<String, Any>?, NSError?) ->()){
@@ -555,5 +565,31 @@ class CalendarHandler{
         }
     }
 
+    
+    //MARK: Helper Functions
+    
+    func sortByIdReverse(_ statuses: [Status]) -> [Status]{
+        
+        var stats = statuses
+        var shifted = true
+        
+        repeat {
+            shifted = false
+            for (index, status) in stats.enumerated(){
+                if(index == 0){
+                }else{
+                    if(status.id > stats[index - 1].id){
+                        let taken = stats[index - 1]
+                        stats[index - 1] = status
+                        stats[index] = taken
+                        shifted = true
+                    }
+                }
+            }
+        } while (shifted);
+        
+        return stats
+        
+    }
     
 }//end class

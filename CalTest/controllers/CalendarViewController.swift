@@ -109,7 +109,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         errorLabel.text = "The calendar is loading."
         errorLabel.numberOfLines = 0
         errorLabel.backgroundColor = UIColor.lightGray.withAlphaComponent(CGFloat(0.5))
-        //errorLabel.isHidden = true
         
         collectionView.addSubview(errorLabel)
         

@@ -30,19 +30,18 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
     
     
     func doLoad(){
-        print("doLoad called")
+       
         let calHandler = CalendarHandler()
         
         calHandler.getEventStatus(eventID) { (statuses, error) in
             //do status handling
-            print("completion Handler: ")
-            print(statuses)
+
             guard var status = statuses else{
                
                 return
             }
-            
-            for var stat in status{
+            self.statuses = status
+            for (index, var stat) in status.enumerated(){
                 calHandler.doGraph(request: stat.poster, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
                     
                     let picture = data!["picture"] as? Dictionary<String, Any>
@@ -52,8 +51,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
                     
                     stat.link = url
                     stat.name = data!["name"] as? String
-                    
-                    self.statuses.append(stat)
+                    self.statuses[index] = stat
                     self.reloadData()
                 })
                 
@@ -80,7 +78,12 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
             cell.message.text = statuses[indexPath.row - 1].message
             cell.poster.text = statuses[indexPath.row - 1].name
             
-            let url = URL(string: statuses[indexPath.row - 1].link!)
+            guard let link = statuses[indexPath.row - 1].link else{
+                return cell
+                
+            }
+            
+            let url = URL(string: link)
             
             getDataFromUrl(url: url!, completion: { data, response, error in
                 guard let data = data, error == nil else { return }

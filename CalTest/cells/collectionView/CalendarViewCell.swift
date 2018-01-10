@@ -29,7 +29,6 @@ class CalendarViewCell: UICollectionViewCell {
         date.frame = CGRect(origin: .zero, size: CGSize(width: frame.width, height: frame.height))
         date.textAlignment = .center
         
-        //print("init")
     }
     
     required init?(coder aDecoder: NSCoder) {

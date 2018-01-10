@@ -239,10 +239,10 @@
 		7D5F5D831FC207A800129830 /* CalTest */ = {
 			isa = PBXGroup;
 			children = (
-				7D0F87D2200465A100CB0058 /* collections */,
 				7D5F5D841FC207A800129830 /* AppDelegate.swift */,
 				7D7DEB881FC23AAA00F5443D /* CalendarHandler.swift */,
 				7D8B868F1FF6B91F006D4284 /* EventContainerView.swift */,
+				7D0F87D2200465A100CB0058 /* collections */,
 				7DAA49E11FCCCDF20056E033 /* modals */,
 				7DAA49E01FCCCDDF0056E033 /* controllers */,
 				7DAA49DF1FCCCDD80056E033 /* cells */,
