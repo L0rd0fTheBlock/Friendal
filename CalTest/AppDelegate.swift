@@ -12,6 +12,7 @@ import FBSDKLoginKit
 import FBNotifications
 import FacebookCore
 import CoreData
+import GoogleMobileAds
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         AppEventsLogger.activate(application)
-        
+        GADMobileAds.configure(withApplicationID: "ca-app-pub-8694139400395039~1830749784")
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
