@@ -15,13 +15,16 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
-        backgroundColor = .white
+        backgroundColor = UIColor(rgb:0xD1D1D1)
         translatesAutoresizingMaskIntoConstraints = false
         delegate = self
         dataSource = self
         
         register(StatusViewCell.self, forCellWithReuseIdentifier: "StatusCell")
         register(NewStatusViewCell.self, forCellWithReuseIdentifier: "NewStatusCell")
+        
+        layer.borderWidth = 1.0
+        layer.borderColor = UIColor.lightGray.cgColor
     }
     
     required init?(coder aDecoder: NSCoder) {

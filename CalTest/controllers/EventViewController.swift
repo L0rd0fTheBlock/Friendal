@@ -38,7 +38,7 @@ class EventViewController: UITableViewController {
         delete.frame = CGRect(x: 0, y: view.frame.height - 100/*-125*/, width: view.frame.width, height: 50)
         view.addSubview(delete)
         
-       // tableView.separatorStyle = .none
+        tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         tableView.isUserInteractionEnabled = true
         
