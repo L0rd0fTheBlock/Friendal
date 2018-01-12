@@ -182,6 +182,7 @@ class EventViewController: UITableViewController {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "status") as! StatusTableViewCell
                 cell.collectionView.eventID = (event?.id)!
                 cell.collectionView.doLoad()
+                cell.collectionView.rootView = self
                 return cell
             default:
                 print("defaulting")

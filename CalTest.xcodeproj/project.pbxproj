@@ -39,6 +39,7 @@
 		7D88FFD91FCC5E4700E6773E /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D88FFD81FCC5E4700E6773E /* Person.swift */; };
 		7D8B86901FF6B91F006D4284 /* EventContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8B868F1FF6B91F006D4284 /* EventContainerView.swift */; };
 		7D90D53F1FD44B7D00FE2E89 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D90D53E1FD44B7D00FE2E89 /* SettingsViewController.swift */; };
+		7DA95A4720080B02004DB003 /* AdMobCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA95A4620080B02004DB003 /* AdMobCollectionViewCell.swift */; };
 		7DAA49DE1FCCC2990056E033 /* NewEventVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAA49DD1FCCC2990056E033 /* NewEventVC.swift */; };
 		7DAA49E31FCCCE650056E033 /* FormTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAA49E21FCCCE650056E033 /* FormTextCell.swift */; };
 		7DAA49E51FCCCEAB0056E033 /* FormDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAA49E41FCCCEAB0056E033 /* FormDatePickerCell.swift */; };
@@ -112,6 +113,7 @@
 		7D88FFD81FCC5E4700E6773E /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		7D8B868F1FF6B91F006D4284 /* EventContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventContainerView.swift; sourceTree = "<group>"; };
 		7D90D53E1FD44B7D00FE2E89 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		7DA95A4620080B02004DB003 /* AdMobCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobCollectionViewCell.swift; sourceTree = "<group>"; };
 		7DAA49DD1FCCC2990056E033 /* NewEventVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventVC.swift; sourceTree = "<group>"; };
 		7DAA49E21FCCCE650056E033 /* FormTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextCell.swift; sourceTree = "<group>"; };
 		7DAA49E41FCCCEAB0056E033 /* FormDatePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDatePickerCell.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				7D74E0C41FC7888D00DB91AF /* CalendarViewCell.swift */,
 				7D0F87D720050F7800CB0058 /* StatusViewCell.swift */,
 				7D45F4582005329D0096A205 /* NewStatusViewCell.swift */,
+				7DA95A4620080B02004DB003 /* AdMobCollectionViewCell.swift */,
 			);
 			path = collectionView;
 			sourceTree = "<group>";
@@ -627,6 +630,7 @@
 			files = (
 				7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */,
 				7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */,
+				7DA95A4720080B02004DB003 /* AdMobCollectionViewCell.swift in Sources */,
 				7D5E0FF31FC9D8BB006A9D75 /* LoginViewController.swift in Sources */,
 				7D0F87CC2004244F00CB0058 /* Status.swift in Sources */,
 				7D0F87D4200465A100CB0058 /* StatusView.swift in Sources */,

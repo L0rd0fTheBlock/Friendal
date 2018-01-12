@@ -10,13 +10,14 @@ import Foundation
 
 struct Status: Decodable{
     
-    let id: String
-    let poster: String
-    let message: String
+    let id: String?
+    let poster: String?
+    let message: String?
     //let posted: Date
     var name: String?
     var link: String?
     var comments: [Comment]?
+    var isAd: Bool? = false
     
 }
 

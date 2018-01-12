@@ -14,6 +14,8 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
     let placeholder = UILabel(frame: .zero)
     let post = UIButton(type: .custom)
     
+    let tutorialView = UIView(frame: .zero)
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -58,6 +60,14 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
         post.setTitle("Continue", for: .disabled)
         post.addTarget(self, action: #selector(didPost), for: .touchUpInside)
         
+        if let tut = UserDefaults.standard.object(forKey: "didCloseStatusTutorial") as? Bool{
+            if(!tut){
+                setupTutorial()
+            }
+        }else{
+            setupTutorial()
+        }
+        
         
     }
     
@@ -83,6 +93,65 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         post.isEnabled = true
         return true
+    }
+    
+    func setupTutorial(){
+        
+        tutorialView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(tutorialView)
+        
+        tutorialView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        tutorialView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        tutorialView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        tutorialView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
+        tutorialView.backgroundColor = UIColor(rgb: 0x01B30A, alpha: 0.8)
+        
+        let information = UILabel()
+        let close = UILabel()
+        
+        information.translatesAutoresizingMaskIntoConstraints = false
+        close.translatesAutoresizingMaskIntoConstraints = false
+        
+       // information.backgroundColor = .red
+        //close.backgroundColor = .blue
+        
+        tutorialView.addSubview(information)
+        tutorialView.addSubview(close)
+        
+        
+        information.text = "You can swipe from left to right to view Statuses"
+        information.numberOfLines = 0
+        information.font = UIFont.systemFont(ofSize: 18)
+        information.textColor = .white
+        information.textAlignment = .center
+        
+        close.text = "Tap here to close"
+        close.textAlignment = .center
+        close.font = UIFont.boldSystemFont(ofSize: 14)
+        close.textColor = .white
+        
+        close.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        close.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        close.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        close.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
+        information.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        information.leftAnchor.constraint(equalTo: leftAnchor, constant: 5).isActive = true
+        information.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
+        information.bottomAnchor.constraint(equalTo: close.topAnchor).isActive = true
+        
+        let tapHandler = UITapGestureRecognizer(target: self, action: #selector(didTapToClose))
+        
+        tutorialView.addGestureRecognizer(tapHandler)
+        
+    }
+    
+    @objc func didTapToClose(){
+        print("tap")
+        tutorialView.removeFromSuperview()
+        UserDefaults.standard.set(true, forKey: "didCloseStatusTutorial")
     }
     
     

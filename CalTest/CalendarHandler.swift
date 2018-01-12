@@ -173,7 +173,9 @@ class CalendarHandler{
                         JSONDecoder().decode([Status].self, from: data)
                     
                     DispatchQueue.main.async {
-                       completion(self.sortByIdReverse(statuses), nil)
+                        var sorted = self.sortByIdReverse(statuses)
+                        var propogated = self.propogateAds(sorted)
+                       completion(propogated, nil)
                     }
                     
                 }catch let error{
@@ -576,11 +578,17 @@ class CalendarHandler{
         repeat {
             shifted = false
             for (index, status) in stats.enumerated(){
+                var stat = status
+                if(stat.isAd != nil){
+                    print("not nil")
+                }else{
+                    stat.isAd = false
+                }
                 if(index == 0){
                 }else{
-                    if(status.id > stats[index - 1].id){
+                    if(status.id! > stats[index - 1].id!){
                         let taken = stats[index - 1]
-                        stats[index - 1] = status
+                        stats[index - 1] = stat
                         stats[index] = taken
                         shifted = true
                     }
@@ -592,4 +600,48 @@ class CalendarHandler{
         
     }
     
+    func propogateAds(_ statuses: [Status]) -> [Status]{
+        
+        var stat = statuses
+        
+        
+        if(stat.count > 0){
+            print("Propogating ads: ", statuses.count)
+            var index = 1
+            repeat{
+                print(index)
+                if(index < 1){
+                    
+                }else{
+                    let chance = arc4random()%10
+                    
+                    print("chance: ", chance)
+                    
+                    if(chance < 3 && !stat[index - 1].isAd!){
+                        print("adding an add at: ", index)
+                        var statAd = Status(id: nil, poster: nil, message: nil, name: nil, link: nil, comments: nil, isAd: true)
+                        statAd.isAd = true
+                        
+                        stat.insert(statAd, at: index)
+                        // print(statuses)
+                    }
+                }
+                index = index + 1
+            }while(index <= stat.count)
+        }else{
+            let statAd = Status(id: nil, poster: nil, message: nil, name: nil, link: nil, comments: nil, isAd: true)
+            
+            stat.insert(statAd, at: 0)
+        }
+        
+//        print("=================================")
+//        print("=========Propogated List=========")
+//        print("=================================")
+//        print(stat)
+//        print("=================================")
+//        print("=================================")
+//        print("=================================")
+        
+        return stat
+    }
 }//end class
