@@ -11,7 +11,7 @@ import FacebookCore
 
 class CalendarHandler{
     
-    let BASE_URL = "http://90.217.204.240"
+    let BASE_URL = "http://friendal.co.uk"
     //let BASE_URL = "http://192.168.0.67"
     //let BASE_URL = "http://localhost"
     

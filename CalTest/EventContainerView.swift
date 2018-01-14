@@ -55,6 +55,8 @@ class EventContainerView: UIView {
         label.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 30)
         label.backgroundColor = UIColor.orange
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.1
         
         if(event?.isVisible())!{
             label.text = event?.title
