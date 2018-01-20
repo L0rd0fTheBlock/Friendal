@@ -11,7 +11,7 @@ import UIKit
 class DayViewController: UITableViewController {
     
     var drawEvent:Event? = nil
-    
+    var shouldLoadUserCalendar: Bool? = nil
     var today: CalendarDay?{
         didSet{
             navigationItem.title = today?.getFullDate()
@@ -40,6 +40,11 @@ class DayViewController: UITableViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.allowsSelection = false
+        
+        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapNewEventButton))
+        
+        navigationItem.setRightBarButton(button, animated: true)
+        
     }
     func setupView(){
         view.backgroundColor = .white
@@ -170,6 +175,32 @@ class DayViewController: UITableViewController {
         return cell
     }//end function
     
+    @objc func didTapNewEventButton(){
+        
+        if(shouldLoadUserCalendar)!{
+            
+            let addVC = CalendarNavigationController(rootViewController: NewEventVC())
+            let vc:NewEventVC = addVC.topViewController as! NewEventVC
+            
+            vc.dayVC = self
+            
+            self.present(addVC, animated: true, completion: ({() in
+                
+            }))
+        }else{
+            let addVC = CalendarNavigationController(rootViewController: NewRequestVC())
+            
+            let vc:NewRequestVC = addVC.topViewController as! NewRequestVC
+            
+            vc.dayVC = self
+            
+            self.present(addVC, animated: true, completion: ({() in
+                
+            }))
+            
+        }
+    }
+    
     //MARK: Helper functions
     
     func makeMinutes(from: String) -> Int{
@@ -183,5 +214,7 @@ class DayViewController: UITableViewController {
         return minutes
         
     }
+    
+    
     
 }

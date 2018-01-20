@@ -330,11 +330,7 @@ extension CalendarViewController: UICollectionViewDataSource{
             }
             
             if(thisDay.doesHaveEvents()){
-                if(thisDay.countEvents() > 1){
-                    cell.date.layer.backgroundColor = UIColor.yellow.cgColor
-                }else if(thisDay.countEvents() == 1){
-                    cell.date.layer.backgroundColor = UIColor.green.cgColor
-                }
+                cell.date.layer.backgroundColor = UIColor.green.cgColor
                 
             }
             
@@ -352,16 +348,19 @@ extension CalendarViewController: UICollectionViewDataSource{
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       let day = dates[indexPath.row-7]
-        if( day.getDate() != "0" && day.getDate() != " "){
-            showTimeline(ofDay: day)
-            
+        if(indexPath.row > 6 && indexPath.row < collectionView.numberOfItems(inSection: 0)){
+           let day = dates[indexPath.row-7]
+            if( day.getDate() != "0" && day.getDate() != " "){
+                showTimeline(ofDay: day)
+                
+            }
         }
     }
     
     func showTimeline(ofDay: CalendarDay){
         let dayView = DayViewController()
         dayView.today = ofDay
+        dayView.shouldLoadUserCalendar = self.shouldLoadUserCalendar
         navigationController?.pushViewController(dayView, animated: true)
     }
     

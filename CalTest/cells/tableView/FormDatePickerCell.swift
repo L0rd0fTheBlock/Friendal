@@ -16,6 +16,7 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
     var shortDate: String?
     var start: String?
     var end: String?
+    var startDate:Date?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -51,6 +52,14 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
         }else{
             datePicker.datePickerMode = .time
         }
+        guard let startDate = startDate else{
+            
+            textField.inputView = datePicker
+            datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
+            return
+            
+        }
+        datePicker.date = startDate
         textField.inputView = datePicker
         datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
     }
@@ -65,6 +74,7 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
        formatter.dateStyle = .none
         print(formatter.string(from: sender.date))
         if(desc.text == "Start"){
+            formatter.dateStyle = .none
             start = formatter.string(from: sender.date)
         }else if(desc.text == "End"){
             end = formatter.string(from: sender.date)

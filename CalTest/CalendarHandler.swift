@@ -8,6 +8,7 @@
 
 import Foundation
 import FacebookCore
+import Firebase
 
 class CalendarHandler{
     
@@ -20,8 +21,8 @@ class CalendarHandler{
             
             var month: Array<CalendarDay> = []
             var m = ""
-            let url = URL(string: self.BASE_URL + "/calendar/getmonth.php?month=" + forMonth  + "&year=" + ofYear + "&user=" + withUser)
-            
+            let url = URL(string: self.BASE_URL + "/calendar/getMonth.php?month=" + forMonth  + "&year=" + ofYear + "&user=" + withUser)
+            print(url?.absoluteString)
             let request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
             
             let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
@@ -227,7 +228,7 @@ class CalendarHandler{
         task.resume()
     }//end save Event
     
-    func saveNewRequest(event: String, user: String){
+    func saveNewRequest(event: String, user: String, name: String, isNotMe: Bool){
         
         let url = URL(string: self.BASE_URL + "/calendar/addRequest.php")
         
@@ -241,6 +242,10 @@ class CalendarHandler{
         
         postString += "&sender=" + (AccessToken.current?.userId)!
         
+        postString += "&senderName=" + name
+        
+        postString += "&notMe=" + String(isNotMe)
+        print(postString)
         request.httpBody = postString.data(using: String.Encoding.utf8)
         let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
             if error != nil {
@@ -449,6 +454,8 @@ class CalendarHandler{
             
             let url = URL(string: self.BASE_URL + "/calendar/getUserOptions.php?uid=" + forUser)
             
+            let token = Messaging.messaging().fcmToken
+            
             let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
@@ -528,6 +535,29 @@ class CalendarHandler{
         }//end task
         task.resume()
     }//end save Event
+    
+    
+    func registerDviceToken(){
+        print("sending update to register.php")
+        let url = URL(string: self.BASE_URL + "/calendar/register.php")
+        
+        let request = NSMutableURLRequest(url: url!)
+        request.httpMethod = "POST"
+        
+        var postString:String
+        postString = "token=" + Messaging.messaging().fcmToken!
+        
+        postString += "&sender=" + (AccessToken.current?.userId)!
+        
+        request.httpBody = postString.data(using: String.Encoding.utf8)
+        let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
+            if error != nil {
+                print("ERROR")
+                print(error!)
+            }
+        }//end task
+        task.resume()
+    }//end save request
     
     
     func doGraph(request: String, params: String, completion: @escaping (Dictionary<String, Any>?, NSError?) ->()){

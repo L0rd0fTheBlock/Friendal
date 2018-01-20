@@ -66,7 +66,7 @@ class NewRequestVC: NewEventVC {
         
         handler.saveNewEvent(event: event, completion:{(data) in
             print(data)
-            handler.saveNewRequest(event: data, user: (self.calendarVC?.nonUserUID)!)
+            handler.saveNewRequest(event: data, user: (self.calendarVC?.nonUserUID)!, name: "null", isNotMe: false)
         })
         
         

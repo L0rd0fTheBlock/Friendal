@@ -12,6 +12,7 @@ class NewEventToggleCell: UITableViewCell {
 
     let toggle = UISwitch()
     let title = UILabel()
+    var parent: NewEventVC?
     
     
     override func awakeFromNib() {
@@ -47,9 +48,15 @@ class NewEventToggleCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    @objc
-    func didToggle() {
-    
+    @objc func didToggle() {
+        print("toggle")
+        if(title.text == "All-Day" && toggle.isOn){
+            parent?.hideEndTime(true)
+//            parent?.tableView.reloadData()
+        }else{
+            parent?.hideEndTime(false)
+        }
+        
     }
 
 }

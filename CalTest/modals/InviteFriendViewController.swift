@@ -17,6 +17,8 @@ class InviteFriendViewController: FriendsListViewController {
     
     var selected: [String] = []
     
+    var me: Person? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.allowsMultipleSelection = true
@@ -30,11 +32,16 @@ class InviteFriendViewController: FriendsListViewController {
         navigationItem.setRightBarButton(save, animated: true)
         
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        let calHandler = CalendarHandler()
+        
+        calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
+            
+            guard let person = person else{
+                return
+            }
+            
+            self.me = Person(id: person["id"]as! String, first: person["first_name"] as! String, last: person["last_name"] as! String)
+        })
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -98,7 +105,7 @@ class InviteFriendViewController: FriendsListViewController {
        let handler = CalendarHandler()
         
         for id in selected{
-            handler.saveNewRequest(event: (topView?.event?.id)!, user: id)
+            handler.saveNewRequest(event: (topView?.event?.id)!, user: id, name: (me?.name)!, isNotMe: true)
         }
         dismissView()
     }

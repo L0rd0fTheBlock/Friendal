@@ -63,6 +63,9 @@ extension LoginViewController: LoginButtonDelegate{
             case LoginResult.success:
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: {(result, error) in
                     
+                    let calHandler = CalendarHandler()
+                    calHandler.registerDviceToken()
+                    
                     self.dismiss(animated: true, completion: ({() in
                         
                         if(self.vc == "cal"){
