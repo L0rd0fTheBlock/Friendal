@@ -72,12 +72,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         if AccessToken.current != nil {
             // User is logged in, use 'accessToken' here.
             doLoad()
-            //UNCOMMENT THESE LINES FOR DEBUG
-            /*let loginVC = LoginViewController()
-             loginVC.calendarVC = self
-             self.present(loginVC, animated: true, completion: ({() in
-             
-             }))*/
         }else{
             if(!shouldLoadUserCalendar){
                 AppEventsLogger.log("Viewed Friend Calendar")
@@ -127,9 +121,9 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
-            
+            print("completion: GetCalMonth")
             guard let events = data, let month = m  else{
-                print(error)
+                print("Error", error)
                 guard let code = error?.code else{return}
                 self.errorLabel.isHidden = false
                 self.errorLabel.text = (error?.userInfo["message"] as? String)! + " Code: " + String(describing: code)
@@ -140,6 +134,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
             self.dates = events
             self.navigationItem.title = month + " " + String(self.year)
             self.collectionView.reloadData()
+            print("completion: Completed: GetCalMonth")
         })
         setupCalendar()
         collectionView.register(CalendarViewCell.self, forCellWithReuseIdentifier: cellId)
@@ -242,7 +237,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
                         
                         guard let events = data, let month = m  else{
-                            print(error)
+                            print("error", error)
                             return
                         }
                         
@@ -289,7 +284,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
 extension CalendarViewController: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CalendarViewCell
         
        // cell.date.layer.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height - 50)

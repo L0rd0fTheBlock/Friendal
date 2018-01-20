@@ -24,7 +24,7 @@ class CalendarHandler{
             let url = URL(string: self.BASE_URL + "/calendar/getMonth.php?month=" + forMonth  + "&year=" + ofYear + "&user=" + withUser)
             print(url?.absoluteString)
             let request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
-            
+
             let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
                 if error != nil {
                     print("ERROR in request")
@@ -32,7 +32,7 @@ class CalendarHandler{
                         completion(nil, nil, self.getError(from: error! as NSError))
                     }
                 }else{
-                    
+
                         if let content = data{
                             do{
                                 //Array
@@ -47,7 +47,7 @@ class CalendarHandler{
                                         }
                                     }
                                     let thisDay = CalendarDay(onDay: day["date"] as! String, ofMonth: day["month"] as! String, hasEvent: hasEvent)
-                                    
+
                                     if(hasEvent){
                                         for event in day["Events"] as! Array<[String: String]> {
                                             thisDay.addEvent(event: Event(event["id"]!, title: event["title"]!, date: event["day"]!, month: event["month"]!, year: event["year"]!, start: event["start"]!, end: event["end"]!, count: event["inviteCount"]!, creator: event["UID"]!, privacy: event["make_private"]!, allDay: event["allDay"]!))
@@ -104,6 +104,7 @@ class CalendarHandler{
                                 
                                 let ev = request["0"]! as! Dictionary<String, Any>
                                 let events = ev["events"] as! Array<Dictionary<String, String>>
+                               //print(events.count)
                                 let anEvent = events[0]
                                 
                                 let thisEvent = Event(anEvent["id"]!, title: anEvent["title"]!, date: anEvent["day"]!, month: anEvent["month"]!, year: anEvent["year"]!, start: anEvent["start"]!, end: anEvent["end"]!, count: "0", creator: anEvent["UID"]!, privacy: anEvent["make_private"]!, allDay: anEvent["allDay"]!)
@@ -245,7 +246,7 @@ class CalendarHandler{
         postString += "&senderName=" + name
         
         postString += "&notMe=" + String(isNotMe)
-        print(postString)
+        //print(postString)
         request.httpBody = postString.data(using: String.Encoding.utf8)
         let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
             if error != nil {
@@ -257,7 +258,7 @@ class CalendarHandler{
     }//end save request
     
     
-    func acceptRequest(_ id: String){
+    func acceptRequest(_ id: String, completion: @escaping () ->()){
         
         DispatchQueue.global(qos: .userInteractive).async {
             
@@ -269,12 +270,15 @@ class CalendarHandler{
                     print(error!)
                 }else{
                 }
+                DispatchQueue.main.async {
+                    completion()
+                }
             }
             task.resume()
         }
     }
     
-    func declineRequest(_ id: String){
+    func declineRequest(_ id: String, completion: @escaping () ->()){
         
         DispatchQueue.global(qos: .userInteractive).async {
             
@@ -285,6 +289,9 @@ class CalendarHandler{
                     print("ERROR")
                     print(error!)
                 }else{
+                }
+                DispatchQueue.main.async {
+                    completion()
                 }
             }
             task.resume()

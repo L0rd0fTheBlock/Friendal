@@ -189,7 +189,6 @@ class NewEventVC: UITableViewController {
         
         let dat = cell1.shortDate
         let date = dat?.split(separator: "/") as Array<Substring>!
-        print(date)
         event.date = String(describing: date![0])
         event.month = String(describing: date![1])
         let year = date![2].split(separator: ",")
@@ -221,7 +220,6 @@ class NewEventVC: UITableViewController {
         
         let dat = cell1.shortDate
         let date = dat?.split(separator: "/") as Array<Substring>!
-        print(date)
         event.date = String(describing: date![0])
         event.month = String(describing: date![1])
         let year = date![2].split(separator: ",")

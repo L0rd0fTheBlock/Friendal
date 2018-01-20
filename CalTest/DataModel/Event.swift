@@ -63,7 +63,7 @@ class Event{
     func isInvitee(){
         let calHandler = CalendarHandler()
         calHandler.isInvitee(Settings.sharedInstance.uid, forEvent: id, completion: {(invitee) in
-            print(invitee)
+            //print(invitee)
             self.isUserInvited = invitee
         })
     }

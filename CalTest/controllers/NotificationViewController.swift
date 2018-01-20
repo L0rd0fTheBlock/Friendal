@@ -27,6 +27,7 @@ class NotificationViewController: UITableViewController {
     }
     
     func loadData(){
+        print("loading data for notifications")
         requests.removeAll()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
         errorLabel.textAlignment = .center
@@ -38,7 +39,7 @@ class NotificationViewController: UITableViewController {
         let cal = CalendarHandler()
         requests = []
         cal.getRequests(forUser: (AccessToken.current?.userId)!, completion: { (request, error) in
-            
+            print("Notification completion handler")
             guard let r = request else{
                 
                 guard let code = error?.code else{return}
@@ -49,8 +50,9 @@ class NotificationViewController: UITableViewController {
                 return
                 
             }
-            self.errorLabel.isHidden = true
+            
             self.requests = r
+            print("Requests assigned: ", self.requests.count)
             
             let calHandler = CalendarHandler()
             
@@ -73,8 +75,10 @@ class NotificationViewController: UITableViewController {
                     person.downloadImage(url: URL(string: (person.link))!, table: self.tableView)
                     self.tableView.reloadData()
                 })
+                
             }
-            
+            self.errorLabel.isHidden = true
+            self.tableView.reloadData()
             
         })
         

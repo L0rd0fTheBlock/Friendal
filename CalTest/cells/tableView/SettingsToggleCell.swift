@@ -51,7 +51,7 @@ class SettingsToggleCell: UITableViewCell {
     
     @objc
     func didToggle(){
-        print(toggle.isOn)
+        print("didToggle", toggle.isOn)
         Settings.sharedInstance.setPrivacy(toggle.isOn)
         Settings.sharedInstance.save()
     }
