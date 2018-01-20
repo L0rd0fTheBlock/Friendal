@@ -180,7 +180,7 @@ class EventViewController: UITableViewController {
                 return cell
             case 6:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "status") as! StatusTableViewCell
-                cell.collectionView.eventID = (event?.id)!
+                cell.collectionView.event = self.event
                 cell.collectionView.doLoad()
                 cell.collectionView.rootView = self
                 return cell

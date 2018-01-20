@@ -13,6 +13,7 @@ class Settings{
     
     var id:Int? = nil
     var uid:String = (AccessToken.current?.userId)!
+    var me: Person = Person(id: "0", first: "", last: "")
     var dateFormat: Int = 1
     var privacy: Int = 0
     
@@ -26,6 +27,18 @@ class Settings{
         let calHandler = CalendarHandler()
         
         calHandler.getSettings(forUser: uid)
+        
+        calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
+            
+            guard let person = person else{
+                return
+            }
+            
+            self.me = Person(id: person["id"]as! String, first: person["first_name"] as! String, last: person["last_name"] as! String)
+            
+        })
+        
+        
     }
     
     func save(){

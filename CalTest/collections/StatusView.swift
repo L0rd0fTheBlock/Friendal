@@ -11,7 +11,7 @@ import UIKit
 class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var statuses: [Status] = []
-    var eventID: String = "0"
+    var event: Event? = nil
     var hasPropogatedAdverts = false
     
     var rootView: EventViewController? = nil
@@ -42,7 +42,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
        
         let calHandler = CalendarHandler()
         
-        calHandler.getEventStatus(eventID) { (statuses, error) in
+        calHandler.getEventStatus((event?.id)!) { (statuses, error) in
             //do status handling
 
             guard var status = statuses else{
@@ -87,7 +87,10 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
         print("number of statuses: ", statuses.count)
         if(indexPath.row == 0){
             print("creating newStatus")
-            let cell = dequeueReusableCell(withReuseIdentifier: "NewStatusCell", for: indexPath)
+            let cell = dequeueReusableCell(withReuseIdentifier: "NewStatusCell", for: indexPath) as! NewStatusViewCell
+            
+            cell.event = self.event
+            
             return cell
         }else{
             if(statuses[indexPath.row - 1].isAd != nil){

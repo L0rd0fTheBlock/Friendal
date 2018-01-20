@@ -516,7 +516,7 @@ class CalendarHandler{
     }//end getInvited
     
     
-    func saveNewStatus(event: String, sender: String, message: String, completion: @escaping (String) ->()){
+    func saveNewStatus(event: String, title: String, sender: String, senderName: String, message: String, completion: @escaping (String) ->()){
         let url = URL(string: self.BASE_URL + "/calendar/addStatus.php")
         
         let request = NSMutableURLRequest(url: url!)
@@ -527,8 +527,10 @@ class CalendarHandler{
         postString = "id=" + event
         postString += "&message=" + message
         postString += "&poster=" + (AccessToken.current?.userId)!
+        postString += "&eventTitle=" + title
+        postString += "&posterName=" + senderName
         request.httpBody = postString.data(using: String.Encoding.utf8)
-        
+        print(postString)
         let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
             if error != nil {
                 print("ERROR")

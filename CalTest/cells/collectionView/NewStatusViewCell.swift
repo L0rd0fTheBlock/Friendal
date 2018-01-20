@@ -11,6 +11,7 @@ import UIKit
 class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
     
     let status = UITextView()
+    var event: Event? = nil
     let placeholder = UILabel(frame: .zero)
     let post = UIButton(type: .custom)
     
@@ -77,8 +78,13 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
     
     @objc func didPost(){
         let calHandler = CalendarHandler()
+        guard let event = self.event else{
+            print("No event found")
+            return
+        }
+        print("posting")
         
-        calHandler.saveNewStatus(event: (superview as! StatusView).eventID, sender: Settings.sharedInstance.uid, message: status.text!) { (data) in
+        calHandler.saveNewStatus(event: event.id, title: event.title!, sender: Settings.sharedInstance.uid, senderName: Settings.sharedInstance.me.name, message: status.text!) { (data) in
             self.status.text = ""
             self.placeholder.isHidden = false
             (self.superview as! StatusView).doLoad()
