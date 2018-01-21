@@ -135,7 +135,7 @@ class CalendarHandler{
     func cancelEvent(event: String, forUser:String, completion:@escaping (_ respond:Bool)->()){
         DispatchQueue.global(qos: .userInteractive).async {
         let url = URL(string: self.BASE_URL + "/calendar/cancelEvent.php?id=" + forUser + "&eid=" + event)
-            
+            print(url?.absoluteString)
         let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
             if error != nil {
                 print("ERROR")

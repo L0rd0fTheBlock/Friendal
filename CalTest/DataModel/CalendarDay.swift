@@ -40,6 +40,8 @@ class CalendarDay{
         
         for (index, event) in events.enumerated(){
             if(event.id == id){
+                print("Removing event from index: ", index)
+                print(events.count)
                 events.remove(at: index)
             }
         }
