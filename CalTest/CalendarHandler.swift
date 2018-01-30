@@ -739,16 +739,24 @@ class CalendarHandler{
     func setSettings(){
         DispatchQueue.global(qos: .userInteractive).async {
             let settings = Settings.sharedInstance
-
-            var urlString = self.BASE_URL
-            urlString = urlString + "/calendar/updateUserOptions.php?uid=" + settings.uid
-            urlString = urlString + "&format=" + String(describing: settings.dateFormat)
-            urlString = urlString + "&privacy=" + String(describing: settings.privacy)
             
-            let url = URL(string: urlString)
+            let url = URL(string: self.BASE_URL + "/calendar/updateUserOptions.php")
             
             
-            let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+            
+            request.httpMethod = "POST"
+            
+            var postString:String
+            
+            postString  = "uid=" + settings.uid
+            postString += "&format=" + String(describing: settings.dateFormat)
+            postString += "&privacy=" + String(describing: settings.privacy)
+            
+            print(postString)
+            request.httpBody = postString.data(using: String.Encoding.utf8)
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
                     print(error!)
