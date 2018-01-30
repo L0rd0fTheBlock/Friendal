@@ -21,54 +21,66 @@ class CalendarHandler{
             
             var month: Array<CalendarDay> = []
             var m = ""
-            let url = URL(string: self.BASE_URL + "/calendar/getMonth.php?month=" + forMonth  + "&year=" + ofYear + "&user=" + withUser)
-            print(url?.absoluteString)
-            let request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
-
-            let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+            let url = URL(string: self.BASE_URL + "/calendar/getMonth.php?")//month=" + forMonth  + "&year=" + ofYear + "&user=" + withUser)
+            
+            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+            
+            request.httpMethod = "POST"
+            
+            var postString:String
+            
+            postString = "month=" + forMonth
+            
+            postString += "&year=" + ofYear
+            
+            postString += "&end=" + withUser
+            
+            print(postString)
+            request.httpBody = postString.data(using: String.Encoding.utf8)
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
                 if error != nil {
                     print("ERROR in request")
                     DispatchQueue.main.async {
                         completion(nil, nil, self.getError(from: error! as NSError))
                     }
                 }else{
-
-                        if let content = data{
-                            do{
-                                //Array
-                                let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
-                                let jdata = json as! Array<[String: Any]>
-                                for day in jdata {
-                                    m = day["month"] as! String
-                                    var hasEvent: Bool = false
-                                    if let events = day["Events"] as? Array<[String: Any]>{
-                                        if(events.count > 0){
-                                            hasEvent = true
-                                        }
+                    if let content = data{
+                        do{
+                            //Array
+                            let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
+                            let jdata = json as! Array<[String: Any]>
+                            for day in jdata {
+                                m = day["month"] as! String
+                                var hasEvent: Bool = false
+                                if let events = day["Events"] as? Array<[String: Any]>{
+                                    if(events.count > 0){
+                                        hasEvent = true
                                     }
-                                    let thisDay = CalendarDay(onDay: day["date"] as! String, ofMonth: day["month"] as! String, ofYear: ofYear, hasEvent: hasEvent)
+                                }
+                                let thisDay = CalendarDay(onDay: day["date"] as! String, ofMonth: day["month"] as! String, ofYear: ofYear, hasEvent: hasEvent)
 
-                                    if(hasEvent){
-                                        for event in day["Events"] as! Array<[String: String]> {
-                                            thisDay.addEvent(event: Event(event["id"]!, title: event["title"]!, date: event["day"]!, month: event["month"]!, year: event["year"]!, start: event["start"]!, end: event["end"]!, count: event["inviteCount"]!, creator: event["UID"]!, privacy: event["make_private"]!, allDay: event["allDay"]!))
-                                        }
+                                if(hasEvent){
+                                    for event in day["Events"] as! Array<[String: String]> {
+                                        thisDay.addEvent(event: Event(event["id"]!, title: event["title"]!, date: event["day"]!, month: event["month"]!, year: event["year"]!, start: event["start"]!, end: event["end"]!, count: event["inviteCount"]!, creator: event["UID"]!, privacy: event["make_private"]!, allDay: event["allDay"]!))
                                     }
-                                    month.append(thisDay)
                                 }
-                                DispatchQueue.main.async {
-                                    completion(month, m, nil)
-                                }
-                            }catch let err{
-                                DispatchQueue.main.async {
+                                month.append(thisDay)
+                            }
+                            DispatchQueue.main.async {
+                                completion(month, m, nil)
+                            }
+                        }catch let err{
+                            DispatchQueue.main.async {
 
-                                    print(err)
-                                    completion(nil, nil, self.getError(from: err as NSError))
+                                print(err)
+                                completion(nil, nil, self.getError(from: err as NSError))
 
-                                }
                             }
                         }
                     }
-            })//end Task
+                }
+            }//end Task
             task.resume()
         }//end async
     }//end getCalMonth
