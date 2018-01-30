@@ -158,7 +158,7 @@ class CalendarHandler{
             
             var requests: Array<Request> = []
             
-            let url = URL(string: self.BASE_URL + "/calendar/getRequests.php?user=" + forUser)
+            let url = URL(string: self.BASE_URL + "/calendar/getRequests.php")//?user=" + forUser)
             
             var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
             
@@ -225,9 +225,21 @@ class CalendarHandler{
     
     func cancelEvent(event: String, forUser:String, completion:@escaping (_ respond:Bool)->()){
         DispatchQueue.global(qos: .userInteractive).async {
-        let url = URL(string: self.BASE_URL + "/calendar/cancelEvent.php?id=" + forUser + "&eid=" + event)
-            print(url?.absoluteString)
-        let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+        let url = URL(string: self.BASE_URL + "/calendar/cancelEvent.php")//?id=" + forUser + "&eid=" + event)
+            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+            
+            request.httpMethod = "POST"
+            
+            var postString:String
+            
+            postString = "id=" + forUser
+            
+            postString += "&eid=" + event
+            
+            print(postString)
+            request.httpBody = postString.data(using: String.Encoding.utf8)
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
             if error != nil {
                 print("ERROR")
                 print(error!)
