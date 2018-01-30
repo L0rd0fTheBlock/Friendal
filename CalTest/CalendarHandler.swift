@@ -420,8 +420,22 @@ class CalendarHandler{
         DispatchQueue.global(qos: .userInteractive).async {
             
             
-             let url = URL(string: self.BASE_URL + "/calendar/acceptRequest.php?id=" + id)
-            let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+            let url = URL(string: self.BASE_URL + "/calendar/acceptRequest.php")//?id=" + id)
+            
+            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+            
+            request.httpMethod = "POST"
+            
+            var postString:String
+            
+            postString = "id=" + id
+            
+            
+            
+            print(postString)
+            request.httpBody = postString.data(using: String.Encoding.utf8)
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
                     print(error!)
@@ -440,8 +454,21 @@ class CalendarHandler{
         DispatchQueue.global(qos: .userInteractive).async {
             
             
-             let url = URL(string: self.BASE_URL + "/calendar/declineRequest.php?id=" + id)
-            let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+            let url = URL(string: self.BASE_URL + "/calendar/declineRequest.php")//?id=" + id)
+            
+            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+            
+            request.httpMethod = "POST"
+            
+            var postString:String
+            
+            postString = "id=" + id
+
+            
+            print(postString)
+            request.httpBody = postString.data(using: String.Encoding.utf8)
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
                     print(error!)
