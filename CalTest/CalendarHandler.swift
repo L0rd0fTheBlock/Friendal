@@ -33,7 +33,7 @@ class CalendarHandler{
             
             postString += "&year=" + ofYear
             
-            postString += "&end=" + withUser
+            postString += "&user=" + withUser
             
             print(postString)
             request.httpBody = postString.data(using: String.Encoding.utf8)
@@ -88,12 +88,27 @@ class CalendarHandler{
     
     func getCalendarDay(_ today: CalendarDay, forUser: String, onDay: String, ofMonth: String, forYear: String, completion: @escaping (NSError?) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
-        let url = URL(string: self.BASE_URL + "/calendar/getCalendarDay.php?month=" + ofMonth  + "&year=" + forYear + "&day=" + onDay + "&user=" + forUser)
+        let url = URL(string: self.BASE_URL + "/calendar/getCalendarDay.php")//?month=" + ofMonth  + "&year=" + forYear + "&day=" + onDay + "&user=" + forUser)
         
         print(url?.absoluteString)
-        let request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
-        
-        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+            
+            request.httpMethod = "POST"
+            
+            var postString:String
+            
+            postString = "month=" + ofMonth
+            
+            postString += "&year=" + forYear
+            
+            postString += "&day=" + onDay
+            
+            postString += "&user=" + forUser
+            
+            print(postString)
+            request.httpBody = postString.data(using: String.Encoding.utf8)
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
             if error != nil {
                 print("ERROR in request")
                 DispatchQueue.main.async {
@@ -132,7 +147,7 @@ class CalendarHandler{
                     }
                 }
             }
-        })//end Task
+        }//end Task
         task.resume()
     }//end async
     }//end calendar day
@@ -143,8 +158,20 @@ class CalendarHandler{
             
             var requests: Array<Request> = []
             
-            let url = URL(string: self.BASE_URL + "/calendar/getCalendarDay.php?user=" + forUser)
-            let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+            let url = URL(string: self.BASE_URL + "/calendar/getRequests.php?user=" + forUser)
+            
+            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+            
+            request.httpMethod = "POST"
+            
+            var postString:String
+            
+            postString = "user=" + forUser
+            
+            print(postString)
+            request.httpBody = postString.data(using: String.Encoding.utf8)
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
                     DispatchQueue.main.async {
