@@ -258,11 +258,20 @@ class CalendarHandler{
     
 
     func getEventStatus(_ id: String, completion: @escaping ([Status]?, NSError?) ->()){
-        let url = URL(string: self.BASE_URL + "/calendar/getStatuses.php?id=" + String(describing: id))
+        let url = URL(string: self.BASE_URL + "/calendar/getStatuses.php")//?id=" + String(describing: id))
         
-        let request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+        var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
         
-        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+        request.httpMethod = "POST"
+        
+        var postString:String
+        
+        postString = "id=" + id
+        
+        print(postString)
+        request.httpBody = postString.data(using: String.Encoding.utf8)
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
             if error != nil {
                 print("ERROR in request")
                 DispatchQueue.main.async {
@@ -289,7 +298,7 @@ class CalendarHandler{
                 }
         
             }
-        })
+        }
         task.resume()
     }
     
