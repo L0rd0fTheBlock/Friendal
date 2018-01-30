@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Messaging.messaging().delegate = self
         
         let token = Messaging.messaging().fcmToken
-        print("FCM token: \(token ?? "")")
+        //print("FCM token: \(token ?? "")")
         
         if(AccessToken.current != nil && token != nil){
             let ch = CalendarHandler()
@@ -58,8 +58,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         window?.makeKeyAndVisible()
         
         window?.rootViewController = TabBarController()
-        print("-=-=-=-=-=-=-=-=-=-=-=")
-        print(AccessToken.current)
+       // print("-=-=-=-=-=-=-=-=-=-=-=")
+        //print(AccessToken.current)
         return true
     }
 

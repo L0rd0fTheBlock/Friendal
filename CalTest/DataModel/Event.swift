@@ -118,6 +118,28 @@ class Event{
         }
     }
     
+    func prefixedMonth() -> String{
+        
+        
+        if( Int(month!)! < 10){
+            return "0" + month!
+        }else{
+            return month!
+        }
+    }
+    
+    func getDate() -> Date{
+        var dateString = self.date! + "/"
+        dateString += prefixedMonth() + "/"
+        dateString += self.year! + " "
+        dateString += self.start!
+        print(dateString)
+        let date = DateFormatter()
+        date.dateFormat = "dd/mm/yyyy HH:mm"
+        let r = date.date(from: dateString)
+        print(r)
+        return r!
+    }
     
     init(){
         id = "0"

@@ -17,6 +17,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     var selectedCell: Int = -1
     let errorLabel = UILabel()
     
+    let tutorialView = UIView(frame: .zero)
     
     var shouldLoadUserCalendar: Bool = true
     var nonUserUID: String? = nil
@@ -93,6 +94,14 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         
         view.addSubview(collectionView)
         collectionView.frame = CGRect(x: 0, y: 10, width: view.frame.width, height: view.frame.height)
+        
+        if let tut = UserDefaults.standard.object(forKey: "didCloseCalendarTutorial") as? Bool{
+            if(!tut){
+                setupTutorial()
+            }
+        }else{
+            setupTutorial()
+        }
         
     }
     
@@ -276,6 +285,65 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         
+    }
+    
+    func setupTutorial(){
+        
+        tutorialView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionView.addSubview(tutorialView)
+        
+        tutorialView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tutorialView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tutorialView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tutorialView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        tutorialView.backgroundColor = UIColor(rgb: 0x01B30A, alpha: 0.8)
+        
+        let information = UILabel()
+        let close = UILabel()
+        
+        information.translatesAutoresizingMaskIntoConstraints = false
+        close.translatesAutoresizingMaskIntoConstraints = false
+        
+        // information.backgroundColor = .red
+        //close.backgroundColor = .blue
+        
+        tutorialView.addSubview(information)
+        tutorialView.addSubview(close)
+        
+        
+        information.text = "You can swipe left and right to view past and future months"
+        information.numberOfLines = 0
+        information.font = UIFont.systemFont(ofSize: 24)
+        information.textColor = .white
+        information.textAlignment = .center
+        
+        close.text = "Tap here to close"
+        close.textAlignment = .center
+        close.font = UIFont.boldSystemFont(ofSize: 18)
+        close.textColor = .white
+        
+        close.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        close.leftAnchor.constraint(equalTo: tutorialView.leftAnchor).isActive = true
+        close.rightAnchor.constraint(equalTo: tutorialView.rightAnchor).isActive = true
+        close.bottomAnchor.constraint(equalTo: tutorialView.bottomAnchor, constant: -50).isActive = true
+        
+        information.topAnchor.constraint(equalTo: tutorialView.topAnchor).isActive = true
+        information.leftAnchor.constraint(equalTo: tutorialView.leftAnchor, constant: 5).isActive = true
+        information.rightAnchor.constraint(equalTo: tutorialView.rightAnchor, constant: -5).isActive = true
+        information.bottomAnchor.constraint(equalTo: close.topAnchor).isActive = true
+        
+        let tapHandler = UITapGestureRecognizer(target: self, action: #selector(didTapToClose))
+        
+        tutorialView.addGestureRecognizer(tapHandler)
+        
+    }
+    
+    @objc func didTapToClose(){
+        print("tap")
+        tutorialView.removeFromSuperview()
+        UserDefaults.standard.set(true, forKey: "didCloseCalendarTutorial")
     }
 
 

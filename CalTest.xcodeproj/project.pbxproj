@@ -22,6 +22,7 @@
 		7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C41FF9A32C009752F0 /* Settings.swift */; };
 		7D3127C71FF9C6CE009752F0 /* BugReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */; };
 		7D45F4592005329D0096A205 /* NewStatusViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D45F4582005329D0096A205 /* NewStatusViewCell.swift */; };
+		7D476FB42014F6710004E490 /* TextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D476FB32014F6710004E490 /* TextTableViewCell.swift */; };
 		7D4E7BAE1FFA88020085DA33 /* WebViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */; };
 		7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */; };
 		7D5E0FF31FC9D8BB006A9D75 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF21FC9D8BB006A9D75 /* LoginViewController.swift */; };
@@ -91,6 +92,7 @@
 		7D3127C41FF9A32C009752F0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewController.swift; sourceTree = "<group>"; };
 		7D45F4582005329D0096A205 /* NewStatusViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStatusViewCell.swift; sourceTree = "<group>"; };
+		7D476FB32014F6710004E490 /* TextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTableViewCell.swift; sourceTree = "<group>"; };
 		7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTableViewCell.swift; sourceTree = "<group>"; };
 		7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventToggleCell.swift; sourceTree = "<group>"; };
 		7D5E0FF21FC9D8BB006A9D75 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */,
 				7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */,
 				7D0F87D02004554A00CB0058 /* StatusTableViewCell.swift */,
+				7D476FB32014F6710004E490 /* TextTableViewCell.swift */,
 			);
 			path = tableView;
 			sourceTree = "<group>";
@@ -344,6 +347,8 @@
 				7D5F5D7F1FC207A800129830 /* Resources */,
 				A2EE619D786F65A0CD7132C5 /* [CP] Embed Pods Frameworks */,
 				3A16B1FDBBDD63FFA146FF4A /* [CP] Copy Pods Resources */,
+				7DB978C520166A8B002BFCAB /* crash reporting Script */,
+				7DE8182F2017987A007E41F7 /* upload dSYMs */,
 			);
 			buildRules = (
 			);
@@ -556,6 +561,34 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		7DB978C520166A8B002BFCAB /* crash reporting Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "crash reporting Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}\"/Fabric/run";
+		};
+		7DE8182F2017987A007E41F7 /* upload dSYMs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "upload dSYMs";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "find \"/Users/jamie/Library/Developer/Xcode/DerivedData/CalTest-eijpetsowazsmsegwizzgopcdpcq/Build/Products\" -name \"*.dSYM\" | xargs -I \\{\\} $PODS_ROOT/Fabric/upload-symbols -gsp \"/Users/jamie/Documents/CalTest/CalTest/GoogleService-Info.plist\" -p \"ios\" \\{\\}\n\necho \"uploaded dSYMs\"";
+		};
 		A2EE619D786F65A0CD7132C5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -681,6 +714,7 @@
 				7D2A498C1FED42A800CDEEB3 /* InviteesTableViewController.swift in Sources */,
 				7D4E7BAE1FFA88020085DA33 /* WebViewTableViewCell.swift in Sources */,
 				7D2A49901FF0335900CDEEB3 /* InviteFriendViewController.swift in Sources */,
+				7D476FB42014F6710004E490 /* TextTableViewCell.swift in Sources */,
 				7DCE3F6A1FCF7F7500322939 /* NotificationRequestViewCell.swift in Sources */,
 				7D8B86901FF6B91F006D4284 /* EventContainerView.swift in Sources */,
 			);
@@ -843,7 +877,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CalTest/Friendal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = A832G8D3K3;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CalTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -862,6 +898,7 @@
 				CODE_SIGN_ENTITLEMENTS = CalTest/Friendal.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = A832G8D3K3;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CalTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

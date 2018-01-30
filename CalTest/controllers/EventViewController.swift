@@ -8,9 +8,11 @@
 
 import UIKit
 import FacebookCore
+import Crashlytics
 
 class EventViewController: UITableViewController {
 
+    var cells = 6
     var event:Event? = nil
     var today: DayViewController? = nil
     var isEdit:Bool = false
@@ -18,7 +20,7 @@ class EventViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        Crashlytics.sharedInstance().crash()
         hideKeyboardWhenTappedAround()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
@@ -45,8 +47,7 @@ class EventViewController: UITableViewController {
         tableView.allowsSelection = true
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didBeginEditing))
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "eventItem")
-        tableView.register(StatusTableViewCell.self, forCellReuseIdentifier: "status")
+        registerCells()
         self.tabBarController?.tabBar.isHidden = true
         
         alert.addAction(UIAlertAction(title: "I'm Sure", style: .default, handler: { (action: UIAlertAction!) in
@@ -75,9 +76,12 @@ class EventViewController: UITableViewController {
         title = event?.title
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func registerCells(){
+        tableView.register(TextTableViewCell.self, forCellReuseIdentifier: "eventItem")
+        tableView.register(StatusTableViewCell.self, forCellReuseIdentifier: "status")
+        tableView.register(FormTextCell.self, forCellReuseIdentifier: "textCell")
+        tableView.register(FormDatePickerCell.self, forCellReuseIdentifier: "dateCell")
+        tableView.register(NewEventToggleCell.self, forCellReuseIdentifier: "toggleCell")
     }
 
     // MARK: - Table view data source
@@ -87,12 +91,42 @@ class EventViewController: UITableViewController {
         if(!isEdit){
             self.navigationItem.rightBarButtonItem? = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didBeginEditing))
             isEdit = true
+            tableView.separatorStyle = .singleLine
         }else{
             isEdit = false
+            saveEvent()
+            tableView.separatorStyle = .none
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didBeginEditing))
         }
         
         tableView.reloadData()
+    }
+    
+    func saveEvent(){
+        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! FormTextCell
+        event?.title = cell.value.text
+        
+        let cell1 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormDatePickerCell
+        let dat = cell1.shortDate
+        let date = dat?.split(separator: "/") as Array<Substring>!
+        print(date)
+        event?.date = String(describing: date![0])
+        event?.month = String(describing: date![1])
+        let year = date![2].split(separator: ",")
+        event?.year = String(describing: year[0])
+        
+        event?.start = cell1.start
+        
+        let cell2 = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! FormDatePickerCell
+        
+        event?.end = cell2.end
+        
+        let cell3 = tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as! NewEventToggleCell
+        event?.isPrivate = cell3.toggle.isOn
+        
+        let ch = CalendarHandler()
+        ch.updateEvent(event: event!)
+        
     }
     
     @objc func didDelete(){
@@ -110,7 +144,7 @@ class EventViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 7
+        return cells
     }
 
     
@@ -118,8 +152,8 @@ class EventViewController: UITableViewController {
    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         //MARK: customize cell sizes for map and address(?)
         switch indexPath.row{
-        case 6:
-            return CGFloat(175)
+        case 5:
+            return CGFloat(200)
         default:
             return tableView.rowHeight
         }
@@ -128,57 +162,113 @@ class EventViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if(isEdit){
-            let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
-            return cell
+            return getEditCell(indexPath: indexPath)
         }else{
-            switch indexPath.row{
+            return getDisplayCell(indexPath: indexPath)
+        }
+    }
+    
+    
+    func getEditCell(indexPath: IndexPath) -> UITableViewCell{
+        
+        switch indexPath.row{
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "textCell", for: indexPath) as! FormTextCell
+            cell.value.text = event?.title
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "textCell", for: indexPath) as! FormTextCell
+            cell.value.text = ""
+            return cell
+        case 2://start
+            let cell = tableView.dequeueReusableCell(withIdentifier: "dateCell", for: indexPath) as! FormDatePickerCell
+            cell.desc.text = "Start"
+            cell.showDate = true
+            cell.startDate = event?.getDate()
+                let formatter = DateFormatter()
+                formatter.dateStyle = .medium
+                formatter.timeStyle = .short
+                cell.value.text = formatter.string(from: cell.startDate!)
+                formatter.dateStyle = .none
+                cell.start = formatter.string(from: cell.startDate!)
+                cell.end = formatter.string(from: cell.startDate!)
+                formatter.dateStyle = .short
+                formatter.timeStyle = .none
+                cell.shortDate = formatter.string(from: cell.startDate!)
+                cell.showDate = true
+
+            return cell
+        case 3:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "dateCell", for: indexPath) as! FormDatePickerCell
+            cell.desc.text = "End"
+            let formatter = DateFormatter()
+            formatter.dateStyle = .none
+            formatter.timeStyle = .short
+            
+            cell.value.text = event?.end
+            formatter.dateStyle = .none
+            cell.start = formatter.string(from: Date())
+            cell.end = event?.end
+            cell.showDate = false
+            return cell
+        case 4:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "toggleCell", for: indexPath) as! NewEventToggleCell
+            cell.parent = self
+            cell.type = 1
+            cell.title.text = "Hide Event"
+            cell.toggle.isOn = (event?.isPrivate)!
+            
+            return cell
+        case 5:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "toggleCell", for: indexPath) as! NewEventToggleCell
+            cell.parent = self
+            cell.type = 1
+            cell.title.text = "All-Day"
+            cell.toggle.isOn = (event?.isAllDay)!
+            
+            return cell
+        default:
+            return UITableViewCell()
+            
+        }
+        
+    }
+    
+    func getDisplayCell(indexPath: IndexPath) -> UITableViewCell{
+        switch indexPath.row{
             case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
-                let title = UILabel(frame: CGRect(x: 30, y: 20, width: cell.frame.width, height: cell.frame.height))
-                title.font = UIFont.boldSystemFont(ofSize: 30)
-                title.text = event?.title
-                cell.addSubview(title)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
+                cell.value.frame = CGRect(x: 30, y: 20, width: cell.frame.width, height: cell.frame.height)
+                cell.value.font = UIFont.boldSystemFont(ofSize: 30)
+                cell.value.text = event?.title
                 return cell
             case 1:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
-                let location = UILabel(frame: CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height))
-                location.text = "Renfrew Town Center"
-                cell.addSubview(location)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
+                cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
+                cell.value.text = "Renfrew Town Center"
                 return cell
-            case 2://TODO: Create a cell builder class to clean up this code
-                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
-                guard let location = event?.location else{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
-                    return cell
-                }
-                    let address = UILabel(frame: CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height))
-                    address.text = "Renfrew Town Center"
-                    cell.addSubview(address)
-                    return cell
-                
+            case 2:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
+                cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
+                cell.value.text = (event?.date)! + daySuffix((event?.date)!) + " "
+                cell.value.text = cell.value.text! + dateString((event?.month)!)
+                cell.value.text = cell.value.text! + " " + (event?.year)!
+                return cell
             case 3:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
-                let date = UILabel(frame: CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height))
-                date.text = (event?.date)! + daySuffix((event?.date)!) + " "
-                date.text = date.text! + dateString((event?.month)!)
-                date.text = date.text! + " " + (event?.year)!
-                cell.addSubview(date)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
+                cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
+    
+                cell.value.text = "from " + (event?.start)!
+                cell.value.text = cell.value.text! + " to " + (event?.end)!
+    
                 return cell
             case 4:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
-                let start = UILabel(frame: CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height))
-                start.text = "from " + (event?.start)!
-                start.text = start.text! + " to " + (event?.end)!
-                cell.addSubview(start)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
+                cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
+    
+                cell.value.text = "Invitees " + (event?.count)!
                 return cell
             case 5:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
-                let invitees = UILabel(frame: CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height))
-                invitees.text = "Invitees " + (event?.count)!
-                
-                cell.addSubview(invitees)
-                return cell
-            case 6:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "status") as! StatusTableViewCell
                 cell.collectionView.event = self.event
                 cell.collectionView.doLoad()
@@ -188,13 +278,17 @@ class EventViewController: UITableViewController {
                 print("defaulting")
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
                 return cell
-            }
         }
+    
     }
     
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        if(indexPath.row == 5){
-            return true
+        if(!isEdit){
+            if(indexPath.row == 4){
+                return true
+            }else{
+                return false
+            }
         }else{
             return false
         }
@@ -212,34 +306,75 @@ class EventViewController: UITableViewController {
         }
     }
     
+    func hideEndTime(_ should: Bool){
+        let path = IndexPath(row: 3, section: 0)
+        if(should){
+            cells = cells - 1
+            tableView.deleteRows(at: [path], with: .right)
+            
+        }else{
+            if(cells < 6){
+                cells = cells + 1
+                tableView.insertRows(at: [path], with: .left)
+            }
+        }
+        event?.setAllDay(should)
+    }
+    
     func dateString(_ date:String) ->String{
+        print(date.first)
+        if(date.first == "0"){
         switch date{
-        case "1":
-            return "January"
-        case "2":
-            return "February"
-        case "3":
-            return "March"
-        case "4":
-            return "April"
-        case "5":
-            return "May"
-        case "6":
-            return "June"
-        case "7":
-            return "July"
-        case "8":
-            return "August"
-        case "9":
-            return "September"
-        case "10":
-            return "October"
-        case "11":
-            return "November"
-        case "12":
-            return "December"
-        default:
-            return "ERROR"
+            case "01":
+                return "January"
+            case "02":
+                return "February"
+            case "03":
+                return "March"
+            case "04":
+                return "April"
+            case "05":
+                return "May"
+            case "06":
+                return "June"
+            case "07":
+                return "July"
+            case "08":
+                return "August"
+            case "09":
+                return "September"
+            default:
+                return "Error"
+        }
+        }else{
+            switch date{
+            case "1":
+                return "January"
+            case "2":
+                return "February"
+            case "3":
+                return "March"
+            case "4":
+                return "April"
+            case "5":
+                return "May"
+            case "6":
+                return "June"
+            case "7":
+                return "July"
+            case "8":
+                return "August"
+            case "9":
+                return "September"
+            case "10":
+                return "October"
+            case "11":
+                return "November"
+            case "12":
+                return "December"
+            default:
+                return "ERROR"
+            }
         }
     }
     
@@ -257,17 +392,21 @@ class EventViewController: UITableViewController {
     }
     
     @objc func keyboardWillShow(){
-        var contentOffset:CGPoint = tableView.contentOffset
-        contentOffset.y  = tableView.contentOffset.y + 200
-        
-        tableView.contentOffset = contentOffset
+        if(!isEdit){
+            var contentOffset:CGPoint = tableView.contentOffset
+            contentOffset.y  = tableView.contentOffset.y + 200
+            
+            tableView.contentOffset = contentOffset
+        }
     }
     
     @objc func keyboardWillHide(){
-        var contentOffset:CGPoint = tableView.contentOffset
-        contentOffset.y  = tableView.contentOffset.y - 200
-        
-        tableView.contentOffset = contentOffset
+        if(!isEdit){
+            var contentOffset:CGPoint = tableView.contentOffset
+            contentOffset.y  = tableView.contentOffset.y - 200
+            
+            tableView.contentOffset = contentOffset
+        }
     }
     
 }

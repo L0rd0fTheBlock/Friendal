@@ -11,6 +11,7 @@ import UIKit
 class DayViewController: UITableViewController {
     
     var drawEvent:Event? = nil
+    var events: [EventContainerView] = []
     var shouldLoadUserCalendar: Bool? = nil
     var today: CalendarDay?{
         didSet{
@@ -43,12 +44,23 @@ class DayViewController: UITableViewController {
         
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapNewEventButton))
         
+        for i in -1...23 {
+            drawTime(i)
+        }
+        
         navigationItem.setRightBarButton(button, animated: true)
         
     }
+    
+
+    
     func setupView(){
         view.backgroundColor = .white
         view.addSubview(allDayLabel)
+        
+        for event in events{
+            event.removeFromSuperview()
+        }
         
         for (index, event) in (today?.events.enumerated())!{
             
@@ -65,12 +77,10 @@ class DayViewController: UITableViewController {
                 shift = calculateShift(index, start: start, end: end)
             }
             
-            drawEvent(event, overlaps: overlap, shiftBy: shift)
+            events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
         }// end drawdrawEvent loop
         
-        for i in -1...23 {
-            drawTime(i)
-        }
+        
     }
     
     func drawTime(_ index: Int){
@@ -82,7 +92,7 @@ class DayViewController: UITableViewController {
         }
     }
     
-    func drawEvent(_ event:Event, overlaps:Int, shiftBy:Int){
+    func drawEvent(_ event:Event, overlaps:Int, shiftBy:Int) -> EventContainerView{
         if(event.isAllDay){
             let spacer: CGFloat = CGFloat(5) //the space between all day events
             let eventWidth = (tableView.frame.width - 80) / CGFloat(overlaps)
@@ -92,6 +102,7 @@ class DayViewController: UITableViewController {
             
             let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
             tableView.addSubview(eventView)
+            return eventView
             
         }else{
             let start = makeMinutes(from: event.start!)
@@ -119,6 +130,7 @@ class DayViewController: UITableViewController {
             
             let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
             tableView.addSubview(eventView)
+            return eventView
         }
     }
     
@@ -156,7 +168,11 @@ class DayViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
-        tableView.reloadData()
+        today?.update(){ (error) in
+            self.setupView()
+            self.tableView.reloadData()
+        }
+        
     }
     
     

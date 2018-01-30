@@ -46,7 +46,7 @@ class CalendarHandler{
                                             hasEvent = true
                                         }
                                     }
-                                    let thisDay = CalendarDay(onDay: day["date"] as! String, ofMonth: day["month"] as! String, hasEvent: hasEvent)
+                                    let thisDay = CalendarDay(onDay: day["date"] as! String, ofMonth: day["month"] as! String, ofYear: ofYear, hasEvent: hasEvent)
 
                                     if(hasEvent){
                                         for event in day["Events"] as! Array<[String: String]> {
@@ -73,13 +73,65 @@ class CalendarHandler{
         }//end async
     }//end getCalMonth
     
+    
+    func getCalendarDay(_ today: CalendarDay, forUser: String, onDay: String, ofMonth: String, forYear: String, completion: @escaping (NSError?) ->()){
+        DispatchQueue.global(qos: .userInteractive).async {
+        let url = URL(string: self.BASE_URL + "/calendar/getCalendarDay.php?month=" + ofMonth  + "&year=" + forYear + "&day=" + onDay + "&user=" + forUser)
+        
+        print(url?.absoluteString)
+        let request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+        
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+            if error != nil {
+                print("ERROR in request")
+                DispatchQueue.main.async {
+                    completion(self.getError(from: error! as NSError))
+                }
+            }else{
+                
+                if let content = data{
+                    do{
+                        //Array
+                        let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
+                        let jdata = json as! Array<[String: String]>
+                        print(jdata)
+                        today.events = []
+                            for event in jdata{
+                                print(today)
+                                
+                                for (key, value) in event{
+                                    print(key + ": ", value)
+                                }
+                                
+                                let e = Event(event["id"]!, title: event["title"]!, date: event["day"]!, month: event["month"]!, year: event["year"]!, start: event["start"]!, end: event["end"]!, count: event["inviteCount"]!, creator: event["UID"]!, privacy: event["make_private"]!, allDay: event["allDay"]!)
+                                
+                                today.addEvent(event: e)
+                            }
+                        DispatchQueue.main.async {
+                            completion(nil)
+                        }
+                    }catch let err{
+                        DispatchQueue.main.async {
+                            
+                            print(err)
+                            completion(self.getError(from: err as NSError))
+                            
+                        }
+                    }
+                }
+            }
+        })//end Task
+        task.resume()
+    }//end async
+    }//end calendar day
+    
     func getRequests(forUser: String, completion: @escaping ([Request]?, NSError?) ->()){
        
         DispatchQueue.global(qos: .userInteractive).async {
             
             var requests: Array<Request> = []
             
-            let url = URL(string: self.BASE_URL + "/calendar/getRequests.php?user=" + forUser)
+            let url = URL(string: self.BASE_URL + "/calendar/getCalendarDay.php?user=" + forUser)
             let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
@@ -216,6 +268,7 @@ class CalendarHandler{
         postString += "&allday=" + String(describing: event.getAllDayInt())
         
         postString += "&id=" + (AccessToken.current?.userId)!
+        print(postString)
         request.httpBody = postString.data(using: String.Encoding.utf8)
         
         let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
@@ -228,6 +281,50 @@ class CalendarHandler{
         }//end task
         task.resume()
     }//end save Event
+    
+    
+    func updateEvent(event: Event/*,completion: @escaping (String) ->()*/){
+        
+        let url = URL(string: self.BASE_URL + "/calendar/updateEvent.php")
+        
+        let request = NSMutableURLRequest(url: url!)
+        request.httpMethod = "POST"
+        
+        var postString:String
+        
+        postString = "title=" + event.title!
+        
+        postString += "&start=" + event.start!
+        
+        postString += "&end=" + event.end!
+        
+        postString += "&day=" + event.date!
+        
+        postString += "&month=" + event.month!
+        
+        postString += "&year=" + event.year!
+        
+        postString += "&privacy=" + String(describing: event.isHidden())
+        
+        postString += "&allday=" + String(describing: event.getAllDayInt())
+        
+        postString += "&uid=" + (AccessToken.current?.userId)!
+        
+        postString += "&id=" + event.id
+        
+        print(postString)
+        request.httpBody = postString.data(using: String.Encoding.utf8)
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
+            if error != nil {
+                print("ERROR")
+                print(error!)
+            }else{
+                //completion(String(data: data!, encoding: String.Encoding.utf8)!)
+            }
+        }//end task
+        task.resume()
+    }//end update Event
     
     func saveNewRequest(event: String, user: String, name: String, isNotMe: Bool){
         

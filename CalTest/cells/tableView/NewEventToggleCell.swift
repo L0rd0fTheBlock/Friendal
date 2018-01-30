@@ -12,7 +12,8 @@ class NewEventToggleCell: UITableViewCell {
 
     let toggle = UISwitch()
     let title = UILabel()
-    var parent: NewEventVC?
+    var parent: UITableViewController?
+    var type: Int = 0
     
     
     override func awakeFromNib() {
@@ -50,11 +51,24 @@ class NewEventToggleCell: UITableViewCell {
     
     @objc func didToggle() {
         print("toggle")
-        if(title.text == "All-Day" && toggle.isOn){
-            parent?.hideEndTime(true)
-//            parent?.tableView.reloadData()
-        }else{
-            parent?.hideEndTime(false)
+        if(type == 0){
+            let p = parent as! NewEventVC
+            if(title.text == "All-Day" && toggle.isOn){
+                
+                p.hideEndTime(true)
+                //            parent?.tableView.reloadData()
+            }else if(title.text == "All-Day" && !toggle.isOn){
+                p.hideEndTime(false)
+            }
+        }else if(type == 1){
+            let p = parent as! EventViewController
+            if(title.text == "All-Day" && toggle.isOn){
+                
+                p.hideEndTime(true)
+                //            parent?.tableView.reloadData()
+            }else if(title.text == "All-Day" && !toggle.isOn){
+                p.hideEndTime(false)
+            }
         }
         
     }

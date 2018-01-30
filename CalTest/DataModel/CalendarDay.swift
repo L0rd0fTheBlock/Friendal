@@ -11,13 +11,15 @@ class CalendarDay{
     var events:[Event]
     var date: String
     var month: String
+    var year: String
     let hasEvents: Bool
     
     
     
-    init(onDay: String, ofMonth: String = "NONE", hasEvent: Bool) {
+    init(onDay: String, ofMonth: String = "NONE", ofYear: String = "NONE", hasEvent: Bool) {
         date = onDay
         month = ofMonth
+        year = ofYear
         hasEvents = hasEvent
         events = [Event]()
     }
@@ -34,6 +36,13 @@ class CalendarDay{
     }
     func addEvent(event: Event){
         events.append(event)
+    }
+    
+    func update(completion: @escaping (NSError?) ->()){
+        let ch = CalendarHandler()
+        ch.getCalendarDay(self, forUser: Settings.sharedInstance.me.uid, onDay: date, ofMonth: String(monthAsInt()), forYear: year, completion: { (error) in
+            completion(error)
+        })
     }
     
     func cancelEvent(_ id: String){
