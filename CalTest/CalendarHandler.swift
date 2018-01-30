@@ -692,11 +692,23 @@ class CalendarHandler{
     func getSettings(forUser: String){
         DispatchQueue.global(qos: .userInteractive).async {
             
-            let url = URL(string: self.BASE_URL + "/calendar/getUserOptions.php?uid=" + forUser)
+            let url = URL(string: self.BASE_URL + "/calendar/getUserOptions.php")//?uid=" + forUser)
             
-            let token = Messaging.messaging().fcmToken
+            //let token = Messaging.messaging().fcmToken
             
-            let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+            
+            request.httpMethod = "POST"
+            
+            var postString:String
+            
+            
+            postString = "&uid=" + forUser
+            
+            print(postString)
+            request.httpBody = postString.data(using: String.Encoding.utf8)
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
                     print(error!)
