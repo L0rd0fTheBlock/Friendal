@@ -538,8 +538,22 @@ class CalendarHandler{
         DispatchQueue.global(qos: .userInteractive).async {
             var invitees: Array<Invitee> = []
             
-            let url = URL(string: self.BASE_URL + "/calendar/isInvitee.php?eid=" + forEvent + "&uid=" + user)
-            let task = URLSession.shared.dataTask(with: url!){ (data, response, error) in
+            let url = URL(string: self.BASE_URL + "/calendar/isInvitee.php")//?eid=" + forEvent + "&uid=" + user)
+            
+            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
+            
+            request.httpMethod = "POST"
+            
+            var postString:String
+            
+            postString = "eid=" + forEvent
+            
+            postString += "&uid=" + user
+            
+            print(postString)
+            request.httpBody = postString.data(using: String.Encoding.utf8)
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
                 if error != nil {
                     print("ERROR")
                     print(error!)
