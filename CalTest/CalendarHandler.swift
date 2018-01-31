@@ -811,6 +811,10 @@ class CalendarHandler{
         
         postString += "&sender=" + (AccessToken.current?.userId)!
         
+        postString += "&device=" + UIDevice.current.model
+        
+        postString += "&os=" + UIDevice.current.systemVersion
+        print(postString)
         request.httpBody = postString.data(using: String.Encoding.utf8)
         let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
             if error != nil {
