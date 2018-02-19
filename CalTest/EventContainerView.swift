@@ -86,6 +86,7 @@ class EventContainerView: UIView {
             if(event != nil){
                 eventView.event = event
                 eventView.today = today
+                eventView.isMyCalendar = (today?.shouldLoadMyCalendar)!
                 today?.navigationController?.pushViewController(eventView, animated: true)
             }
         }else{

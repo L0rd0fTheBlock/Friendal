@@ -425,7 +425,7 @@ extension CalendarViewController: UICollectionViewDataSource{
     func showTimeline(ofDay: CalendarDay){
         let dayView = DayViewController()
         dayView.today = ofDay
-        dayView.shouldLoadUserCalendar = self.shouldLoadMyCalendar
+        dayView.shouldLoadMyCalendar = self.shouldLoadMyCalendar
         navigationController?.pushViewController(dayView, animated: true)
     }
     

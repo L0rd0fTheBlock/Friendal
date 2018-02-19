@@ -12,7 +12,7 @@ class DayViewController: UITableViewController {
     
     var drawEvent:Event? = nil
     var events: [EventContainerView] = []
-    var shouldLoadUserCalendar: Bool? = nil
+    var shouldLoadMyCalendar: Bool = true
     var today: CalendarDay?{
         didSet{
             navigationItem.title = today?.getFullDate()
@@ -194,7 +194,7 @@ class DayViewController: UITableViewController {
     
     @objc func didTapNewEventButton(){
         
-        if(shouldLoadUserCalendar)!{
+        if(shouldLoadMyCalendar){
             
             let addVC = CalendarNavigationController(rootViewController: NewEventVC())
             let vc:NewEventVC = addVC.topViewController as! NewEventVC

@@ -16,6 +16,7 @@ class EventViewController: UITableViewController {
     var event:Event? = nil
     var today: DayViewController? = nil
     var isEdit:Bool = false
+    var isMyCalendar = true
     let alert: UIAlertController = UIAlertController(title: "Delete", message: "Are you sure? This cannot be undone.", preferredStyle: UIAlertControllerStyle.alert)
     let warning: UIAlertController = UIAlertController(title: "Invalid end time", message: "The end time must not be the same or before the start time.", preferredStyle: UIAlertControllerStyle.alert)
     
@@ -27,19 +28,20 @@ class EventViewController: UITableViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
         
-        let delete = UIButton()
-        view.isUserInteractionEnabled = true
-       // delete.backgroundColor = .red
-        //delete.titleLabel?.text = "Delete"
-        delete.setTitle("Delete", for: .normal)
-        delete.setTitleColor(.red, for: .normal)
-        delete.tintColor = .white
-        
-        delete.addTarget(self, action: #selector(didDelete), for: .touchUpInside)
-        
-        delete.frame = CGRect(x: 0, y: view.frame.height - 100/*-125*/, width: view.frame.width, height: 50)
-        view.addSubview(delete)
-        
+        if(isMyCalendar){
+            let delete = UIButton()
+            view.isUserInteractionEnabled = true
+           // delete.backgroundColor = .red
+            //delete.titleLabel?.text = "Delete"
+            delete.setTitle("Delete", for: .normal)
+            delete.setTitleColor(.red, for: .normal)
+            delete.tintColor = .white
+            
+            delete.addTarget(self, action: #selector(didDelete), for: .touchUpInside)
+            
+            delete.frame = CGRect(x: 0, y: view.frame.height - 100/*-125*/, width: view.frame.width, height: 50)
+            view.addSubview(delete)
+        }
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
         tableView.isUserInteractionEnabled = true
