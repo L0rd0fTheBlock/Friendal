@@ -16,6 +16,7 @@ class Settings{
     var me: Person = Person(id: "0", first: "", last: "")
     var dateFormat: Int = 1
     var privacy: Int = 0
+    var selectedFriendId: String? = nil
     
     static let sharedInstance = Settings()
     

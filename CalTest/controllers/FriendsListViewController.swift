@@ -34,12 +34,6 @@ class FriendsListViewController: UITableViewController {
         if AccessToken.current != nil {
             // User is logged in, use 'accessToken' here.
             doLoad()
-            //UNCOMMENT THESE LINES FOR DEBUG
-            /*let loginVC = LoginViewController()
-             loginVC.calendarVC = self
-             self.present(loginVC, animated: true, completion: ({() in
-             
-             }))*/
         }else{
             //Access Token does not exist
             let loginVC = LoginViewController()
@@ -54,11 +48,13 @@ class FriendsListViewController: UITableViewController {
     func doLoad(){
         
         friends.removeAll()
+        tableView.reloadData()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
         errorLabel.textAlignment = .center
         errorLabel.text = "Your Friends List is loading."
         errorLabel.numberOfLines = 0
         errorLabel.backgroundColor = UIColor.lightGray.withAlphaComponent(CGFloat(0.5))
+        errorLabel.isHidden = false
         tableView.addSubview(errorLabel)
         
         let calHandler = CalendarHandler()
@@ -134,8 +130,8 @@ class FriendsListViewController: UITableViewController {
         
         
         let friendCal = CalendarViewController()
-        friendCal.shouldLoadUserCalendar = false
-        friendCal.nonUserUID = friends[indexPath.row].uid
+        friendCal.shouldLoadMyCalendar = false
+        Settings.sharedInstance.selectedFriendId = friends[indexPath.row].uid
         
         navigationController?.pushViewController(friendCal, animated: true)
         

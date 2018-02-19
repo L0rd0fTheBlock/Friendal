@@ -17,6 +17,7 @@ class EventViewController: UITableViewController {
     var today: DayViewController? = nil
     var isEdit:Bool = false
     let alert: UIAlertController = UIAlertController(title: "Delete", message: "Are you sure? This cannot be undone.", preferredStyle: UIAlertControllerStyle.alert)
+    let warning: UIAlertController = UIAlertController(title: "Invalid end time", message: "The end time must not be the same or before the start time.", preferredStyle: UIAlertControllerStyle.alert)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +67,9 @@ class EventViewController: UITableViewController {
         }))
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-           
+        }))
+        
+        warning.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { (action: UIAlertAction!) in
         }))
         
     }
@@ -92,25 +95,28 @@ class EventViewController: UITableViewController {
             isEdit = true
             tableView.separatorStyle = .singleLine
         }else{
-            isEdit = false
-            saveEvent()
-            tableView.separatorStyle = .none
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didBeginEditing))
-        }
+            if(saveEvent()){
+                isEdit = false
+                tableView.separatorStyle = .none
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didBeginEditing))
+            }
+            }
+        
         
         tableView.reloadData()
     }
     
-    func saveEvent(){
+    func saveEvent() -> Bool{
         let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! FormTextCell
         event?.title = cell.value.text
         
         let cell1 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormDatePickerCell
         let dat = cell1.shortDate
         let date = dat?.split(separator: "/") as Array<Substring>!
-        print(date)
+        print("date at save: ", date)
         event?.date = String(describing: date![0])
-        event?.month = String(describing: date![1])
+        let month = Int(date![1])
+        event?.month = String(describing: month! + 1)
         let year = date![2].split(separator: ",")
         event?.year = String(describing: year[0])
         
@@ -123,9 +129,21 @@ class EventViewController: UITableViewController {
         let cell3 = tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as! NewEventToggleCell
         event?.isPrivate = cell3.toggle.isOn
         
-        let ch = CalendarHandler()
-        ch.updateEvent(event: event!)
-        
+        if(event?.getAllDayBool())!{
+            let ch = CalendarHandler()
+            ch.updateEvent(event: event!)
+            return true
+        }else{
+            if(event?.start == event?.end){
+                navigationController?.present(warning, animated: true, completion: {
+                })
+                return false
+            }else{
+                let ch = CalendarHandler()
+                ch.updateEvent(event: event!)
+                return true
+            }
+        }
     }
     
     @objc func didDelete(){
@@ -244,7 +262,7 @@ class EventViewController: UITableViewController {
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
                 cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
-                cell.value.text = "Renfrew Town Center"
+                cell.value.text = ""
                 return cell
             case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell

@@ -19,7 +19,7 @@ class AdMobCollectionViewCell: UICollectionViewCell {
         // In this case, we instantiate the banner with desired ad size.
         backgroundColor = .white
         bannerView = GADBannerView(adSize: kGADAdSizeLargeBanner)
-        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        bannerView.adUnitID = "ca-app-pub-8694139400395039/9086600880"
         guard let root = rootView else{return}
        loadBannerView()
     }

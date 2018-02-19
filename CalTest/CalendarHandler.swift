@@ -855,11 +855,11 @@ class CalendarHandler{
     func getError(from: NSError) ->NSError{
         print("===GETERROR===")
         if(from.domain == "NSCocoaErrorDomain"){
-            return NSError(domain: "com.makeitfortheweb", code: 101, userInfo: ["message": "An error occured while accessing the calendar."])
+            return NSError(domain: "uk.co.friendal", code: 101, userInfo: ["message": "An error occured while accessing the calendar."])
         }else if(from.domain == NSURLErrorDomain && from.code == -1009){
-            return NSError(domain: "com.makeitfortheweb", code: 100, userInfo: ["message": "The Internet connection appears to be offline."])
+            return NSError(domain: "uk.co.friendal", code: 100, userInfo: ["message": "The Internet connection appears to be offline."])
         }else{
-            return NSError(domain: "com.makeitfortheweb", code: 001, userInfo: ["message": "An unknown error has occured while maing your request."])
+            return NSError(domain: "uk.co.friendal", code: 001, userInfo: ["message": "An unknown error has occured while making your request."])
         }
     }
 

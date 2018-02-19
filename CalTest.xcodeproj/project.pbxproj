@@ -21,6 +21,7 @@
 		7D3127C31FF98B65009752F0 /* SettingsToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C21FF98B65009752F0 /* SettingsToggleCell.swift */; };
 		7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C41FF9A32C009752F0 /* Settings.swift */; };
 		7D3127C71FF9C6CE009752F0 /* BugReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */; };
+		7D4483D32039DADC00071CB3 /* LoginViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4483D22039DADC00071CB3 /* LoginViewCell.swift */; };
 		7D45F4592005329D0096A205 /* NewStatusViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D45F4582005329D0096A205 /* NewStatusViewCell.swift */; };
 		7D476FB42014F6710004E490 /* TextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D476FB32014F6710004E490 /* TextTableViewCell.swift */; };
 		7D4E7BAE1FFA88020085DA33 /* WebViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */; };
@@ -91,6 +92,7 @@
 		7D3127C21FF98B65009752F0 /* SettingsToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsToggleCell.swift; sourceTree = "<group>"; };
 		7D3127C41FF9A32C009752F0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewController.swift; sourceTree = "<group>"; };
+		7D4483D22039DADC00071CB3 /* LoginViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewCell.swift; sourceTree = "<group>"; };
 		7D45F4582005329D0096A205 /* NewStatusViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStatusViewCell.swift; sourceTree = "<group>"; };
 		7D476FB32014F6710004E490 /* TextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTableViewCell.swift; sourceTree = "<group>"; };
 		7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTableViewCell.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				7D0F87D720050F7800CB0058 /* StatusViewCell.swift */,
 				7D45F4582005329D0096A205 /* NewStatusViewCell.swift */,
 				7DA95A4620080B02004DB003 /* AdMobCollectionViewCell.swift */,
+				7D4483D22039DADC00071CB3 /* LoginViewCell.swift */,
 			);
 			path = collectionView;
 			sourceTree = "<group>";
@@ -712,6 +715,7 @@
 				7D117BA91FC39462009E5932 /* DayViewController.swift in Sources */,
 				7D0F87D12004554A00CB0058 /* StatusTableViewCell.swift in Sources */,
 				7D2A498C1FED42A800CDEEB3 /* InviteesTableViewController.swift in Sources */,
+				7D4483D32039DADC00071CB3 /* LoginViewCell.swift in Sources */,
 				7D4E7BAE1FFA88020085DA33 /* WebViewTableViewCell.swift in Sources */,
 				7D2A49901FF0335900CDEEB3 /* InviteFriendViewController.swift in Sources */,
 				7D476FB42014F6710004E490 /* TextTableViewCell.swift in Sources */,

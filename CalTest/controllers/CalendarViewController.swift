@@ -19,8 +19,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     let tutorialView = UIView(frame: .zero)
     
-    var shouldLoadUserCalendar: Bool = true
-    var nonUserUID: String? = nil
+    var shouldLoadMyCalendar: Bool = true
     
     var month: Int = 0//the selected month
     var year:  Int = 0//the selected year
@@ -74,7 +73,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
             // User is logged in, use 'accessToken' here.
             doLoad()
         }else{
-            if(!shouldLoadUserCalendar){
+            if(!shouldLoadMyCalendar){
                 AppEventsLogger.log("Viewed Friend Calendar")
             }else{
                 AppEventsLogger.log("viewed Own Calendar")
@@ -107,12 +106,13 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func doLoad(){
         dates.removeAll()
+        collectionView.reloadData()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
         errorLabel.textAlignment = .center
         errorLabel.text = "The calendar is loading."
         errorLabel.numberOfLines = 0
         errorLabel.backgroundColor = UIColor.lightGray.withAlphaComponent(CGFloat(0.5))
-        
+        errorLabel.isHidden = false
         collectionView.addSubview(errorLabel)
         
         Settings.sharedInstance.load()
@@ -125,8 +125,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         month = calendar.component(.month, from: date)
         year = calendar.component(.year, from: date)
         var user: String = (AccessToken.current?.userId)!
-        if(!shouldLoadUserCalendar){
-            user = nonUserUID!
+        if(!shouldLoadMyCalendar){
+            user = Settings.sharedInstance.selectedFriendId!
         }
         
         cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
@@ -154,7 +154,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @objc func didTapNewEventButton(){
         
-        if(shouldLoadUserCalendar){
+        if(shouldLoadMyCalendar){
         
             let addVC = CalendarNavigationController(rootViewController: NewEventVC())
             let vc:NewEventVC = addVC.topViewController as! NewEventVC
@@ -190,8 +190,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     
                     let cal = CalendarHandler()
                     var user: String = (AccessToken.current?.userId)!
-                    if(!shouldLoadUserCalendar){
-                        user = nonUserUID!
+                    if(!shouldLoadMyCalendar){
+                        user = Settings.sharedInstance.selectedFriendId!
                     }
                     
                     cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
@@ -213,8 +213,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     
                     let cal = CalendarHandler()
                     var user: String = (AccessToken.current?.userId)!
-                    if(!shouldLoadUserCalendar){
-                        user = nonUserUID!
+                    if(!shouldLoadMyCalendar){
+                        user = Settings.sharedInstance.selectedFriendId!
                     }
                     
                     cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
@@ -239,8 +239,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     
                     let cal = CalendarHandler()
                     var user: String = (AccessToken.current?.userId)!
-                    if(!shouldLoadUserCalendar){
-                        user = nonUserUID!
+                    if(!shouldLoadMyCalendar){
+                        user = Settings.sharedInstance.selectedFriendId!
                     }
                     
                     cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
@@ -264,8 +264,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     
                     let cal = CalendarHandler()
                     var user: String = (AccessToken.current?.userId)!
-                    if(!shouldLoadUserCalendar){
-                        user = nonUserUID!
+                    if(!shouldLoadMyCalendar){
+                        user = Settings.sharedInstance.selectedFriendId!
                     }
                     
                     cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
@@ -390,8 +390,11 @@ extension CalendarViewController: UICollectionViewDataSource{
             if(cell.date.text == "0"){
                 cell.date.text = " "
             }
-            
+            print("===================")
+            print("today has events: ", thisDay.doesHaveEvents())
+            print(thisDay.events)
             if(thisDay.doesHaveEvents()){
+                print("Setting colour: green")
                 cell.date.layer.backgroundColor = UIColor.green.cgColor
                 
             }
@@ -422,7 +425,7 @@ extension CalendarViewController: UICollectionViewDataSource{
     func showTimeline(ofDay: CalendarDay){
         let dayView = DayViewController()
         dayView.today = ofDay
-        dayView.shouldLoadUserCalendar = self.shouldLoadUserCalendar
+        dayView.shouldLoadUserCalendar = self.shouldLoadMyCalendar
         navigationController?.pushViewController(dayView, animated: true)
     }
     

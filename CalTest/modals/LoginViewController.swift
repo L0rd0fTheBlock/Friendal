@@ -12,7 +12,7 @@ import FacebookLogin
 import FacebookCore
 import FBSDKLoginKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     var isModal = true
     
@@ -20,13 +20,34 @@ class LoginViewController: UIViewController {
     
     var calendarVC: UIViewController? = nil
     
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.isPagingEnabled = true
+        cv.bounces = false
+        cv.backgroundColor = .white
+        return cv
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Options"
-        let loginButton = LoginButton(readPermissions: [ .publicProfile, .userFriends ])
-        loginButton.center = view.center
-        loginButton.delegate = self
-        view.addSubview(loginButton)
+        
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        collectionView.isPagingEnabled = true
+        
+        collectionView.register(LoginViewCell.self, forCellWithReuseIdentifier: "cell")
+        
+        view.addSubview(collectionView)
+        collectionView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        
+        
         // Do any additional setup after loading the view.
         
         view.backgroundColor = UIColor(rgb: 0x01B30A)
@@ -38,53 +59,39 @@ class LoginViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
     }
-    */
-
-}
-
-extension LoginViewController: LoginButtonDelegate{
-    func loginButtonDidLogOut(_ loginButton: LoginButton) {
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! LoginViewCell
         
-    }
-    
-    
-    func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
-        if(isModal){
+        cell.parent = self
+        
+        if(indexPath.item == 0){
             
-            switch result {
-            case LoginResult.success:
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: {(result, error) in
-                    
-                    let calHandler = CalendarHandler()
-                    calHandler.registerDviceToken()
-                    
-                    self.dismiss(animated: true, completion: ({() in
-                        
-                        if(self.vc == "cal"){
-                            let cal = self.calendarVC as! CalendarViewController
-                            cal.doLoad()
-                        }else if(self.vc == "friend"){
-                            let cal = self.calendarVC as! FriendsListViewController
-                            cal.doLoad()
-                        }
-                    }))
-                    
-                })
-                //TODO: handle new UID
-                
-            default:
-                print("fail")
-            }
+            cell.imageView.image = UIImage(named: "friends2")
+            cell.title.text = "Connect with your friends like never before."
+            cell.text.text = "Friendal let's you see when your Facebook friends are free"
+            return cell
+        }else if(indexPath.item == 1){
+            cell.imageView.image = UIImage(named: "sunset")
+            cell.title.text = "Invite groups of friends to events"
+            cell.text.text = "Invite large groups of friends to join you at important events"
+            return cell
+        }else{
+            cell.imageView.image = UIImage(named: "night out")
+            cell.title.text = "Planning that important night out has never been easier"
+            cell.text.text = ""
+            return cell
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
+        return CGSize(width: view.frame.width, height: view.frame.height)
     }
     
 }
+
+

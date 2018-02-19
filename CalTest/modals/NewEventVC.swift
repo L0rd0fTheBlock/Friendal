@@ -9,6 +9,7 @@
 import UIKit
 //import FBNotifications
 import FacebookCore
+import Crashlytics
 
 class NewEventVC: UITableViewController {
     var calendarVC:CalendarViewController?
@@ -58,12 +59,13 @@ class NewEventVC: UITableViewController {
     @objc func didSave(){
         
         
-        AppEventsLogger.log("Added Calendar Event")
         let handler = CalendarHandler()
         var event = Event()
         
+        Crashlytics.sharedInstance().setBoolValue(isAllDay, forKey: "isAllDay")
+        
         if(isAllDay){
-           event = getAllDayEvent()
+            event = getAllDayEvent()
         }else{
             event = getEventWithEndTime()
         }
