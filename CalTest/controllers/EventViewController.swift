@@ -86,6 +86,7 @@ class EventViewController: UITableViewController {
         tableView.register(FormTextCell.self, forCellReuseIdentifier: "textCell")
         tableView.register(FormDatePickerCell.self, forCellReuseIdentifier: "dateCell")
         tableView.register(NewEventToggleCell.self, forCellReuseIdentifier: "toggleCell")
+        tableView.register(SelectableTableViewCell.self, forCellReuseIdentifier: "selectableCell")
     }
 
     // MARK: - Table view data source
@@ -257,35 +258,44 @@ class EventViewController: UITableViewController {
         switch indexPath.row{
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
-                cell.value.frame = CGRect(x: 30, y: 20, width: cell.frame.width, height: cell.frame.height)
-                cell.value.font = UIFont.boldSystemFont(ofSize: 30)
-                cell.value.text = event?.title
+                cell.title.frame = CGRect(x: 30, y: 20, width: cell.frame.width, height: cell.frame.height)
+                cell.title.font = UIFont.boldSystemFont(ofSize: 30)
+                cell.title.text = event?.title
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
-                cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
-                cell.value.text = ""
+                cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
+                cell.title.text = ""
                 return cell
             case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
-                cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
-                cell.value.text = (event?.date)! + daySuffix((event?.date)!) + " "
-                cell.value.text = cell.value.text! + dateString((event?.month)!)
-                cell.value.text = cell.value.text! + " " + (event?.year)!
+                cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
+                cell.title.text = (event?.date)! + daySuffix((event?.date)!) + " "
+                cell.title.text = cell.title.text! + dateString((event?.month)!)
+                cell.title.text = cell.title.text! + " " + (event?.year)!
                 return cell
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
-                cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
+                cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
     
-                cell.value.text = "from " + (event?.start)!
-                cell.value.text = cell.value.text! + " to " + (event?.end)!
+                cell.title.text = "from " + (event?.start)!
+                cell.title.text = cell.title.text! + " to " + (event?.end)!
     
                 return cell
             case 4:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
-                cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
-    
-                cell.value.text = "Invitees " + (event?.count)!
+                //let cell = tableView.dequeueReusableCell(withIdentifier: "selectableCell", for: indexPath) as! SelectableTableViewCell
+                
+                
+//                cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
+//
+//                cell.title.text = "Invitees "
+//                cell.value.text = String(describing: event?.invitees.count)
+//
+                let cell = UITableViewCell(style: .value1, reuseIdentifier: "selectcell")
+                
+                cell.textLabel?.text = "Invitees "
+                cell.detailTextLabel?.text = event?.count
+                cell.accessoryType = .disclosureIndicator
                 return cell
             case 5:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "status") as! StatusTableViewCell

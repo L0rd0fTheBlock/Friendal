@@ -29,6 +29,7 @@ class NotificationViewController: UITableViewController {
     func loadData(){
         print("loading data for notifications")
         requests.removeAll()
+        tableView.reloadData()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
         errorLabel.textAlignment = .center
         errorLabel.text = "Your notifications are loading."

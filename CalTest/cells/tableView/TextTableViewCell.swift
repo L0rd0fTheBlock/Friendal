@@ -10,12 +10,17 @@ import UIKit
 
 class TextTableViewCell: UITableViewCell {
 
+    let title = UILabel(frame: .zero)
     let value = UILabel(frame: .zero)
+    let chevron = UILabel(frame: .zero)
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        value.frame = CGRect(x: frame.width - 30, y: 0, width: 20, height: frame.height)
+        chevron.frame = CGRect(x: frame.width - 10, y: 0, width: 10, height: frame.height)
+        addSubview(title)
         addSubview(value)
+        
         
         
     }
