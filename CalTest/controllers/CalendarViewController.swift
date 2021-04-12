@@ -63,7 +63,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         print("View Will Appear")
-        do{ try Auth.auth().signOut() }catch{}
+        //MARK: Uncomment this line to debug login features
+        //do{ try Auth.auth().signOut() }catch{}
         super.viewDidLoad()
         
         if(!isLoggedIn()){
