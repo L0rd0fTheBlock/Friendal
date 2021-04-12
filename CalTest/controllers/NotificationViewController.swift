@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import FacebookLogin
-import FacebookCore
+//import FacebookLogin
+//import FacebookCore
 
 class NotificationViewController: UITableViewController {
 
@@ -39,7 +39,7 @@ class NotificationViewController: UITableViewController {
         
         let cal = CalendarHandler()
         requests = []
-        cal.getRequests(forUser: (AccessToken.current?.userId)!, completion: { (request, error) in
+/*        cal.getRequests(forUser: (AccessToken.current?.userId)!, completion: { (request, error) in
             print("Notification completion handler")
             guard let r = request else{
                 
@@ -49,7 +49,6 @@ class NotificationViewController: UITableViewController {
                 self.errorLabel.isHidden = false
                 self.tableView.reloadData()
                 return
-                
             }
             
             self.requests = r
@@ -81,7 +80,7 @@ class NotificationViewController: UITableViewController {
             self.errorLabel.isHidden = true
             self.tableView.reloadData()
             
-        })
+        })*/
         
     }
     

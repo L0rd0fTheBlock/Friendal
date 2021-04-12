@@ -21,7 +21,7 @@ class NewEventToggleCell: UITableViewCell {
         // Initialization code
     }
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    /*override init(styleUITableViewCell.CellStylele, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         print(toggle.frame.width)
@@ -47,7 +47,7 @@ class NewEventToggleCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
+    }*/
     
     @objc func didToggle() {
         print("toggle")
@@ -64,10 +64,10 @@ class NewEventToggleCell: UITableViewCell {
             let p = parent as! EventViewController
             if(title.text == "All-Day" && toggle.isOn){
                 
-                p.hideEndTime(true)
+               // p.hideEndTime(true)
                 //            parent?.tableView.reloadData()
             }else if(title.text == "All-Day" && !toggle.isOn){
-                p.hideEndTime(false)
+               // p.hideEndTime(false)
             }
         }
         

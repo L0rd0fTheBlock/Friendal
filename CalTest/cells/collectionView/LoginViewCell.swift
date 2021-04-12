@@ -7,17 +7,17 @@
 //
 
 import UIKit
-import FacebookCore
-import FacebookLogin
+//import FacebookCore
+//import FacebookLogin
 import UserNotifications
-import Crashlytics
+//import Crashlytics
 
 class LoginViewCell: UICollectionViewCell {
     
     let imageView: UIImageView
     let title: UILabel
     let text: UILabel
-    var parent: LoginViewController? = nil
+    var parent: WelcomeViewController? = nil
     
     override init(frame: CGRect) {
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
@@ -43,20 +43,28 @@ class LoginViewCell: UICollectionViewCell {
         addSubview(title)
         addSubview(text)
         
-        let loginButton = LoginButton(readPermissions: [ .publicProfile, .userFriends ])
+        let loginButton = UIButton(frame: CGRect(x: 100, y: 100, width: 300, height: 50))
+        loginButton.backgroundColor = .blue
+          loginButton.setTitle("Login with Email", for: .normal)
+          loginButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         loginButton.center = CGPoint(x: frame.width / 2, y: ((frame.height/4) * 3) + 50)
-        loginButton.delegate = self
         addSubview(loginButton)
         
     }
     
+    @objc func buttonAction(sender: UIButton!) {
+        print("Button tapped")
+        let lgvc = LoginViewController()
+        
+        parent?.present(lgvc, animated: true, completion:  nil)
+        
+    }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
 
-extension LoginViewCell: LoginButtonDelegate{
+/*extension LoginViewCell: LoginButtonDelegate{
     func loginButtonDidLogOut(_ loginButton: LoginButton) {
         
     }
@@ -111,5 +119,6 @@ extension LoginViewCell: LoginButtonDelegate{
         }
         
     }
-    
+
+}*/
 }

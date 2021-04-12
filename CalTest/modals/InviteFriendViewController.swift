@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FacebookCore
+//import FacebookCore
 
 class InviteFriendViewController: FriendsListViewController {
 
@@ -80,10 +80,10 @@ class InviteFriendViewController: FriendsListViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath) as! FriendsListViewCell
         
-        if(cell.uid == AccessToken.current?.userId){
+       /* if(cell.uid == AccessToken.current?.userId){
             cell.name.text = cell.name.text! + " (You)"
         }
-        
+        */
         for invitee in invited{
             if(invitee.uid == cell.uid){
                 cell.isUserInteractionEnabled = false

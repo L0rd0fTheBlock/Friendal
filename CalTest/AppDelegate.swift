@@ -8,32 +8,33 @@
 
 import UIKit
 import UserNotifications
-import FBSDKLoginKit
-import FBNotifications
-import FacebookCore
+//import FBSDKLoginKit
+//import FBNotifications
+//import FacebookCore
 import CoreData
-import GoogleMobileAds
+//import GoogleMobileAds
 import Firebase
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate /*MessagingDelegate*/ {
 
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+    internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+       // FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         FirebaseApp.configure()
-        Messaging.messaging().delegate = self
+        Auth.auth().addStateDidChangeListener { (auth, user) in }
+       // Messaging.messaging().delegate = self
         
-        let token = Messaging.messaging().fcmToken
+       // let token = Messaging.messaging().fcmToken
         //print("FCM token: \(token ?? "")")
         
-        if(AccessToken.current != nil && token != nil){
+        /*if(AccessToken.current != nil && token != nil){
             let ch = CalendarHandler()
             ch.registerDviceToken()
-        }
+        }*/
         
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
@@ -52,18 +53,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         application.registerForRemoteNotifications()
         
         
-        AppEventsLogger.activate(application)
-        GADMobileAds.configure(withApplicationID: "ca-app-pub-8694139400395039~1830749784")
+      //  AppEventsLogger.activate(application)
+        //GADMobileAds.configure(withApplicationID: "ca-app-pub-8694139400395039~1830749784")
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-        window?.rootViewController = TabBarController()
+        window?.rootViewController = TabBarController() //TODO: set this back to tab bar controller after testing
        // print("-=-=-=-=-=-=-=-=-=-=-=")
         //print(AccessToken.current)
-        return true
+    return true
     }
 
-    public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+   /* public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         
         return FBSDKApplicationDelegate.sharedInstance().application(
             app,
@@ -79,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             open: url as URL!,
             sourceApplication: sourceApplication,
             annotation: annotation)
-    }
+    }*/
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         // If you are receiving a notification message while your app is in the background,
@@ -98,8 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print(userInfo)
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
         // TODO: Handle data of notification
@@ -146,7 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     //MARK: FIREBASE NOTIFICATION DELEGATE
     
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+   /* func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         
         
         // TODO: If necessary send token to application server.
@@ -161,7 +161,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             calHandler.registerDviceToken()
         }
     }
-
+*/
 
 }
 

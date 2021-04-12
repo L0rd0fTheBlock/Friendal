@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import FacebookLogin
-import FacebookCore
+import Firebase
+import FirebaseAuth
 
 
 class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
@@ -39,12 +39,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         
-        super.viewDidLoad()
-        
-       // navigationController.
-        
-        
-        
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapNewEventButton))
         
         navigationItem.setRightBarButton(button, animated: true)
@@ -68,8 +62,21 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = false
-        if AccessToken.current != nil {
+        print("View Will Appear")
+        do{ try Auth.auth().signOut() }catch{}
+        super.viewDidLoad()
+        
+        if(!isLoggedIn()){
+            if(shouldLoadMyCalendar){
+                showLoginScreen()
+            }
+        }else{
+            print("View Will Appear -> Do Load")
+            doLoad()
+        }
+        
+        
+      /*  if AccessToken.current != nil {
             // User is logged in, use 'accessToken' here.
             doLoad()
         }else{
@@ -85,10 +92,32 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
             self.present(loginVC, animated: true, completion: ({() in
                 
             }))
-        }
+        }*/
     }
     
-
+    func isLoggedIn() ->Bool {
+        
+        if(Auth.auth().currentUser != nil){
+            print("User is Logged in")
+               return true
+            }else{
+                if(!self.shouldLoadMyCalendar){
+                 //   AppEventsLogger.log("Viewed Friend Calendar")
+                    return false
+                }else{
+                 //   AppEventsLogger.log("viewed Own Calendar")
+                    return false
+                }
+            }
+    }
+    
+    func showLoginScreen(){
+        let welcomeVC = WelcomeViewController()
+        welcomeVC.calendarVC = self
+        welcomeVC.modalPresentationStyle = .overFullScreen
+        navigationController?.present(welcomeVC, animated: true, completion: nil)
+    }
+    
     func setupCalendar(){
         
         view.addSubview(collectionView)
@@ -104,6 +133,14 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         
     }
     
+    func validateLogin(){
+        if(isLoggedIn()){
+            doLoad()
+        }else{
+            showLoginScreen()
+        }
+    }
+    
     func doLoad(){
         dates.removeAll()
         collectionView.reloadData()
@@ -117,19 +154,20 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         
         Settings.sharedInstance.load()
         
-        let cal = CalendarHandler()
+        //let cal = CalendarHandler() ---- Deprecated: Use buildMonth() method(?)
         
+        buildMonth()
         
         let date = Date()
         let calendar = Calendar.current
         month = calendar.component(.month, from: date)
         year = calendar.component(.year, from: date)
-        var user: String = (AccessToken.current?.userId)!
+      //  var user: String = (AccessToken.current?.userId)!
         if(!shouldLoadMyCalendar){
-            user = Settings.sharedInstance.selectedFriendId!
+           // user = Settings.sharedInstance.selectedFriendId!
         }
         
-        cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
+        /*cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
             print("completion: GetCalMonth")
             guard let events = data, let month = m  else{
                 print("Error", error)
@@ -144,7 +182,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
             self.navigationItem.title = month + " " + String(self.year)
             self.collectionView.reloadData()
             print("completion: Completed: GetCalMonth")
-        })
+        })*/
         setupCalendar()
         collectionView.register(CalendarViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.dataSource = self
@@ -187,14 +225,14 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     let nextMonth: Date = Calendar.current.date(byAdding: .month, value: diff, to: Date())!
                     let calendar = Calendar.current
                     month = calendar.component(.month, from: nextMonth)
-                    
-                    let cal = CalendarHandler()
-                    var user: String = (AccessToken.current?.userId)!
+                    //TODO: Handle swipe gestures
+                //    let cal = CalendarHandler()
+                   // var user: String = (AccessToken.current?.userId)!
                     if(!shouldLoadMyCalendar){
-                        user = Settings.sharedInstance.selectedFriendId!
+                     //   user = Settings.sharedInstance.selectedFriendId!
                     }
                     
-                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
+                  /*  cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
                         guard let events = data, let month = m  else{
                             print(error)
                             return
@@ -202,7 +240,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                         self.dates = events
                         self.navigationItem.title = month + " " + String(self.year)
                         self.collectionView.reloadData()
-                    })
+                    })*/
                 }else{
                     month = 12
                     yDiff = yDiff - 1
@@ -212,12 +250,12 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     year = calendar.component(.year, from: nextYear)
                     
                     let cal = CalendarHandler()
-                    var user: String = (AccessToken.current?.userId)!
+                   // var user: String = (AccessToken.current?.userId)!
                     if(!shouldLoadMyCalendar){
-                        user = Settings.sharedInstance.selectedFriendId!
+                     //   user = Settings.sharedInstance.selectedFriendId!
                     }
                     
-                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
+                    /*cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
                         
                         guard let events = data, let month = m  else{
                             print(error)
@@ -227,7 +265,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                         self.dates = events
                         self.navigationItem.title = month + " " + String(self.year)
                         self.collectionView.reloadData()
-                    })
+                    })*/
                 }
                 
             }else if(swipe.direction == .left){
@@ -238,12 +276,12 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     month = calendar.component(.month, from: nextMonth)
                     
                     let cal = CalendarHandler()
-                    var user: String = (AccessToken.current?.userId)!
+                    //var user: String = (AccessToken.current?.userId)!
                     if(!shouldLoadMyCalendar){
-                        user = Settings.sharedInstance.selectedFriendId!
+                       // user = Settings.sharedInstance.selectedFriendId!
                     }
                     
-                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
+                    /*cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
                         
                         guard let events = data, let month = m  else{
                             print("error", error)
@@ -253,7 +291,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                         self.dates = events
                         self.navigationItem.title = month + " " + String(self.year)
                         self.collectionView.reloadData()
-                    })
+                    })*/
                 }else{
                     month = 1
                     yDiff = yDiff + 1
@@ -263,12 +301,12 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     year = calendar.component(.year, from: nextYear)
                     
                     let cal = CalendarHandler()
-                    var user: String = (AccessToken.current?.userId)!
+                    //var user: String = (AccessToken.current?.userId)!
                     if(!shouldLoadMyCalendar){
-                        user = Settings.sharedInstance.selectedFriendId!
+                     //   user = Settings.sharedInstance.selectedFriendId!
                     }
                     
-                    cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
+                  /*  cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
                         
                         guard let events = data, let month = m  else{
                             print(error)
@@ -278,7 +316,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                         self.dates = events
                         self.navigationItem.title = month + " " + String(self.year)
                         self.collectionView.reloadData()
-                    })
+                    })*/
                 }
                 
             }
@@ -348,6 +386,20 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
 
 
 }
+
+
+
+//MARK: Build Calendar Month
+
+func buildMonth(){
+    print("=============STARTING BUILD MONTH============")
+    let date = Date()
+    var components = Calendar.current.dateComponents([.month], from: date)
+    print(components.day)
+}
+
+
+//MARK: Data Sources
 
 extension CalendarViewController: UICollectionViewDataSource{
     

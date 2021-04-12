@@ -12,7 +12,7 @@ class StatusTableViewCell: UITableViewCell {
 
     var collectionView: StatusView
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         collectionView = StatusView(frame: .zero, collectionViewLayout: layout)
@@ -31,9 +31,9 @@ class StatusTableViewCell: UITableViewCell {
         //backgroundColor = .black
         addSubview(collectionView)
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": collectionView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": collectionView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": collectionView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": collectionView]))
         
         
         

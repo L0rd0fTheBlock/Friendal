@@ -14,7 +14,15 @@ class TextTableViewCell: UITableViewCell {
     let value = UILabel(frame: .zero)
     let chevron = UILabel(frame: .zero)
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        value.frame = CGRect(x: frame.width - 30, y: 0, width: 30, height: frame.height)
+        chevron.frame = CGRect(x: frame.width - 10, y: 0, width: 10, height: frame.height)
+        addSubview(title)
+        addSubview(value)
+    }
+    
+   /* override init?(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         value.frame = CGRect(x: frame.width - 30, y: 0, width: 20, height: frame.height)
         chevron.frame = CGRect(x: frame.width - 10, y: 0, width: 10, height: frame.height)
@@ -23,7 +31,7 @@ class TextTableViewCell: UITableViewCell {
         
         
         
-    }
+    }*/
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

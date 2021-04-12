@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import FacebookCore
+//import FacebookCore
 import Firebase
 
 class CalendarHandler{
@@ -327,7 +327,7 @@ class CalendarHandler{
         
         postString += "&allday=" + String(describing: event.getAllDayInt())
         
-        postString += "&id=" + (AccessToken.current?.userId)!
+//        postString += "&id=" + (AccessToken.current?.userId)!
         print(postString)
         request.httpBody = postString.data(using: String.Encoding.utf8)
         
@@ -368,7 +368,7 @@ class CalendarHandler{
         
         postString += "&allday=" + String(describing: event.getAllDayInt())
         
-        postString += "&uid=" + (AccessToken.current?.userId)!
+//        postString += "&uid=" + (AccessToken.current?.userId)!
         
         postString += "&id=" + event.id
         
@@ -398,7 +398,7 @@ class CalendarHandler{
         
         postString += "&id=" + user
         
-        postString += "&sender=" + (AccessToken.current?.userId)!
+//        postString += "&sender=" + (AccessToken.current?.userId)!
         
         postString += "&senderName=" + name
         
@@ -721,7 +721,7 @@ class CalendarHandler{
                             let jdata = json as! Dictionary<String, String>
                             
                             Settings.sharedInstance.id = Int(jdata["id"]!)
-                            Settings.sharedInstance.uid = jdata["uid"]!
+//                            Settings.sharedInstance.uid = jdata["uid"]!
                             Settings.sharedInstance.dateFormat = Int(jdata["date_format"]!)!
                             Settings.sharedInstance.privacy = Int(jdata["default_privacy"]!)!
                             
@@ -747,11 +747,11 @@ class CalendarHandler{
             
             request.httpMethod = "POST"
             
-            var postString:String
+            var postString:String = ""
             
-            postString  = "uid=" + settings.uid
-            postString += "&format=" + String(describing: settings.dateFormat)
-            postString += "&privacy=" + String(describing: settings.privacy)
+//            postString  = "uid=" + settings.uid
+         //   postString += "&format=" + String(describing: settings.dateFormat)
+            //postString += "&privacy=" + String(describing: settings.privacy)//
             
             print(postString)
             request.httpBody = postString.data(using: String.Encoding.utf8)
@@ -779,7 +779,7 @@ class CalendarHandler{
         
         postString = "id=" + event
         postString += "&message=" + message
-        postString += "&poster=" + (AccessToken.current?.userId)!
+//        postString += "&poster=" + (AccessToken.current?.userId)!
         postString += "&eventTitle=" + title
         postString += "&posterName=" + senderName
         request.httpBody = postString.data(using: String.Encoding.utf8)
@@ -806,10 +806,10 @@ class CalendarHandler{
         let request = NSMutableURLRequest(url: url!)
         request.httpMethod = "POST"
         
-        var postString:String
-        postString = "token=" + Messaging.messaging().fcmToken!
+        var postString:String = ""
+//        postString = "token=" + Messaging.messaging().fcmToken!
         
-        postString += "&sender=" + (AccessToken.current?.userId)!
+      //  postString += "&sender=" + (AccessToken.current?.userId)!
         
         postString += "&device=" + UIDevice.current.model
         
@@ -829,10 +829,10 @@ class CalendarHandler{
     func doGraph(request: String, params: String, completion: @escaping (Dictionary<String, Any>?, NSError?) ->()){
         DispatchQueue.global(qos: .userInteractive).async {
             
-            var graph = GraphRequest.init(graphPath: request)
-            graph.parameters = ["fields": params]
+          //  var graph = GraphRequest.init(graphPath: request)
+    //        graph.parameters = ["fields": params]
           //  graph.parameters = nil
-            graph.start({ (response, data) in
+     /*       graph.start({ (response, data) in
                 
                 switch data {
                     
@@ -848,7 +848,7 @@ class CalendarHandler{
                     }
                 }//end switch
                 
-            })//end request
+            })//end request*/
         }//end async
     }//end doGraph
     

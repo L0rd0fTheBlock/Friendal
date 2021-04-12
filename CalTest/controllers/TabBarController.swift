@@ -13,7 +13,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        hideKeyboardWhenTappedAround()
+      //  hideKeyboardWhenTappedAround()
         
         tabBar.barTintColor = UIColor(rgb: 0x01B30A)
         //tabBar.tintColor = UIColor.orange

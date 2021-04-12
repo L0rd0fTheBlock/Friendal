@@ -21,7 +21,7 @@ class SettingsToggleCell: UITableViewCell {
         
     }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+  /*  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         print(toggle.frame.width)
@@ -37,7 +37,7 @@ class SettingsToggleCell: UITableViewCell {
         toggle.setOn(Settings.sharedInstance.getPrivacy(), animated: true)
         addSubview(toggle)
         addSubview(title)
-    }
+    }*/
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

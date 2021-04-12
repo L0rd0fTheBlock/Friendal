@@ -19,7 +19,7 @@ class WebViewTableViewCell: UITableViewCell {
         // Initialization code
     }
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         btn.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)

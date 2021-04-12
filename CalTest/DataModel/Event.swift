@@ -26,6 +26,10 @@ class Event{
     var isUserInvited: Bool = false
     var isAllDay: Bool = true
     
+    init(){
+        id = "0"
+    }
+    
     init(_ id: String, title: String, date: String, month: String, year: String, start: String, end: String, count: String, creator: String, privacy: String, allDay: String) {
         self.id = id
         self.title = title
@@ -40,9 +44,9 @@ class Event{
         self.count = count
         
         setPrivacy(Int(privacy)!)
-        setAllDay(Int(allDay)!)
+       // setAllDay(Int(allDay)!)
         
-        isInvitee()
+       // isInvitee()
         
     }
     
@@ -59,34 +63,36 @@ class Event{
     }
     
     
-    
+   
     func isInvitee(){
         let calHandler = CalendarHandler()
-        calHandler.isInvitee(Settings.sharedInstance.uid, forEvent: id, completion: {(invitee) in
+     //   calHandler.isInvitee(Settings.sharedInstance.uid, forEvent: id, completion: {(invitee) in
             //print(invitee)
-            self.isUserInvited = invitee
-        })
+          //  self.isUserInvited = true //TODO: re-implement this
+       // })
     }
     
     func isVisible() -> Bool{
-        if(isPrivate){
-            if(isUserInvited){
-                return true
-            }else{
-                return false
-            }
-        }else{
-            return true
-        }
+//        if(isPrivate){
+//            if(isUserInvited){
+//                return true
+//            }else{
+//                return false
+//            }
+//        }else{
+//            return true
+//        }
+        return false
     }
     
     func isHidden() -> Int{
         if(isPrivate){
-            if(creator == Settings.sharedInstance.uid){
+          /*  if(creator == Settings.sharedInstance.uid){
                 return 0
             }else{
                 return 1
-            }
+            }*/
+            return 1
         }else{
             return 0
         }
@@ -141,7 +147,6 @@ class Event{
         return r!
     }
     
-    init(){
-        id = "0"
-    }
+    
+ 
 }

@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import FacebookCore
-import Crashlytics
+//import FacebookCore
+//import Crashlytics
 
 class EventViewController: UITableViewController {
 
@@ -17,16 +17,16 @@ class EventViewController: UITableViewController {
     var today: DayViewController? = nil
     var isEdit:Bool = false
     var isMyCalendar = true
-    let alert: UIAlertController = UIAlertController(title: "Delete", message: "Are you sure? This cannot be undone.", preferredStyle: UIAlertControllerStyle.alert)
-    let warning: UIAlertController = UIAlertController(title: "Invalid end time", message: "The end time must not be the same or before the start time.", preferredStyle: UIAlertControllerStyle.alert)
+    let alert: UIAlertController = UIAlertController(title: "Delete", message: "Are you sure? This cannot be undone.", preferredStyle: UIAlertController.Style.alert)
+    let warning: UIAlertController = UIAlertController(title: "Invalid end time", message: "The end time must not be the same or before the start time.", preferredStyle: UIAlertController.Style.alert)
     
-    override func viewDidLoad() {
+   /* override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+      //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIResponder.keyboardWillShowNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+       // NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIResponder.keyboardWillHideNotification, object: nil)
         
         if(isMyCalendar){
             let delete = UIButton()
@@ -37,7 +37,7 @@ class EventViewController: UITableViewController {
             delete.setTitleColor(.red, for: .normal)
             delete.tintColor = .white
             
-            delete.addTarget(self, action: #selector(didDelete), for: .touchUpInside)
+         //   delete.addTarget(self, action: #selector(didDelete), for: .touchUpInside)
             
             delete.frame = CGRect(x: 0, y: view.frame.height - 100/*-125*/, width: view.frame.width, height: 50)
             view.addSubview(delete)
@@ -48,25 +48,25 @@ class EventViewController: UITableViewController {
         
         tableView.allowsSelection = true
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didBeginEditing))
+       // self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didBeginEditing))
         registerCells()
         self.tabBarController?.tabBar.isHidden = true
         
         alert.addAction(UIAlertAction(title: "I'm Sure", style: .default, handler: { (action: UIAlertAction!) in
-            AppEventsLogger.log("Deleted Calendar Event")
+         //   AppEventsLogger.log("Deleted Calendar Event")
             let handler = CalendarHandler()
-            handler.cancelEvent(event: self.event!.id, forUser: (AccessToken.current?.userId)!, completion: {(response) in
+            //handler.cancelEvent(event: self.event!.id, forUser: (AccessToken.current?.userId)!, completion: {(response) in
                 
-                if(response){
+                /*if(response){
                     self.today?.today?.cancelEvent(self.event!.id)
                     self.navigationController?.popViewController(animated: true)
                 }else{
                     self.alert.message = "Something went wrong. Ensure you are connected to the internet and try again."
                     self.present(self.alert, animated: true, completion: nil)
-                }
+                }*/
                 
             })
-        }))
+    }))
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
         }))
@@ -450,5 +450,5 @@ extension UIViewController {
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
-    }
+    }*/
 }

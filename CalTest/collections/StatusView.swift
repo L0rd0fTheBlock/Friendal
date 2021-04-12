@@ -89,7 +89,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
             print("creating newStatus")
             let cell = dequeueReusableCell(withReuseIdentifier: "NewStatusCell", for: indexPath) as! NewStatusViewCell
             
-            cell.event = self.event
+           // cell.event = self.event
             
             return cell
         }else{
@@ -102,8 +102,8 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
             if(statuses[indexPath.row - 1].isAd!){
                 print(indexPath.row, ": Is Ad")
                 let cell = dequeueReusableCell(withReuseIdentifier: "AdvertStatusCell", for: indexPath) as! AdMobCollectionViewCell
-                cell.rootView = rootView
-                cell.loadBannerView()
+                //cell.rootView = rootView
+               // cell.loadBannerView()
                 return cell
             }else{
                 print(indexPath.row, ": Is Not Ad")

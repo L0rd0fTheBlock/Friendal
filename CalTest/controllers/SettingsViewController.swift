@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FacebookLogin
+//import FacebookLogin
 
 class SettingsViewController: UITableViewController {
     var me:Person?
@@ -108,13 +108,13 @@ class SettingsViewController: UITableViewController {
                 return cell
             case 2:
                let cell = tableView.dequeueReusableCell(withIdentifier: "option", for: indexPath)
-                let loginButton = LoginButton(readPermissions: [ .publicProfile, .userFriends ])
+/*                let loginButton = LoginButton(readPermissions: [ .publicProfile, .userFriends ])
 
                 loginButton.delegate = self
                 let width = loginButton.frame.width / 2
                 let x = (cell.frame.width / 2) - width
                 loginButton.frame = CGRect(origin: CGPoint(x: x, y: 10), size: loginButton.bounds.size)
-                cell.addSubview(loginButton)
+                cell.addSubview(loginButton)*/
                 
                 return cell
             default:
@@ -146,7 +146,7 @@ class SettingsViewController: UITableViewController {
 
 }
 
-extension SettingsViewController: LoginButtonDelegate{
+/*extension SettingsViewController: LoginButtonDelegate{
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         print("well... this is akward... it appears you have found a bug in me.")
     }
@@ -156,4 +156,4 @@ extension SettingsViewController: LoginButtonDelegate{
     }
     
     
-}
+}*/

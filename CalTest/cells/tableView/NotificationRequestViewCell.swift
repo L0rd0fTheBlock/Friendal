@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FacebookCore
+//import FacebookCore
 
 class NotificationRequestViewCell: UITableViewCell {
 
@@ -24,7 +24,7 @@ class NotificationRequestViewCell: UITableViewCell {
     }
     
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    /*override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         title.frame = CGRect(x: 70, y: 20, width: frame.width-75, height: 120)
         
@@ -78,7 +78,7 @@ class NotificationRequestViewCell: UITableViewCell {
         addSubview(accept)
         addSubview(decline)
         
-    }
+    }*/
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -92,7 +92,7 @@ class NotificationRequestViewCell: UITableViewCell {
     
     @objc func didAccept(){
         print("Accepted")
-        AppEventsLogger.log("Accepted Calendar Event with Friend")
+       // AppEventsLogger.log("Accepted Calendar Event with Friend")
         let calHandler = CalendarHandler()
         
         calHandler.acceptRequest(id) {
@@ -103,7 +103,7 @@ class NotificationRequestViewCell: UITableViewCell {
     
     @objc func didDecline(){
         print("Declined")
-        AppEventsLogger.log("Declined Calendar Event with Friend")
+       // AppEventsLogger.log("Declined Calendar Event with Friend")
         let calHandler = CalendarHandler()
         
         calHandler.declineRequest(id) {

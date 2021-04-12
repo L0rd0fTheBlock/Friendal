@@ -8,8 +8,8 @@
 
 import UIKit
 //import FBNotifications
-import FacebookCore
-import Crashlytics
+//import FacebookCore
+//import Crashlytics
 
 class NewRequestVC: NewEventVC {
 
@@ -33,7 +33,7 @@ class NewRequestVC: NewEventVC {
         let handler = CalendarHandler()
         var event = Event()
         
-        Crashlytics.sharedInstance().setBoolValue(isAllDay, forKey: "isAllDay")
+//        Crashlytics.sharedInstance().setBoolValue(isAllDay, forKey: "isAllDay")
         
         if(isAllDay){
             event = getAllDayEvent()

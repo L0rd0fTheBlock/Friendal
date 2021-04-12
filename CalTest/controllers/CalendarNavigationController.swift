@@ -15,7 +15,7 @@ class CalendarNavigationController: UINavigationController {
         navigationBar.barTintColor = UIColor(rgb: 0x01B30A)
         navigationBar.tintColor = .white
         
-        navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         // Do any additional setup after loading the view.
     }
 

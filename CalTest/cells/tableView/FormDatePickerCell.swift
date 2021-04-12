@@ -23,7 +23,7 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
         // Initialization code
     }
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    /*override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         desc.frame = CGRect(x: 10, y: 10, width: self.frame.width/3, height: self.frame.height)
@@ -62,7 +62,7 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
         datePicker.date = startDate
         textField.inputView = datePicker
         datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
-    }
+    }*/
     
     @objc func pickerChanged(sender: UIDatePicker){
         

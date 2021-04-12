@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FacebookCore
+//import FacebookCore
 class InviteesTableViewController: UITableViewController {
 
     var event:Event? = nil
@@ -40,11 +40,11 @@ class InviteesTableViewController: UITableViewController {
         getNotGoing()
         getInvited()
         if(!(event?.canInvite)!){
-            if(event?.creator == AccessToken.current?.userId){
+            /*if(event?.creator == AccessToken.current?.userId){
                 let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(beginInvites))
                 
                 navigationItem.setRightBarButton(add, animated: true)
-            }
+            }*/
         }else{
             let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(beginInvites))
             
@@ -60,7 +60,7 @@ class InviteesTableViewController: UITableViewController {
         calHandler.getGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
            
             print("======GOING======")
-            print(invitees)
+            print(invitees as Any)
             guard let invite = invitees else{return}
             for invitee in invite{
                 
@@ -233,9 +233,9 @@ class InviteesTableViewController: UITableViewController {
         cell.addSubview(cell.name)
         cell.addSubview(cell.pic)
         
-        if(cell.uid == AccessToken.current?.userId){
+       /* if(cell.uid == AccessToken.current?.userId){
             cell.name.text = cell.name.text! + " (You)"
-        }
+        }*/
         
         return cell
     }
@@ -255,9 +255,9 @@ class InviteesTableViewController: UITableViewController {
         cell.addSubview(cell.name)
         cell.addSubview(cell.pic)
         
-        if(cell.uid == AccessToken.current?.userId){
+        /*if(cell.uid == AccessToken.current?.userId){
             cell.name.text = cell.name.text! + " (You)"
-        }
+        }*/
         
         return cell
     }
@@ -275,9 +275,9 @@ class InviteesTableViewController: UITableViewController {
         cell.addSubview(cell.name)
         cell.addSubview(cell.pic)
         
-        if(cell.uid == AccessToken.current?.userId){
+       /* if(cell.uid == AccessToken.current?.userId){
             cell.name.text = cell.name.text! + " (You)"
-        }
+        }*/
         
         return cell
     }

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FacebookCore
+//import FacebookCore
 
 class FriendsListViewController: UITableViewController {
 
@@ -31,7 +31,7 @@ class FriendsListViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         
-        if AccessToken.current != nil {
+       /* if AccessToken.current != nil {
             // User is logged in, use 'accessToken' here.
             doLoad()
         }else{
@@ -42,7 +42,7 @@ class FriendsListViewController: UITableViewController {
             self.present(loginVC, animated: true, completion: ({() in
                 
             }))
-        }
+        }*/
     }
     
     func doLoad(){
@@ -70,7 +70,7 @@ class FriendsListViewController: UITableViewController {
                 return
                 
             }
-            
+            if(friends.count > 0){
             self.errorLabel.isHidden = true
             //if(data[0] != nil){
             self.friends = self.populateFriends(data: friends)
@@ -82,7 +82,11 @@ class FriendsListViewController: UITableViewController {
             
             self.tableView.reloadData()
             //}
-            
+            }else{
+                self.errorLabel.text = "None of your friends have installed Friendal yet"
+                self.errorLabel.isHidden = false
+                self.tableView.reloadData()
+            }
         })
         
     }

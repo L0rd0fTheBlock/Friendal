@@ -8,15 +8,15 @@
 
 import UIKit
 //import FBNotifications
-import FacebookCore
-import Crashlytics
+//import FacebookCore
+//import Crashlytics
 
 class NewEventVC: UITableViewController {
     var calendarVC:CalendarViewController?
     var dayVC:DayViewController?
     var isAllDay: Bool = false
     var cells = 5
-    let alert: UIAlertController = UIAlertController(title: "Invalid Duration", message: "An event cannot end at the same time (or earlier) than the start time.", preferredStyle: UIAlertControllerStyle.alert)
+    let alert: UIAlertController = UIAlertController(title: "Invalid Duration", message: "An event cannot end at the same time (or earlier) than the start time.", preferredStyle: UIAlertController.Style.alert)
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,7 +62,7 @@ class NewEventVC: UITableViewController {
         let handler = CalendarHandler()
         var event = Event()
         
-        Crashlytics.sharedInstance().setBoolValue(isAllDay, forKey: "isAllDay")
+  //      Crashlytics.sharedInstance().setBoolValue(isAllDay, forKey: "isAllDay")
         
         if(isAllDay){
             event = getAllDayEvent()
@@ -190,7 +190,7 @@ class NewEventVC: UITableViewController {
         let cell1 = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! FormDatePickerCell
         
         let dat = cell1.shortDate
-        let date = dat?.split(separator: "/") as Array<Substring>!
+        let date = dat?.split(separator: "/") as Array<Substring>?
         event.date = String(describing: date![0])
         event.month = String(describing: date![1])
         let year = date![2].split(separator: ",")
@@ -221,7 +221,7 @@ class NewEventVC: UITableViewController {
         let cell1 = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! FormDatePickerCell
         
         let dat = cell1.shortDate
-        let date = dat?.split(separator: "/") as Array<Substring>!
+        let date = dat?.split(separator: "/") as Array<Substring>?
         event.date = String(describing: date![0])
         event.month = String(describing: date![1])
         let year = date![2].split(separator: ",")

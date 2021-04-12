@@ -18,11 +18,11 @@ class FormTextCell: UITableViewCell {
         // Initialization code
     }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        //desc.frame = CGRect(x: 10, y: 10, width: self.frame.width/3-20, height: self.frame.height)
+        desc.frame = CGRect(x: 10, y: 10, width: self.frame.width/3-20, height: self.frame.height)
         value.frame = CGRect(x: 20, y: 10, width: self.frame.width, height: self.frame.height)
-       // self.addSubview(desc)
+        self.addSubview(desc)
         self.addSubview(value)
     }
     

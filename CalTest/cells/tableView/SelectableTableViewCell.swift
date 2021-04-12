@@ -10,8 +10,8 @@ import UIKit
 
 class SelectableTableViewCell: UITableViewCell {
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        let st = UITableViewCellStyle.value1
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        let st = UITableViewCell.CellStyle.value1
         super.init(style: st, reuseIdentifier: reuseIdentifier)
     }
     

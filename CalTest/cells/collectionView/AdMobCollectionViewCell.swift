@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import GoogleMobileAds
+//import GoogleMobileAds
 
 class AdMobCollectionViewCell: UICollectionViewCell {
-    var rootView: EventViewController? = nil
+   /* var rootView: EventViewController? = nil
     
     var bannerView: GADBannerView!
     
@@ -43,6 +43,6 @@ class AdMobCollectionViewCell: UICollectionViewCell {
         request.testDevices = [ "097f2bd01e3ae4cb682ef8477dcb32a7" ]
         bannerView.load(request)
         addBannerViewToView(bannerView)
-    }
+    }*/
     
 }
