@@ -57,7 +57,7 @@ class InviteesTableViewController: UITableViewController {
         
         let calHandler = CalendarHandler()
         
-        calHandler.getGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
+      /*  calHandler.getGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
            
             print("======GOING======")
             print(invitees as Any)
@@ -84,14 +84,14 @@ class InviteesTableViewController: UITableViewController {
                 
             }//end invitees loop
             self.tableView.reloadData()
-        })//end getGoing
+        })//end getGoing*/
     }//end function
     
     func getNotGoing(){
         
         let calHandler = CalendarHandler()
         
-        calHandler.getNotGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
+      /*  calHandler.getNotGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
             
             print("======NOT GOING======")
             print(invitees)
@@ -120,14 +120,14 @@ class InviteesTableViewController: UITableViewController {
                 
             }//end invitees loop
             self.tableView.reloadData()
-        })//end getNotGoing
+        })//end getNotGoing*/
     }//end function
     
     func getInvited(){
         
         let calHandler = CalendarHandler()
         
-        calHandler.getInvited(forEvent: (event?.id)!, completion: {(invitees, error) in
+       /* calHandler.getInvited(forEvent: (event?.id)!, completion: {(invitees, error) in
             print("======Invited======")
             print(invitees)
             
@@ -155,7 +155,7 @@ class InviteesTableViewController: UITableViewController {
                 
             }//end invitees loop
             self.tableView.reloadData()
-        })//end getInvited
+        })//end getInvited*/
     }//end function
     
     override func didReceiveMemoryWarning() {

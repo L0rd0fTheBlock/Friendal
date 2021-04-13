@@ -47,20 +47,20 @@ class NewRequestVC: NewEventVC {
                 present(alert, animated: true, completion: nil)
             }else{
                 print("saving....")
-                handler.saveNewEvent(event: event, completion:{(data) in
-                    print(data)
-                    print(Settings.sharedInstance.selectedFriendId)
-                    handler.saveNewRequest(event: data, user: (Settings.sharedInstance.selectedFriendId)!, name: "null", isNotMe: false)
-                })
+              //  handler.saveNewEvent(event: event, completion:{(data) in
+                   // print(data)
+                  //  print(Settings.sharedInstance.selectedFriendId)
+                  //  handler.saveNewRequest(event: data, user: (Settings.sharedInstance.selectedFriendId)!, name: "null", isNotMe: false)
+               // })
                 dismiss(animated: true, completion: nil)
             }
         }else{
             print("saving....")
-            handler.saveNewEvent(event: event, completion:{(data) in
-                print(data)
-                print(Settings.sharedInstance.selectedFriendId)
-                handler.saveNewRequest(event: data, user: (Settings.sharedInstance.selectedFriendId)!, name: "null", isNotMe: false)
-            })
+           // handler.saveNewEvent(event: event, completion:{(data) in
+               // print(data)
+               // print(Settings.sharedInstance.selectedFriendId)
+               // handler.saveNewRequest(event: data, user: (Settings.sharedInstance.selectedFriendId)!, name: "null", isNotMe: false)
+           // })
             dismiss(animated: true, completion: nil)
         }
     }

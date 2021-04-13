@@ -9,14 +9,14 @@
 import Foundation
 class CalendarDay{
     var events:[Event]
-    var date: String
-    var month: String
-    var year: String
+    var date: Int
+    var month: Int
+    var year: Int
     let hasEvents: Bool
     
     
     
-    init(onDay: String, ofMonth: String = "NONE", ofYear: String = "NONE", hasEvent: Bool) {
+    init(onDay: Int, ofMonth: Int = 0, ofYear: Int = 0, hasEvent: Bool) {
         date = onDay
         month = ofMonth
         year = ofYear
@@ -24,8 +24,16 @@ class CalendarDay{
         events = [Event]()
     }
     
+    init() {
+        date = 0
+        month = 0
+        year = 0
+        hasEvents = false
+        events = [Event]()
+    }
+    
     func getDate() -> String{
-        return date
+        return String(date)
     }
     
     func doesHaveEvents() -> Bool{
@@ -39,10 +47,10 @@ class CalendarDay{
     }
     
     func update(completion: @escaping (NSError?) ->()){
-        let ch = CalendarHandler()
-        ch.getCalendarDay(self, forUser: Settings.sharedInstance.me.uid, onDay: date, ofMonth: String(monthAsInt()), forYear: year, completion: { (error) in
+       // let ch = CalendarHandler()
+       /* ch.getCalendarDay(self, forUser: Settings.sharedInstance.me.uid, onDay: date, ofMonth: String(monthAsInt()), forYear: year, completion: { (error) in
             completion(error)
-        })
+        })*/
     }
     
     func cancelEvent(_ id: String){
@@ -57,46 +65,46 @@ class CalendarDay{
         
     }
     
-    func monthAsInt() ->Int{
+    func monthAsString() ->String{
         
         switch(month){
-        case "Jan":
-            return 1
-        case "Feb":
-            return 2
-        case "Mar":
-            return 3
-        case "Apr":
-            return 4
-        case "May":
-            return 5
-        case "Jun":
-            return 6
-        case "Jul":
-            return 7
-        case "Aug":
-            return 8
-        case "Sep":
-            return 9
-        case "Oct":
-            return 10
-        case "Nov":
-            return 11
+        case 1:
+            return "Jan"
+        case 2:
+            return "Feb"
+        case 3:
+            return "Mar"
+        case 4:
+            return "Apr"
+        case 5:
+            return "May"
+        case 6:
+            return "Jun"
+        case 7:
+            return "Jul"
+        case 8:
+            return "Aug"
+        case 9:
+            return "Sep"
+        case 10:
+            return "Oct"
+        case 11:
+            return "Nov"
         default:
-            return 12
+            return "Dec"
         }
     }
     
     func getFullDate() -> String{
-        return String(date) + " " + month
+        return String(date) + " " + monthAsString()
     }
     
     func getDateAsDate() -> Date{
         
         var dateComponents = DateComponents()
         
-        dateComponents.month = Int(monthAsInt())
-        dateComponents.day = Int(date)!
+        dateComponents.month = month
+        dateComponents.day = date
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy"

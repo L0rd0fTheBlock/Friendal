@@ -42,10 +42,10 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
        
         let calHandler = CalendarHandler()
         
-        calHandler.getEventStatus((event?.id)!) { (statuses, error) in
+       // calHandler.getEventStatus((event?.id)!) { (statuses, error) in
             //do status handling
 
-            guard var status = statuses else{
+         /*   guard var status = statuses else{
                
                 return
             }
@@ -71,7 +71,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
             
             
             self.reloadData()
-        }
+        }*/
     }
     
     

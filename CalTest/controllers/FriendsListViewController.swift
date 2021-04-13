@@ -59,7 +59,7 @@ class FriendsListViewController: UITableViewController {
         
         let calHandler = CalendarHandler()
         
-        calHandler.doGraph(request: "me/friends", params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
+      /*  calHandler.doGraph(request: "me/friends", params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
             
             guard let friends = data else{
                 guard let code = error?.code else{return}
@@ -87,7 +87,7 @@ class FriendsListViewController: UITableViewController {
                 self.errorLabel.isHidden = false
                 self.tableView.reloadData()
             }
-        })
+        })*/
         
     }
     

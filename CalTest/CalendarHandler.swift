@@ -11,8 +11,62 @@ import Foundation
 import Firebase
 
 class CalendarHandler{
+    var month = [CalendarDay]()
     
-    let BASE_URL = "http://friendal.co.uk"
+    init(){
+        print("Calendar Handler Initialised")
+    }
+    
+    
+    func getMonth(forMonth: Int, ofYear: Int, withUser: String) ->[CalendarDay]{
+        var dateComponents = DateComponents()
+        dateComponents.year = ofYear
+        dateComponents.month = forMonth
+        dateComponents.day = 1
+        
+        let userCalendar = Calendar(identifier: .gregorian) // since the components above (like year 1980) are for Gregorian
+        let date = userCalendar.date(from: dateComponents)
+        var weekday = userCalendar.component(.weekday, from: date!) as Int
+        
+        
+        var length = 0
+        let thisMonth = userCalendar.component(.month, from: date!)
+        var tDay = 1
+
+        if(thisMonth % 2 == 0){
+            length = 30
+        }else{
+            length = 31
+        }
+
+        weekday -= 1//shift day of the week backwards - sunday becomes 0, Monday 1 etc
+        //REMEMBER: Sunday is day 1
+        if(weekday>1){
+            while month.count < weekday{
+                month.append(CalendarDay())
+            }
+        }
+
+
+        while tDay<length+1{
+            
+            month.append(CalendarDay(onDay: tDay, ofMonth: dateComponents.month!, ofYear: dateComponents.year!, hasEvent: false))
+            tDay += 1
+        }
+        return month
+        
+    }
+    
+    
+    func getEvents(forDay: Int, ofMonth: Int, fromUser: String)->[Event]{
+        //TODO: Implement Events
+        return [Event()]
+        
+    }
+    
+    
+    
+   /* let BASE_URL = "http://friendal.co.uk"
     //let BASE_URL = "http://192.168.0.67"
     //let BASE_URL = "http://localhost"
     
@@ -939,5 +993,5 @@ class CalendarHandler{
 //        print("=================================")
         
         return stat
-    }
+    }*/
 }//end class

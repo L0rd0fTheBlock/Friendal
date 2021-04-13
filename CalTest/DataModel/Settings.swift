@@ -28,15 +28,15 @@ class Settings{
         
        // calHandler.getSettings(forUser: uid)
         
-        calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
+      //  calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
             
-            guard let person = person else{
+         /*   guard let person = person else{
                 return
             }
             
             self.me = Person(id: person["id"]as! String, first: person["first_name"] as! String, last: person["last_name"] as! String)
             
-        })
+        })*/
         
         
     }
@@ -44,25 +44,26 @@ class Settings{
     func save(){
         
         let calHandler = CalendarHandler()
-        calHandler.setSettings()
+      //  calHandler.setSettings()
         
     }
     
     func getPrivacy() ->Bool{
         
-        if(privacy == 0){
+       /* if(privacy == 0){
             return false
         }else{
             return true
-        }
+        }*/
+        return true
     }
     
     func setPrivacy(_ p: Bool){
         
-        if(p == false){
+      /*  if(p == false){
             privacy = 0
         }else{
             privacy = 1
-        }
+        }*/
     }
 }

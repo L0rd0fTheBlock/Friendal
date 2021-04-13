@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import CalTest
+//@testable import CalTest
 
 class CalTestTests: XCTestCase {
     

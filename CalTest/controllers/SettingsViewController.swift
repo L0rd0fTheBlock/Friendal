@@ -36,16 +36,16 @@ class SettingsViewController: UITableViewController {
         
         let calHandler = CalendarHandler()
         
-        calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
+      //  calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
             
-            guard let person = person else{
+         /*   guard let person = person else{
                 return
             }
             
             self.me = Person(id: person["id"]as! String, first: person["first_name"] as! String, last: person["last_name"] as! String)
             
             self.tableView.reloadData()
-        })
+        })*/
         
     }
 

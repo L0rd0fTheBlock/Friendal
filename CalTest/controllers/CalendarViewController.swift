@@ -12,7 +12,7 @@ import FirebaseAuth
 
 
 class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
-    var dates: Array<CalendarDay> = []
+    var dates = [CalendarDay]()
     let cellId = "day"
     var selectedCell: Int = -1
     let errorLabel = UILabel()
@@ -155,9 +155,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         
         Settings.sharedInstance.load()
         
-        //let cal = CalendarHandler() ---- Deprecated: Use buildMonth() method(?)
-        
-        buildMonth()
+        let cal = CalendarHandler()
+
         
         let date = Date()
         let calendar = Calendar.current
@@ -168,22 +167,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
            // user = Settings.sharedInstance.selectedFriendId!
         }
         
-        /*cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
-            print("completion: GetCalMonth")
-            guard let events = data, let month = m  else{
-                print("Error", error)
-                guard let code = error?.code else{return}
-                self.errorLabel.isHidden = false
-                self.errorLabel.text = (error?.userInfo["message"] as? String)! + " Code: " + String(describing: code)
-                self.collectionView.reloadData()
-                return
-            }
-            self.errorLabel.isHidden = true
-            self.dates = events
-            self.navigationItem.title = month + " " + String(self.year)
-            self.collectionView.reloadData()
-            print("completion: Completed: GetCalMonth")
-        })*/
+        dates = cal.getMonth(forMonth: month, ofYear: year, withUser: "Not Yet")
         setupCalendar()
         collectionView.register(CalendarViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.dataSource = self
@@ -386,17 +370,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
 
 
-}
-
-
-
-//MARK: Build Calendar Month
-
-func buildMonth(){
-    print("=============STARTING BUILD MONTH============")
-    let date = Date()
-    var components = Calendar.current.dateComponents([.month], from: date)
-    print(components.day)
 }
 
 

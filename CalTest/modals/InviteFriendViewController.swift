@@ -34,14 +34,14 @@ class InviteFriendViewController: FriendsListViewController {
         
         let calHandler = CalendarHandler()
         
-        calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
+       /* calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
             
             guard let person = person else{
                 return
             }
             
             self.me = Person(id: person["id"]as! String, first: person["first_name"] as! String, last: person["last_name"] as! String)
-        })
+        })*/
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -105,7 +105,7 @@ class InviteFriendViewController: FriendsListViewController {
        let handler = CalendarHandler()
         
         for id in selected{
-            handler.saveNewRequest(event: (topView?.event?.id)!, user: id, name: (me?.name)!, isNotMe: true)
+           // handler.saveNewRequest(event: (topView?.event?.id)!, user: id, name: (me?.name)!, isNotMe: true)
         }
         dismissView()
     }
