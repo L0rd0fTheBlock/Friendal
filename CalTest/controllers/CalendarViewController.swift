@@ -63,6 +63,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         print("View Will Appear")
+        
+        
         //MARK: Uncomment this line to debug login features
         //do{ try Auth.auth().signOut() }catch{}
         super.viewDidLoad()
@@ -72,7 +74,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                 showLoginScreen()
             }
         }else{
-            print("View Will Appear -> Do Load")
+           // print("View Will Appear -> Do Load")
             doLoad()
         }
         
@@ -155,7 +157,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         
         Settings.sharedInstance.load()
         
-        let cal = CalendarHandler()
+        let cal = CalendarHandler(self)
 
         
         let date = Date()
@@ -167,7 +169,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
            // user = Settings.sharedInstance.selectedFriendId!
         }
         
-        dates = cal.getMonth(forMonth: month, ofYear: year, withUser: "Not Yet")
+        dates = cal.getMonth(forMonth: month, ofYear: year, withUser: Auth.auth().currentUser!.uid)
         setupCalendar()
         collectionView.register(CalendarViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.dataSource = self
@@ -234,7 +236,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     let calendar = Calendar.current
                     year = calendar.component(.year, from: nextYear)
                     
-                    let cal = CalendarHandler()
+                    let cal = CalendarHandler(self)
                    // var user: String = (AccessToken.current?.userId)!
                     if(!shouldLoadMyCalendar){
                      //   user = Settings.sharedInstance.selectedFriendId!
@@ -260,7 +262,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     let calendar = Calendar.current
                     month = calendar.component(.month, from: nextMonth)
                     
-                    let cal = CalendarHandler()
+                    let cal = CalendarHandler(self)
                     //var user: String = (AccessToken.current?.userId)!
                     if(!shouldLoadMyCalendar){
                        // user = Settings.sharedInstance.selectedFriendId!
@@ -285,7 +287,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     let calendar = Calendar.current
                     year = calendar.component(.year, from: nextYear)
                     
-                    let cal = CalendarHandler()
+                    let cal = CalendarHandler(self)
                     //var user: String = (AccessToken.current?.userId)!
                     if(!shouldLoadMyCalendar){
                      //   user = Settings.sharedInstance.selectedFriendId!
@@ -416,9 +418,6 @@ extension CalendarViewController: UICollectionViewDataSource{
             if(cell.date.text == "0"){
                 cell.date.text = " "
             }
-            print("===================")
-            print("today has events: ", thisDay.doesHaveEvents())
-            print(thisDay.events)
             if(thisDay.doesHaveEvents()){
                 print("Setting colour: green")
                 cell.date.layer.backgroundColor = UIColor.green.cgColor

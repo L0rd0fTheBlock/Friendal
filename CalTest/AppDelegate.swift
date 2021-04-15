@@ -14,17 +14,22 @@ import UserNotifications
 import CoreData
 //import GoogleMobileAds
 import Firebase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate /*MessagingDelegate*/ {
 
     var window: UIWindow?
 
-
+    
+    
     internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
        // FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         FirebaseApp.configure()
+        let db = Firestore.firestore()
+        
         Auth.auth().addStateDidChangeListener { (auth, user) in }
        // Messaging.messaging().delegate = self
         

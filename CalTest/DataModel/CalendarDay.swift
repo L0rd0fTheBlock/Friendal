@@ -12,15 +12,15 @@ class CalendarDay{
     var date: Int
     var month: Int
     var year: Int
-    let hasEvents: Bool
+    var hasEvents: Bool
     
     
     
-    init(onDay: Int, ofMonth: Int = 0, ofYear: Int = 0, hasEvent: Bool) {
+    init(onDay: Int, ofMonth: Int = 0, ofYear: Int = 0) {
         date = onDay
         month = ofMonth
         year = ofYear
-        hasEvents = hasEvent
+        hasEvents = false
         events = [Event]()
     }
     
@@ -37,13 +37,18 @@ class CalendarDay{
     }
     
     func doesHaveEvents() -> Bool{
-        return hasEvents
+        if(events.count > 0){
+            return true
+        }else{
+            return false
+        }
     }
     func countEvents() -> Int{
         return events.count
     }
     func addEvent(event: Event){
         events.append(event)
+        hasEvents = true
     }
     
     func update(completion: @escaping (NSError?) ->()){

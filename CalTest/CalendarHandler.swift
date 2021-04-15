@@ -9,16 +9,42 @@
 import Foundation
 //import FacebookCore
 import Firebase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class CalendarHandler{
+    var cal: CalendarViewController
+    var db: Firestore!
     var month = [CalendarDay]()
     
+    init(_ calendar:CalendarViewController){
+        
+       // let settings = FirestoreSettings()
+
+          //      Firestore.firestore().settings = settings
+                // [END setup]
+                cal = calendar
+                db = Firestore.firestore()
+        
+        
+        print("Calendar Handler Initialised")
+    }
     init(){
+        
+       // let settings = FirestoreSettings()
+
+          //      Firestore.firestore().settings = settings
+                // [END setup]
+                cal = CalendarViewController()
+                db = Firestore.firestore()
+        
+        
         print("Calendar Handler Initialised")
     }
     
     
     func getMonth(forMonth: Int, ofYear: Int, withUser: String) ->[CalendarDay]{
+        
         var dateComponents = DateComponents()
         dateComponents.year = ofYear
         dateComponents.month = forMonth
@@ -27,7 +53,6 @@ class CalendarHandler{
         let userCalendar = Calendar(identifier: .gregorian) // since the components above (like year 1980) are for Gregorian
         let date = userCalendar.date(from: dateComponents)
         var weekday = userCalendar.component(.weekday, from: date!) as Int
-        
         
         var length = 0
         let thisMonth = userCalendar.component(.month, from: date!)
@@ -50,7 +75,10 @@ class CalendarHandler{
 
         while tDay<length+1{
             
-            month.append(CalendarDay(onDay: tDay, ofMonth: dateComponents.month!, ofYear: dateComponents.year!, hasEvent: false))
+            let day = CalendarDay(onDay: tDay, ofMonth: dateComponents.month!, ofYear: dateComponents.year!)
+            getEvents(forDay: tDay, ofMonth: forMonth, inYear: ofYear, fromUser: Auth.auth().currentUser!.uid, withTDay: month.count)
+            
+            month.append(day)
             tDay += 1
         }
         return month
@@ -58,11 +86,54 @@ class CalendarHandler{
     }
     
     
-    func getEvents(forDay: Int, ofMonth: Int, fromUser: String)->[Event]{
+    func getEvents(forDay: Int, ofMonth: Int, inYear: Int, fromUser: String, withTDay: Int){
         //TODO: Implement Events
-        return [Event()]
+        print("===================")
+        print("Get Events started for day: " + String(forDay))
+        print("user" + fromUser)
+        db.collection("Event")
+            .whereField("user", isEqualTo: fromUser)
+            .whereField("day", isEqualTo: String(forDay))
+            .whereField("month", isEqualTo: String(ofMonth))
+            .whereField("year", isEqualTo: String(inYear))
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        print(document)
+                        print("\(document.documentID) => \(document.data())")
+                        let event = Event(document: document)
+                        self.cal.dates[withTDay].addEvent(event: event)
+                    }
+                    
+                    self.cal.collectionView.reloadData()
+                }
+        }
         
     }
+    
+    
+    func addEvent(event: Event){
+        print("")
+        print("Running addEvent()")
+        print(event.toArray())
+        var ref: DocumentReference? = nil
+        ref = db.collection("Event").addDocument(data: event.toArray())
+            { err in
+                    if let err = err {
+                        print("Error adding document: \(err)")
+                    } else {
+                        print("Document added with ID: \(ref!.documentID)")
+                    }
+                }
+    }
+    
+    
+    
+    
+    
+    
     
     
     
