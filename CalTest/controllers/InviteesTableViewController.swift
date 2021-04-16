@@ -55,7 +55,7 @@ class InviteesTableViewController: UITableViewController {
     
     func getGoing(){
         
-        let calHandler = CalendarHandler()
+        //let calHandler = CalendarHandler()
         
       /*  calHandler.getGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
            
@@ -89,7 +89,7 @@ class InviteesTableViewController: UITableViewController {
     
     func getNotGoing(){
         
-        let calHandler = CalendarHandler()
+       // let calHandler = CalendarHandler()
         
       /*  calHandler.getNotGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
             
@@ -125,7 +125,7 @@ class InviteesTableViewController: UITableViewController {
     
     func getInvited(){
         
-        let calHandler = CalendarHandler()
+   //     let calHandler = CalendarHandler()
         
        /* calHandler.getInvited(forEvent: (event?.id)!, completion: {(invitees, error) in
             print("======Invited======")

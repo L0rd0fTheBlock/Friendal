@@ -93,7 +93,7 @@ class NotificationRequestViewCell: UITableViewCell {
     @objc func didAccept(){
         print("Accepted")
        // AppEventsLogger.log("Accepted Calendar Event with Friend")
-        let calHandler = CalendarHandler()
+      //  let calHandler = CalendarHandler()
         
        /* calHandler.acceptRequest(id) {
             print("didAccept: Completion handler")
@@ -104,7 +104,7 @@ class NotificationRequestViewCell: UITableViewCell {
     @objc func didDecline(){
         print("Declined")
        // AppEventsLogger.log("Declined Calendar Event with Friend")
-        let calHandler = CalendarHandler()
+     //   let calHandler = CalendarHandler()
         
        /* calHandler.declineRequest(id) {
             self.table?.loadData()

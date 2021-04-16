@@ -57,7 +57,7 @@ class FriendsListViewController: UITableViewController {
         errorLabel.isHidden = false
         tableView.addSubview(errorLabel)
         
-        let calHandler = CalendarHandler()
+        //let calHandler = CalendarHandler()
         
       /*  calHandler.doGraph(request: "me/friends", params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
             

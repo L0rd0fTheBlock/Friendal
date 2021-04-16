@@ -32,7 +32,7 @@ class InviteFriendViewController: FriendsListViewController {
         navigationItem.setRightBarButton(save, animated: true)
         
         
-        let calHandler = CalendarHandler()
+       // let calHandler = CalendarHandler()
         
        /* calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
             
@@ -102,7 +102,7 @@ class InviteFriendViewController: FriendsListViewController {
     @objc
     func sendInvites(){
         
-       let handler = CalendarHandler()
+     //  let handler = CalendarHandler()
         
         for id in selected{
            // handler.saveNewRequest(event: (topView?.event?.id)!, user: id, name: (me?.name)!, isNotMe: true)

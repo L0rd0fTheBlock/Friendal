@@ -30,7 +30,7 @@ class NewRequestVC: NewEventVC {
 
     
     @objc override func didSave(){
-        let handler = CalendarHandler()
+      //  let handler = CalendarHandler()
         var event = Event()
         
 //        Crashlytics.sharedInstance().setBoolValue(isAllDay, forKey: "isAllDay")

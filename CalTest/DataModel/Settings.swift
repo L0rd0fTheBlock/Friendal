@@ -24,7 +24,7 @@ class Settings{
     }
     
     func load(){
-        let calHandler = CalendarHandler()
+       // let calHandler = CalendarHandler()
         
        // calHandler.getSettings(forUser: uid)
         
@@ -43,7 +43,7 @@ class Settings{
     
     func save(){
         
-        let calHandler = CalendarHandler()
+    //    let calHandler = CalendarHandler()
       //  calHandler.setSettings()
         
     }

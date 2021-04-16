@@ -37,7 +37,7 @@ class NotificationViewController: UITableViewController {
         errorLabel.backgroundColor = UIColor.lightGray.withAlphaComponent(CGFloat(0.5))
         tableView.addSubview(errorLabel)
         
-        let cal = CalendarHandler()
+       // let cal = CalendarHandler()
         requests = []
 /*        cal.getRequests(forUser: (AccessToken.current?.userId)!, completion: { (request, error) in
             print("Notification completion handler")

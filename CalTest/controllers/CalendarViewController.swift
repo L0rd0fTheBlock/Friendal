@@ -169,11 +169,33 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
            // user = Settings.sharedInstance.selectedFriendId!
         }
         
-        dates = cal.getMonth(forMonth: month, ofYear: year, withUser: Auth.auth().currentUser!.uid)
+        navigationItem.title = monthAsString(month) + " " + String(self.year)
+        
+        cal.getMonth(forMonth: month, ofYear: year, withUser: Auth.auth().currentUser!.uid, completion: applyMonth(days:))
         setupCalendar()
         collectionView.register(CalendarViewCell.self, forCellWithReuseIdentifier: cellId)
         collectionView.dataSource = self
         collectionView.delegate = self
+    }
+    
+    func applyMonth(days : [CalendarDay]){
+        let cal = CalendarHandler(self)
+        dates = days
+        
+        for day in dates{
+            cal.getEvents(forDay: day.date, ofMonth: day.month, inYear: day.year, fromUser: Auth.auth().currentUser!.uid){(events: [Event]) in
+               // print("Got Events -=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+                //print(events)
+                for event in events{
+                    day.addEvent(event: event)
+                }
+                self.collectionView.reloadData()
+            }
+        }
+        
+        collectionView.reloadData()
+        errorLabel.isHidden = true
+        print("data reloaded")
     }
     
     
@@ -213,21 +235,12 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     let calendar = Calendar.current
                     month = calendar.component(.month, from: nextMonth)
                     //TODO: Handle swipe gestures
-                //    let cal = CalendarHandler()
-                   // var user: String = (AccessToken.current?.userId)!
+                    let cal = CalendarHandler(self)
                     if(!shouldLoadMyCalendar){
                      //   user = Settings.sharedInstance.selectedFriendId!
                     }
-                    
-                  /*  cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
-                        guard let events = data, let month = m  else{
-                            print(error)
-                            return
-                        }
-                        self.dates = events
-                        self.navigationItem.title = month + " " + String(self.year)
-                        self.collectionView.reloadData()
-                    })*/
+                    navigationItem.title = monthAsString(month) + " " + String(self.year)
+                    cal.getMonth(forMonth: month, ofYear: year, withUser: Auth.auth().currentUser!.uid, completion: applyMonth(days:))
                 }else{
                     month = 12
                     yDiff = yDiff - 1
@@ -237,22 +250,12 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     year = calendar.component(.year, from: nextYear)
                     
                     let cal = CalendarHandler(self)
-                   // var user: String = (AccessToken.current?.userId)!
+                   
                     if(!shouldLoadMyCalendar){
                      //   user = Settings.sharedInstance.selectedFriendId!
                     }
-                    
-                    /*cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
-                        
-                        guard let events = data, let month = m  else{
-                            print(error)
-                            return
-                        }
-                        
-                        self.dates = events
-                        self.navigationItem.title = month + " " + String(self.year)
-                        self.collectionView.reloadData()
-                    })*/
+                    navigationItem.title = monthAsString(month) + " " + String(self.year)
+                    cal.getMonth(forMonth: month, ofYear: year, withUser: Auth.auth().currentUser!.uid, completion: applyMonth(days:))
                 }
                 
             }else if(swipe.direction == .left){
@@ -267,18 +270,8 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                     if(!shouldLoadMyCalendar){
                        // user = Settings.sharedInstance.selectedFriendId!
                     }
-                    
-                    /*cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
-                        
-                        guard let events = data, let month = m  else{
-                            print("error", error)
-                            return
-                        }
-                        
-                        self.dates = events
-                        self.navigationItem.title = month + " " + String(self.year)
-                        self.collectionView.reloadData()
-                    })*/
+                    navigationItem.title = monthAsString(month) + " " + String(self.year)
+                    cal.getMonth(forMonth: month, ofYear: year, withUser: Auth.auth().currentUser!.uid, completion: applyMonth(days:))
                 }else{
                     month = 1
                     yDiff = yDiff + 1
@@ -293,23 +286,44 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                      //   user = Settings.sharedInstance.selectedFriendId!
                     }
                     
-                  /*  cal.getCalMonth(forMonth: String(month), ofYear: String(year), withUser: user, completion: { (data, m, error) in
-                        
-                        guard let events = data, let month = m  else{
-                            print(error)
-                            return
-                        }
-                        
-                        self.dates = events
-                        self.navigationItem.title = month + " " + String(self.year)
-                        self.collectionView.reloadData()
-                    })*/
+                    navigationItem.title = monthAsString(month) + " " + String(self.year)
+                    cal.getMonth(forMonth: month, ofYear: year, withUser: Auth.auth().currentUser!.uid, completion: applyMonth(days:))
                 }
                 
             }
         }
+    }
+    
+    func monthAsString(_ month:Int) -> String {
         
+        switch month {
+            
+        case 1:
+            return "Jan"
+        case 2:
+            return "Feb"
+        case 3:
+            return "Mar"
+        case 4:
+            return "Apr"
+        case 5:
+            return "May"
+        case 6:
+            return "Jun"
+        case 7:
+            return "Jul"
+        case 8:
+            return "Aug"
+        case 9:
+            return "Sep"
+        case 10:
+            return "Oct"
+        case 11:
+            return "Nov"
+        default:
+            return "Dec"
         
+        }
     }
     
     func setupTutorial(){

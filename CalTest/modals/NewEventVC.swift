@@ -76,12 +76,12 @@ class NewEventVC: UITableViewController {
                 present(alert, animated: true, completion: nil)
             }else{
                 print("saving....")
-               // handler.saveNewEvent(event: event, completion: {(id) in })
+                handler.addEvent(event: event)
                 dismiss(animated: true, completion: nil)
             }
         }else{
             print("saving....")
-           // handler.saveNewEvent(event: event, completion: {(id) in })
+            handler.addEvent(event: event)
             dismiss(animated: true, completion: nil)
         }
         

@@ -34,7 +34,7 @@ class SettingsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let calHandler = CalendarHandler()
+      //  let calHandler = CalendarHandler()
         
       //  calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
             

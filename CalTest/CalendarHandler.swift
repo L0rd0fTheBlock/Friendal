@@ -13,38 +13,26 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class CalendarHandler{
-    var cal: CalendarViewController
+    var cal: CalendarViewController? = nil
     var db: Firestore!
     var month = [CalendarDay]()
     
     init(_ calendar:CalendarViewController){
-        
-       // let settings = FirestoreSettings()
 
-          //      Firestore.firestore().settings = settings
-                // [END setup]
-                cal = calendar
-                db = Firestore.firestore()
-        
+        cal = calendar
+        db = Firestore.firestore()
         
         print("Calendar Handler Initialised")
     }
-    init(){
-        
-       // let settings = FirestoreSettings()
-
-          //      Firestore.firestore().settings = settings
-                // [END setup]
-                cal = CalendarViewController()
-                db = Firestore.firestore()
-        
+   init(){
+        db = Firestore.firestore()
         
         print("Calendar Handler Initialised")
     }
     
     
-    func getMonth(forMonth: Int, ofYear: Int, withUser: String) ->[CalendarDay]{
-        
+    func getMonth(forMonth: Int, ofYear: Int, withUser: String, completion:([CalendarDay]) -> Void){
+        print("CalendarHandler GetMonth")
         var dateComponents = DateComponents()
         dateComponents.year = ofYear
         dateComponents.month = forMonth
@@ -56,12 +44,22 @@ class CalendarHandler{
         
         var length = 0
         let thisMonth = userCalendar.component(.month, from: date!)
+        let thisYear = userCalendar.component(.year, from: date!)
         var tDay = 1
 
-        if(thisMonth % 2 == 0){
-            length = 30
+        if(thisMonth == 2){
+            if(thisYear % 2 == 0){
+                length = 29
+            }
+            else{
+                length = 28
+            }
         }else{
-            length = 31
+            if(thisMonth % 2 == 0){
+                length = 30
+            }else{
+                length = 31
+            }
         }
 
         weekday -= 1//shift day of the week backwards - sunday becomes 0, Monday 1 etc
@@ -76,21 +74,25 @@ class CalendarHandler{
         while tDay<length+1{
             
             let day = CalendarDay(onDay: tDay, ofMonth: dateComponents.month!, ofYear: dateComponents.year!)
-            getEvents(forDay: tDay, ofMonth: forMonth, inYear: ofYear, fromUser: Auth.auth().currentUser!.uid, withTDay: month.count)
-            
             month.append(day)
+            //getEvents(forDay: tDay, ofMonth: forMonth, inYear: ofYear, fromUser: Auth.auth().currentUser!.uid, withTDay: month.count)
+            
+            
             tDay += 1
         }
-        return month
+        completion(month)
         
     }
     
     
-    func getEvents(forDay: Int, ofMonth: Int, inYear: Int, fromUser: String, withTDay: Int){
+    func getEvents(forDay: Int, ofMonth: Int, inYear: Int, fromUser: String, completion: @escaping([Event]) -> Void){
         //TODO: Implement Events
-        print("===================")
-        print("Get Events started for day: " + String(forDay))
-        print("user" + fromUser)
+       // print("===================")
+        //print("Get Events started for day: " + String(forDay))
+        //print("user" + fromUser)
+        
+        var events = [Event]()
+        
         db.collection("Event")
             .whereField("user", isEqualTo: fromUser)
             .whereField("day", isEqualTo: String(forDay))
@@ -104,12 +106,12 @@ class CalendarHandler{
                         print(document)
                         print("\(document.documentID) => \(document.data())")
                         let event = Event(document: document)
-                        self.cal.dates[withTDay].addEvent(event: event)
+                        events.append(event)
                     }
                     
-                    self.cal.collectionView.reloadData()
                 }
-        }
+                completion(events)
+            }
         
     }
     

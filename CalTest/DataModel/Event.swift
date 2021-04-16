@@ -106,7 +106,7 @@ class Event{
     
    
     func isInvitee(){
-        let calHandler = CalendarHandler()
+    //    let calHandler = CalendarHandler()
      //   calHandler.isInvitee(Settings.sharedInstance.uid, forEvent: id, completion: {(invitee) in
             //print(invitee)
           //  self.isUserInvited = true //TODO: re-implement this

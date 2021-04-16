@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>149154097789-9gpr4d3kblqlqceucotpvb3ch6nkqv36.apps.googleusercontent.com</string>
+	<string>149154097789-di4nvbgat06kdnoemghqg8f7sg2qmc8k.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.149154097789-9gpr4d3kblqlqceucotpvb3ch6nkqv36</string>
+	<string>com.googleusercontent.apps.149154097789-di4nvbgat06kdnoemghqg8f7sg2qmc8k</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDlejMGkWrQE1RMzSLuPxvoHVZ0qdpl00U</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.makeitfortheweb.friendal</string>
+	<string>com.appit.friendal</string>
 	<key>PROJECT_ID</key>
 	<string>friendal</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:149154097789:ios:9dd7230539a15bbe019f14</string>
+	<string>1:149154097789:ios:38cad0c36c8cc900019f14</string>
+	<key>DATABASE_URL</key>
+	<string>https://friendal-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

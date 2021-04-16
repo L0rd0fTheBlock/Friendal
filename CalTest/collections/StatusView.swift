@@ -40,7 +40,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
     
     func doLoad(){
        
-        let calHandler = CalendarHandler()
+  //      let calHandler = CalendarHandler()
         
        // calHandler.getEventStatus((event?.id)!) { (statuses, error) in
             //do status handling
