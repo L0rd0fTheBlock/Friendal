@@ -23,7 +23,7 @@ class FormTextCell: UITableViewCell {
         desc.frame = CGRect(x: 10, y: 10, width: self.frame.width/3-20, height: self.frame.height)
         value.frame = CGRect(x: 20, y: 10, width: self.frame.width, height: self.frame.height)
         self.addSubview(desc)
-        self.addSubview(value)
+        contentView.addSubview(value)
     }
     
     required init?(coder aDecoder: NSCoder) {

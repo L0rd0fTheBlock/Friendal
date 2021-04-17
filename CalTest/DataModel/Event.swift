@@ -31,6 +31,7 @@ class Event{
     
     init(){
         id = "0"
+        creator = Auth.auth().currentUser!.uid
     }
     
     init(_ id: String, title: String, date: String, month: String, year: String, start: String, end: String, count: String = "0", creator: String, privacy: String, allDay: String) {
@@ -46,8 +47,8 @@ class Event{
         
         self.count = count
         //MARK: re-implement these functions
-       // setPrivacy(Int(privacy)!)
-       // setAllDay(Int(allDay)!)
+        setPrivacy(Int(privacy)!)
+        setAllDay(Int(allDay)!)
         
        // isInvitee()
         
@@ -60,14 +61,14 @@ class Event{
         self.date = d!["day"] as? String
         self.start = d!["start"] as? String
         self.end = d!["end"] as? String
-        self.creator = d!["creator"] as? String
+        self.creator = d!["user"] as? String
         self.month = d!["month"] as? String
         self.year = d!["year"] as? String
-        
+        self.isAllDay = (d!["isAllDay"] as? Bool)!
         self.count = (d!["count"] as? String)!
         //MARK: re-implement these functions
-       // setPrivacy(Int(privacy)!)
-       // setAllDay(Int(allDay)!)
+        //setPrivacy(Int(privacy)!)
+      //  setAllDay(Int(isad)!)
         
        // isInvitee()
         
@@ -81,7 +82,7 @@ class Event{
         ev["year"] = year
         ev["start"] = start
         ev["end"] = end
-        ev["creator"] = creator
+        ev["user"] = creator
         ev["notes"] = notes
         ev["count"] = count
         //ev["invitees"]
@@ -114,26 +115,25 @@ class Event{
     }
     
     func isVisible() -> Bool{
-//        if(isPrivate){
-//            if(isUserInvited){
-//                return true
-//            }else{
-//                return false
-//            }
-//        }else{
-//            return true
-//        }
-        return false
+        if(isPrivate){
+            if(isUserInvited){
+                return true
+            }else{
+                return false
+            }
+        }else{
+            return true
+        }
+        
     }
     
     func isHidden() -> Int{
         if(isPrivate){
-          /*  if(creator == Settings.sharedInstance.uid){
+            if(creator == Auth.auth().currentUser?.uid){
                 return 0
             }else{
                 return 1
-            }*/
-            return 1
+            }
         }else{
             return 0
         }

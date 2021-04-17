@@ -26,11 +26,11 @@ class TimeTableViewCell: UITableViewCell {
         
         self.addSubview(label)
         self.addSubview(eventLabel)
-       // label.textAlignment = .center
+        label.textAlignment = .center
         
         label.frame = CGRect(origin: .zero, size: CGSize(width: self.frame.width, height: self.frame.height))
         
-        //label.frame = CGRect(x: 0, y: self.frame.height - (self.frame.height/2), width: 30, height: self.frame.height)
+        label.frame = CGRect(x: 0, y: self.frame.height - (self.frame.height/2), width: 30, height: self.frame.height)
         
         let eventwidth = self.frame.width - CGFloat(50)
         eventLabel.frame = CGRect(x: 30, y: 0, width: eventwidth, height: self.frame.height)
@@ -62,7 +62,7 @@ class TimeTableViewCell: UITableViewCell {
         
         print(event?.title as Any)
         if(isTitle){
-            let minute = event?.start?.components(separatedBy: ":").flatMap { Int($0.trimmingCharacters(in: .whitespaces)) }
+            let minute = event?.start?.components(separatedBy: ":").compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }
             if(minute![1] != 00){
                 let eventHeight = (self.frame.height/CGFloat(60/Int(minute![1])))*CGFloat(-1)
                 let eventwidth = self.frame.width - CGFloat(50)

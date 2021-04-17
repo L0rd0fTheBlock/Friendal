@@ -12,7 +12,7 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
 
     var showDate: Bool = true
     let desc = UILabel()
-    let value = UITextField()
+    let value = UIDatePicker()
     var shortDate: String?
     var start: String?
     var end: String?
@@ -23,14 +23,14 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
         // Initialization code
     }
 
-    /*override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         desc.frame = CGRect(x: 10, y: 10, width: self.frame.width/3, height: self.frame.height)
         
-        value.delegate = self
+        //value.delegate = self
         value.frame = CGRect(x: self.frame.width/3, y: 10, width: (self.frame.width/3)*2, height: self.frame.height)
-        addSubview(value)
+        contentView.addSubview(value)
         addSubview(desc)
     }
     
@@ -62,7 +62,7 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
         datePicker.date = startDate
         textField.inputView = datePicker
         datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
-    }*/
+    }
     
     @objc func pickerChanged(sender: UIDatePicker){
         
@@ -84,11 +84,12 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
         if(showDate){
             formatter.dateStyle = .medium
         }
+        /*value.date.description
         value.text = formatter.string(from: sender.date)
         if(showDate){
             formatter.dateStyle = .short
             shortDate = formatter.string(from: sender.date)
-        }
+        }*/
         
     }
 

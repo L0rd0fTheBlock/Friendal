@@ -31,11 +31,10 @@ class NewEventVC: UITableViewController {
         tableView.register(NewEventToggleCell.self, forCellReuseIdentifier: "toggle")
         
         tableView.rowHeight = 60.0
+        tableView.allowsSelection = false
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         
         self.title = "Add Event"
         
@@ -106,8 +105,85 @@ class NewEventVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        if(isAllDay){
+            return cellsForAllDay(indexPath: indexPath)
+        }else{
+            switch indexPath.row {
+            case 0://title
+                let cell:FormTextCell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! FormTextCell
+                cell.value.placeholder = "Title"
+                
+                return cell
+            case 1://start
+                let cell:FormDatePickerCell = tableView.dequeueReusableCell(withIdentifier: "date", for: indexPath) as! FormDatePickerCell
+                cell.desc.text = "Start"
+                cell.showDate = true
+                if(dayVC != nil){
+                    /*cell.startDate = dayVC?.today?.getDateAsDate()
+                    let formatter = DateFormatter()
+                    formatter.dateStyle = .medium
+                    formatter.timeStyle = .short
+                    cell.value
+             //       cell.value.text = formatter.string(from: cell.startDate!)
+                    formatter.dateStyle = .none
+                    cell.start = formatter.string(from: cell.startDate!)
+                    cell.end = formatter.string(from: cell.startDate!)
+                    formatter.dateStyle = .short
+                    formatter.timeStyle = .none
+                    cell.shortDate = formatter.string(from: cell.startDate!)
+                    cell.showDate = true*/
+                    
+                }else{
+                    let formatter = DateFormatter()
+                    formatter.dateStyle = .medium
+                    formatter.timeStyle = .short
+                  //  cell.value.text = formatter.string(from: Date())
+                    
+                    formatter.dateStyle = .short
+                    cell.shortDate = formatter.string(from: Date())
+                    
+                    formatter.dateStyle = .none
+                    cell.start = formatter.string(from: Date())
+                    cell.end = formatter.string(from: Date())
+                    
+                    cell.showDate = true
+                }
+                return cell
+            case 2://end
+                let cell:FormDatePickerCell = tableView.dequeueReusableCell(withIdentifier: "date", for: indexPath) as! FormDatePickerCell
+                cell.desc.text = "End"
+                    let formatter = DateFormatter()
+                    formatter.dateStyle = .none
+                    formatter.timeStyle = .short
+            
+                   // cell.value.text = formatter.string(from: Date())
+                    formatter.dateStyle = .none
+                    cell.start = formatter.string(from: Date())
+                    cell.end = formatter.string(from: Date())
+                    cell.showDate = false
+                return cell
+            case 3:
+
+                let cell: NewEventToggleCell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! NewEventToggleCell
+                cell.title.text = "Hide Event"
+                cell.toggle.setOn(Settings.sharedInstance.getPrivacy(), animated: true)
+                cell.parent = self
+                return cell
+            case 4:
+                let cell: NewEventToggleCell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! NewEventToggleCell
+                cell.title.text = "All-Day"
+                cell.parent = self
+                return cell
+            default:
+                print("error")
+                return UITableViewCell()
+            }
+        }
         
         
+    }
+
+    func cellsForAllDay(indexPath: IndexPath) -> UITableViewCell{
         switch indexPath.row {
         case 0://title
             let cell:FormTextCell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! FormTextCell
@@ -123,7 +199,7 @@ class NewEventVC: UITableViewController {
                 let formatter = DateFormatter()
                 formatter.dateStyle = .medium
                 formatter.timeStyle = .short
-                cell.value.text = formatter.string(from: cell.startDate!)
+               // cell.value.text = formatter.string(from: cell.startDate!)
                 formatter.dateStyle = .none
                 cell.start = formatter.string(from: cell.startDate!)
                 cell.end = formatter.string(from: cell.startDate!)
@@ -136,7 +212,7 @@ class NewEventVC: UITableViewController {
                 let formatter = DateFormatter()
                 formatter.dateStyle = .medium
                 formatter.timeStyle = .short
-                cell.value.text = formatter.string(from: Date())
+              //  cell.value.text = formatter.string(from: Date())
                 
                 formatter.dateStyle = .short
                 cell.shortDate = formatter.string(from: Date())
@@ -148,27 +224,14 @@ class NewEventVC: UITableViewController {
                 cell.showDate = true
             }
             return cell
-        case 2://end
-            let cell:FormDatePickerCell = tableView.dequeueReusableCell(withIdentifier: "date", for: indexPath) as! FormDatePickerCell
-            cell.desc.text = "End"
-                let formatter = DateFormatter()
-                formatter.dateStyle = .none
-                formatter.timeStyle = .short
-        
-                cell.value.text = formatter.string(from: Date())
-                formatter.dateStyle = .none
-                cell.start = formatter.string(from: Date())
-                cell.end = formatter.string(from: Date())
-                cell.showDate = false
-            return cell
-        case 3:
+        case 2:
 
             let cell: NewEventToggleCell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! NewEventToggleCell
             cell.title.text = "Hide Event"
             cell.toggle.setOn(Settings.sharedInstance.getPrivacy(), animated: true)
             cell.parent = self
             return cell
-        case 4:
+        case 3:
             let cell: NewEventToggleCell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! NewEventToggleCell
             cell.title.text = "All-Day"
             cell.parent = self
@@ -178,8 +241,6 @@ class NewEventVC: UITableViewController {
             return UITableViewCell()
         }
     }
-
-    
     
     func getAllDayEvent() -> Event{
         let event = Event()
@@ -196,7 +257,7 @@ class NewEventVC: UITableViewController {
         let year = date![2].split(separator: ",")
         event.year = String(describing: year[0])
         
-        event.start = cell1.start
+        event.start = cell1.value.description
         
         let cell2 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! NewEventToggleCell
         
@@ -220,18 +281,18 @@ class NewEventVC: UITableViewController {
         
         let cell1 = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! FormDatePickerCell
         
-        let dat = cell1.shortDate
-        let date = dat?.split(separator: "/") as Array<Substring>?
-        event.date = String(describing: date![0])
-        event.month = String(describing: date![1])
-        let year = date![2].split(separator: ",")
-        event.year = String(describing: year[0])
+        var dat = cell1.value.date
+        let cal = Calendar.current
+        event.date = String(describing: cal.component(.day, from: dat))
+        event.month = String(describing: cal.component(.month, from: dat))
+        event.year = String(describing: cal.component(.year, from: dat))
         
-        event.start = cell1.start
+        event.start = String(cal.component(.hour, from: dat)) + ":" + String(cal.component(.minute, from: dat))
         
         let cell2 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormDatePickerCell
+        dat = cell2.value.date
         
-        event.end = cell2.end
+        event.end = String(cal.component(.hour, from: dat)) + ":" + String(cal.component(.minute, from: dat))
         
         let cell3 = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! NewEventToggleCell
         
@@ -248,14 +309,16 @@ class NewEventVC: UITableViewController {
     func hideEndTime(_ should: Bool){
         let path = IndexPath(row: 2, section: 0)
         if(should){
+            isAllDay = should
             cells = cells - 1
             tableView.deleteRows(at: [path], with: .right)
             
         }else{
+            isAllDay = should
             cells = cells + 1
             tableView.insertRows(at: [path], with: .left)
         }
-        isAllDay = should
+        
     }
     
 }

@@ -21,7 +21,7 @@ class NewEventToggleCell: UITableViewCell {
         // Initialization code
     }
 
-    /*override init(styleUITableViewCell.CellStylele, reuseIdentifier: String?) {
+     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         print(toggle.frame.width)
@@ -34,7 +34,8 @@ class NewEventToggleCell: UITableViewCell {
         toggle.frame = CGRect(x: frame.width - 70, y: (frame.height / 2) - subtraction, width: frame.width, height: frame.height)
         
         toggle.addTarget(self, action: #selector(didToggle), for: .touchUpInside)
-        addSubview(toggle)
+        contentView.addSubview(toggle)
+        //addSubview(toggle)
         addSubview(title)
     }
     
@@ -47,7 +48,7 @@ class NewEventToggleCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }*/
+    }
     
     @objc func didToggle() {
         print("toggle")
@@ -56,7 +57,7 @@ class NewEventToggleCell: UITableViewCell {
             if(title.text == "All-Day" && toggle.isOn){
                 
                 p.hideEndTime(true)
-                //            parent?.tableView.reloadData()
+                parent?.tableView.reloadData()
             }else if(title.text == "All-Day" && !toggle.isOn){
                 p.hideEndTime(false)
             }
@@ -64,10 +65,10 @@ class NewEventToggleCell: UITableViewCell {
             let p = parent as! EventViewController
             if(title.text == "All-Day" && toggle.isOn){
                 
-               // p.hideEndTime(true)
-                //            parent?.tableView.reloadData()
+                p.hideEndTime(true)
+                parent?.tableView.reloadData()
             }else if(title.text == "All-Day" && !toggle.isOn){
-               // p.hideEndTime(false)
+                p.hideEndTime(false)
             }
         }
         

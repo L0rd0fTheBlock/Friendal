@@ -87,10 +87,10 @@ class CalendarHandler{
     
     func getEvents(forDay: Int, ofMonth: Int, inYear: Int, fromUser: String, completion: @escaping([Event]) -> Void){
         //TODO: Implement Events
-       // print("===================")
+        //print("===================")
         //print("Get Events started for day: " + String(forDay))
-        //print("user" + fromUser)
-        
+       // print("user " + fromUser)
+        print("ofMonth: " + String(ofMonth))
         var events = [Event]()
         
         db.collection("Event")

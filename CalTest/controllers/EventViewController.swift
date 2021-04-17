@@ -20,7 +20,7 @@ class EventViewController: UITableViewController {
     let alert: UIAlertController = UIAlertController(title: "Delete", message: "Are you sure? This cannot be undone.", preferredStyle: UIAlertController.Style.alert)
     let warning: UIAlertController = UIAlertController(title: "Invalid end time", message: "The end time must not be the same or before the start time.", preferredStyle: UIAlertController.Style.alert)
     
-   /* override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
         
@@ -54,7 +54,7 @@ class EventViewController: UITableViewController {
         
         alert.addAction(UIAlertAction(title: "I'm Sure", style: .default, handler: { (action: UIAlertAction!) in
          //   AppEventsLogger.log("Deleted Calendar Event")
-            let handler = CalendarHandler()
+           // let handler = CalendarHandler()
             //handler.cancelEvent(event: self.event!.id, forUser: (AccessToken.current?.userId)!, completion: {(response) in
                 
                 /*if(response){
@@ -65,9 +65,9 @@ class EventViewController: UITableViewController {
                     self.present(self.alert, animated: true, completion: nil)
                 }*/
                 
-            })
-    }))
-        
+           // })
+    //}))
+        }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
         }))
         
@@ -115,7 +115,7 @@ class EventViewController: UITableViewController {
         
         let cell1 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormDatePickerCell
         let dat = cell1.shortDate
-        let date = dat?.split(separator: "/") as Array<Substring>!
+        let date = dat?.split(separator: "/") as Array<Substring>?
         print("date at save: ", date)
         event?.date = String(describing: date![0])
         let month = Int(date![1])
@@ -134,7 +134,7 @@ class EventViewController: UITableViewController {
         
         if(event?.getAllDayBool())!{
             let ch = CalendarHandler()
-            ch.updateEvent(event: event!)
+          //  ch.updateEvent(event: event!)
             return true
         }else{
             if(event?.start == event?.end){
@@ -143,7 +143,7 @@ class EventViewController: UITableViewController {
                 return false
             }else{
                 let ch = CalendarHandler()
-                ch.updateEvent(event: event!)
+               // ch.updateEvent(event: event!)
                 return true
             }
         }
@@ -208,7 +208,7 @@ class EventViewController: UITableViewController {
                 let formatter = DateFormatter()
                 formatter.dateStyle = .medium
                 formatter.timeStyle = .short
-                cell.value.text = formatter.string(from: cell.startDate!)
+            //    cell.value.text = formatter.string(from: cell.startDate!)
                 formatter.dateStyle = .none
                 cell.start = formatter.string(from: cell.startDate!)
                 cell.end = formatter.string(from: cell.startDate!)
@@ -225,7 +225,7 @@ class EventViewController: UITableViewController {
             formatter.dateStyle = .none
             formatter.timeStyle = .short
             
-            cell.value.text = event?.end
+         //   cell.value.text = event?.end
             formatter.dateStyle = .none
             cell.start = formatter.string(from: Date())
             cell.end = event?.end
@@ -450,5 +450,5 @@ extension UIViewController {
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
-    }*/
+    }
 }
