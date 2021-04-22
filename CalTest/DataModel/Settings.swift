@@ -11,7 +11,6 @@ import Foundation
 class Settings{
     
     var id:Int? = nil
-   // var uid:String = (AccessToken.current?.userId)!
     var me: Person = Person(id: "0", first: "", last: "")
     var dateFormat: Int = 1
     var privacy: Int = 0

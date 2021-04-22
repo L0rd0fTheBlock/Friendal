@@ -16,7 +16,7 @@ class FriendsListViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        addSubview(name)
         
     }
 

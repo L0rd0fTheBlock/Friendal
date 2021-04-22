@@ -13,6 +13,7 @@ class DayViewController: UITableViewController {
     var drawEvent:Event? = nil
     var events: [EventContainerView] = []
     var shouldLoadMyCalendar: Bool = true
+    var prevView = UIView()
     var today: CalendarDay?{
         didSet{
             navigationItem.title = today?.getFullDate()
@@ -36,8 +37,10 @@ class DayViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        tableView = UITableView(frame: UIScreen.main.bounds, style: UITableView.Style.plain )
+        var e = tableView
         setupView()
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.dataSource = self
         tableView.delegate = self
@@ -53,6 +56,14 @@ class DayViewController: UITableViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
+        today?.update(){ (error) in
+            self.setupView()
+            self.tableView.reloadData()
+        }
+        
+    }
 
     
     func setupView(){
@@ -63,6 +74,7 @@ class DayViewController: UITableViewController {
             event.removeFromSuperview()
         }
         
+        sortEventsByTime()
         for (index, event) in (today?.events.enumerated())!{
             
             var overlap = 1
@@ -77,11 +89,50 @@ class DayViewController: UITableViewController {
             if(index>0){
                 shift = calculateShift(index, start: start, end: end)
             }
-            
+            if(overlap > 1){
+                events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
+                prevView = events.last!
+            }else{
             events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
+            }
         }// end drawdrawEvent loop
         
         
+    }
+    
+    
+    func sortEventsByTime(){
+        guard var sortedEvents = today?.events
+        else{
+           return
+        }
+        var sorted = false
+        while !sorted {
+            sorted = true
+            for (index, event) in (sortedEvents.enumerated()){
+                if(index == 0){
+                    print("Index is 0: doing nothing")
+                }else{
+                    let thisTime = event.start?.split(separator: ":" )
+                    let lastTime = sortedEvents[index-1].start?.split(separator: ":")
+                    //if hours are less than
+                    if(Int(thisTime![0])! < Int(lastTime![0])!){
+                        sorted = false
+                        let poppedTime = event
+                        sortedEvents.remove(at: index)
+                        sortedEvents.insert(poppedTime, at: index-1)
+                    }else{
+                        if(Int(thisTime![0]) == Int(lastTime![0]) && Int(thisTime![1])! < Int(lastTime![1])!){
+                            sorted = false
+                            let poppedTime = event
+                            sortedEvents.remove(at: index)
+                            sortedEvents.insert(poppedTime, at: index-1)
+                        }
+                    }
+                }
+            }
+        }
+        today?.events = sortedEvents
     }
     
     func drawTime(_ index: Int){
@@ -94,7 +145,60 @@ class DayViewController: UITableViewController {
     }
     
     func drawEvent(_ event:Event, overlaps:Int, shiftBy:Int) -> EventContainerView{
-        if(event.isAllDay){
+        
+      //  if(event.isAllDay){
+            
+        //}else{
+            let start = makeMinutes(from: event.start!)
+            let end = makeMinutes(from: event.end!)
+            
+            let tableLength = 50*25
+            let breakdown = CGFloat(tableLength) / CGFloat(1500) //split the table into it's minutes
+            
+            let startPoint: CGFloat = breakdown * CGFloat(start + 60) // multiply by the start time to push the event down the view
+            let duration = CGFloat(end) - CGFloat(start)
+            
+            let endpoint = breakdown * duration
+        
+            //let eventWidth = (tableView.frame.width - 30) / CGFloat(overlaps)
+            
+           let eventView = EventContainerView(forEvent: event, today: self)
+               eventView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.addSubview(eventView)
+        //actuvate constriants
+        eventView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: startPoint).isActive = true
+        //Calculate the left(leading) edge
+        if(shiftBy == 0){
+            eventView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30.0).isActive = true
+        }else{
+            // start this view at the right-end of the previous view + 5
+            eventView.leadingAnchor.constraint(equalTo: prevView.trailingAnchor, constant: 5.0).isActive = true
+            // make this view width equal to previous view width
+            if(shiftBy == overlaps){
+                eventView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+            }
+}
+        //calculate the rest of the constraints
+        eventView.heightAnchor.constraint(equalToConstant: endpoint).isActive = true
+        eventView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1/CGFloat(overlaps), constant: -30).isActive = true
+            return eventView
+       // }
+        
+        
+        /*
+         
+         let shift = eventWidth * CGFloat(shiftBy)
+         
+         if(shiftBy > 0){
+             frame = CGRect(x: CGFloat(30 + (5*shiftBy)) + shift, y: startPoint, width: eventWidth, height: endpoint)
+             
+         }else{
+             frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
+             
+         }
+         */
+        
+       /* if(event.isAllDay){
             let spacer: CGFloat = CGFloat(5) //the space between all day events
             let eventWidth = (tableView.frame.width - 80) / CGFloat(overlaps)
             let shift = (eventWidth + spacer) * CGFloat(shiftBy)
@@ -117,22 +221,24 @@ class DayViewController: UITableViewController {
             
             let endpoint = breakdown * duration
             
+            let e = tableView.frame.width
+            
             let eventWidth = (tableView.frame.width - 30) / CGFloat(overlaps)
             
             let shift = eventWidth * CGFloat(shiftBy)
             var frame: CGRect
-            if(shiftBy > 0){
-                frame = CGRect(x: CGFloat(30 + (5*shiftBy)) + shift, y: startPoint, width: eventWidth, height: endpoint)
-                
-            }else{
-                frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
-                
-            }
+         if(shiftBy > 0){
+             frame = CGRect(x: CGFloat(30 + (5*shiftBy)) + shift, y: startPoint, width: eventWidth, height: endpoint)
+             
+         }else{
+             frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
+             
+         }
             
             let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
             tableView.addSubview(eventView)
             return eventView
-        }
+        }*/
     }
     
     
@@ -167,16 +273,9 @@ class DayViewController: UITableViewController {
         return overlap
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        tabBarController?.tabBar.isHidden = false
-        today?.update(){ (error) in
-            self.setupView()
-            self.tableView.reloadData()
-        }
-        
-    }
     
     
+    //MARK: TableView data sources
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
@@ -192,6 +291,7 @@ class DayViewController: UITableViewController {
         return cell
     }//end function
     
+    //MARK: Events
     @objc func didTapNewEventButton(){
         
         if(shouldLoadMyCalendar){

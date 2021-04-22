@@ -90,7 +90,7 @@ class CalendarHandler{
         //print("===================")
         //print("Get Events started for day: " + String(forDay))
        // print("user " + fromUser)
-        print("ofMonth: " + String(ofMonth))
+       // print("ofMonth: " + String(ofMonth))
         var events = [Event]()
         
         db.collection("Event")
@@ -103,8 +103,8 @@ class CalendarHandler{
                     print("Error getting documents: \(err)")
                 } else {
                     for document in querySnapshot!.documents {
-                        print(document)
-                        print("\(document.documentID) => \(document.data())")
+                        //print(document)
+                       // print("\(document.documentID) => \(document.data())")
                         let event = Event(document: document)
                         events.append(event)
                     }
@@ -130,15 +130,84 @@ class CalendarHandler{
                     }
                 }
     }
+    func saveUser(person: Person){
+        print("")
+        print("Running saveUser()")
+        print(person.toArray())
+        db.collection("User").document(person.uid).setData(person.toArray())
+        { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            }
+        }
+    }
     
+    func setUser(){
+        
+        db.collection("User")
+            .whereField("user", isEqualTo: String(Auth.auth().currentUser!.uid))
+            .getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        //print(document)
+                       // print("\(document.documentID) => \(document.data())")
+                        let me = Person(document: document)
+                        
+                    }
+                    
+                }
+             //   completion(events)
+            }
+    }
+   
+    func doesUserExist(make: Bool){
+        db.collection("User").document(Auth.auth().currentUser!.uid).getDocument() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                if(querySnapshot?.data() == nil){
+                    print("User document does not exist, Creating")
+                    //Should create "more information" form here
+                    let p = Person(id: Auth.auth().currentUser!.uid, first: "Andrew", last: "Mac", email: "andrew.macfarlane93@gmail.com", mobile: "07940255130")
+                    self.saveUser(person: p)
+                }
+               //let friend = Person(document: querySnapshot!)
+              //  completion(friend)
+            }
+        }
+        
+    }
     
-    
-    
-    
-    
-    
-    
-    
+    func getperson(forUser: String, completion: @escaping (_ p: Person)->Void){
+        db.collection("User").document(forUser).getDocument() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                if(querySnapshot?.data() != nil){
+                    let friend = Person(document: querySnapshot!)
+                    completion(friend)
+                }
+            }
+        }
+    }
+    func getperson(forPhone: String, completion: @escaping (Person)->Void){
+        print("Retrieving user file for \(forPhone)")
+        db.collection("User").whereField("mobile", isEqualTo: forPhone).getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                print("Response recieved")
+                for document in (querySnapshot?.documents)! {
+                        print("Response for: \(forPhone)")
+                        let friend = Person(document: document)
+                        completion(friend)
+                }
+            }
+        }
+    }
+}
    /* let BASE_URL = "http://friendal.co.uk"
     //let BASE_URL = "http://192.168.0.67"
     //let BASE_URL = "http://localhost"
@@ -1067,4 +1136,4 @@ class CalendarHandler{
         
         return stat
     }*/
-}//end class
+//}//end class

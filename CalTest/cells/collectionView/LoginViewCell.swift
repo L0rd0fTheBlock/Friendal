@@ -11,13 +11,15 @@ import UIKit
 //import FacebookLogin
 import UserNotifications
 //import Crashlytics
+import FirebaseUI
 
-class LoginViewCell: UICollectionViewCell {
+class LoginViewCell: UICollectionViewCell, FUIAuthDelegate {
     
     let imageView: UIImageView
     let title: UILabel
     let text: UILabel
     var parent: WelcomeViewController? = nil
+    var authUI: FUIAuth
     
     override init(frame: CGRect) {
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
@@ -25,7 +27,19 @@ class LoginViewCell: UICollectionViewCell {
         title = UILabel(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height - 120))
         text = UILabel(frame: CGRect(x: 0, y: frame.height/4, width: frame.width, height: frame.height/2))
         
+        authUI = FUIAuth.defaultAuthUI()!
         super.init(frame: frame)
+        
+        let providers: [FUIAuthProvider] = [FUIEmailAuth()
+         // FUIGoogleAuth(),
+         // FUIFacebookAuth(),
+         // FUITwitterAuth(),
+         // FUIPhoneAuth(authUI:FUIAuth.defaultAuthUI()),
+        ]
+        authUI.providers = providers
+        
+        
+        authUI.delegate = self
         
         title.lineBreakMode = .byWordWrapping
         title.numberOfLines = 0
@@ -49,14 +63,14 @@ class LoginViewCell: UICollectionViewCell {
           loginButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         loginButton.center = CGPoint(x: frame.width / 2, y: ((frame.height/4) * 3) + 50)
         addSubview(loginButton)
-        
     }
     
     @objc func buttonAction(sender: UIButton!) {
         print("Button tapped")
         let lgvc = LoginViewController()
         
-        parent?.present(lgvc, animated: true, completion:  nil)
+        let authViewController = authUI.authViewController()
+        parent?.present(authViewController  , animated: true, completion:  nil)
         
     }
     
@@ -121,4 +135,15 @@ class LoginViewCell: UICollectionViewCell {
     }
 
 }*/
+    //MARK: Authentication Delegate
+    func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
+      // handle user and error as necessary
+        if( error != nil){
+            print("Error Logging In \(String(describing: error))")
+        }else{
+            let cal = CalendarHandler()
+            cal.doesUserExist(make: true)
+            parent?.dismiss(animated: true, completion: nil)
+        }
+    }
 }

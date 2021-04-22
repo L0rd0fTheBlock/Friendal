@@ -16,6 +16,7 @@ import CoreData
 import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseUI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate /*MessagingDelegate*/ {
@@ -29,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         FirebaseApp.configure()
         let db = Firestore.firestore()
+        
         
         Auth.auth().addStateDidChangeListener { (auth, user) in }
        // Messaging.messaging().delegate = self
@@ -62,30 +64,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //GADMobileAds.configure(withApplicationID: "ca-app-pub-8694139400395039~1830749784")
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        
-        window?.rootViewController = TabBarController() //TODO: set this back to tab bar controller after testing
+        do{
+        // try Auth.auth().signOut()
+        }catch{
+            print("Error")
+        }
+        window?.rootViewController = TabBarController()//TODO: set this back to tab bar controller after testing
        // print("-=-=-=-=-=-=-=-=-=-=-=")
         //print(AccessToken.current)
     return true
     }
-
-   /* public func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        
-        return FBSDKApplicationDelegate.sharedInstance().application(
-            app,
-            open: url as URL!,
-            sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,
-            annotation: options[UIApplicationOpenURLOptionsKey.annotation]
-        )
-    }
-    
-    public func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(
-            application,
-            open: url as URL!,
-            sourceApplication: sourceApplication,
-            annotation: annotation)
-    }*/
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         // If you are receiving a notification message while your app is in the background,
@@ -167,6 +155,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 */
+    
+    
 
 }
 

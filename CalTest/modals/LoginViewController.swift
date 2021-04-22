@@ -15,15 +15,6 @@ class LoginViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let email:String = "andrew.macfarlane93@gmail.com"
-        let password:String = "123456"
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-          guard let strongSelf = self else { return }
-            self?.dismiss(animated: true, completion: nil)
-            
-          // ...
-        }
-        
         tableView.register(FormTextCell.self, forCellReuseIdentifier: "text")
         
         self.title = "Login with Email"

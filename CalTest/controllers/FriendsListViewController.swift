@@ -7,6 +7,12 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+
+import Contacts
 //import FacebookCore
 
 class FriendsListViewController: UITableViewController {
@@ -31,18 +37,18 @@ class FriendsListViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         
-       /* if AccessToken.current != nil {
+        if Auth.auth().currentUser != nil {
             // User is logged in, use 'accessToken' here.
             doLoad()
         }else{
             //Access Token does not exist
             let loginVC = LoginViewController()
-            loginVC.calendarVC = self
-            loginVC.vc = "friend"
+           // loginVC.calendarVC = self
+            //loginVC.vc = "friend"
             self.present(loginVC, animated: true, completion: ({() in
                 
             }))
-        }*/
+        }
     }
     
     func doLoad(){
@@ -57,38 +63,35 @@ class FriendsListViewController: UITableViewController {
         errorLabel.isHidden = false
         tableView.addSubview(errorLabel)
         
-        //let calHandler = CalendarHandler()
+        let calHandler = CalendarHandler()
         
-      /*  calHandler.doGraph(request: "me/friends", params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
+        var contacts = [CNContact]()
+        let keys = [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor]
+        let request = CNContactFetchRequest(keysToFetch: keys)
             
-            guard let friends = data else{
-                guard let code = error?.code else{return}
-                
-                self.errorLabel.text = error?.userInfo["message"] as! String + " Code: " + String(describing: code)
-                self.errorLabel.isHidden = false
-                self.tableView.reloadData()
-                return
-                
+            let contactStore = CNContactStore()
+            do {
+                try contactStore.enumerateContacts(with: request) {
+                    (contact, stop) in
+                    // Array containing all unified contacts from everywhere
+                    contacts.append(contact)
+                    let phone = contacts.last?.phoneNumbers[0].value.stringValue
+                    print("pHONE NUMBERS ================")
+                    let number = String(phone!.filter { !" \n\t\r".contains($0) })
+                    print(number)
+                    calHandler.getperson(forPhone: number, completion: self.appendFriend(p:))
+                }
             }
-            if(friends.count > 0){
-            self.errorLabel.isHidden = true
-            //if(data[0] != nil){
-            self.friends = self.populateFriends(data: friends)
-            
-            
-            for person in self.friends{
-                person.downloadImage(url: URL(string: person.link)!, table: self.tableView)
+            catch {
+                print("unable to fetch contacts")
             }
-            
-            self.tableView.reloadData()
-            //}
-            }else{
-                self.errorLabel.text = "None of your friends have installed Friendal yet"
-                self.errorLabel.isHidden = false
-                self.tableView.reloadData()
-            }
-        })*/
+
         
+    }
+    
+    func appendFriend(p: Person){
+        friends.append(p)
+        tableView.reloadData()
     }
     
     func populateFriends(data: Dictionary<String, Any>) -> Array<Person>{
@@ -161,5 +164,38 @@ class FriendsListViewController: UITableViewController {
         
         return cell
     }
+    
+    
+    //MARK: DEPRECATED CODE
+    /*  calHandler.doGraph(request: "me/friends", params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
+          
+          guard let friends = data else{
+              guard let code = error?.code else{return}
+              
+              self.errorLabel.text = error?.userInfo["message"] as! String + " Code: " + String(describing: code)
+              self.errorLabel.isHidden = false
+              self.tableView.reloadData()
+              return
+              
+          }
+          if(friends.count > 0){
+          self.errorLabel.isHidden = true
+          //if(data[0] != nil){
+          self.friends = self.populateFriends(data: friends)
+          
+          
+          for person in self.friends{
+              person.downloadImage(url: URL(string: person.link)!, table: self.tableView)
+          }
+          
+          self.tableView.reloadData()
+          //}
+          }else{
+              self.errorLabel.text = "None of your friends have installed Friendal yet"
+              self.errorLabel.isHidden = false
+              self.tableView.reloadData()
+          }
+      })*/
+    
 
 }
