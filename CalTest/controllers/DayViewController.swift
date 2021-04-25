@@ -20,25 +20,12 @@ class DayViewController: UITableViewController {
         }
     }
     
-    var allDayLabel: UIView {
-        let adView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 35))
-        let label = UILabel(frame: CGRect(x: 5, y: 0, width: 80, height: 35))
-        label.text = "All-Day"
-        label.textColor = .white
-        
-        adView.backgroundColor = .gray
-        
-        adView.addSubview(label)
-        
-        return adView
-    }
+    var allDayLabel: UIView = UIView()
     
     let cellID: String = "event"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView = UITableView(frame: UIScreen.main.bounds, style: UITableView.Style.plain )
-        var e = tableView
         setupView()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
@@ -68,7 +55,24 @@ class DayViewController: UITableViewController {
     
     func setupView(){
         view.backgroundColor = .white
+        allDayLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(allDayLabel)
+        allDayLabel.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        allDayLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        allDayLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        allDayLabel.heightAnchor.constraint(equalToConstant: CGFloat(30)).isActive = true
+        allDayLabel.backgroundColor = .gray
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        allDayLabel.addSubview(label)
+        label.topAnchor.constraint(equalTo: allDayLabel.topAnchor).isActive = true
+        label.leadingAnchor.constraint(equalTo: allDayLabel.leadingAnchor, constant: CGFloat(5)).isActive = true
+        label.widthAnchor.constraint(equalToConstant: CGFloat(60)).isActive = true
+        label.heightAnchor.constraint(equalToConstant: CGFloat(30)).isActive = true
+        label.text = "All-Day"
+      //  label.adjustsFontSizeToFitWidth = true
+        label.textColor = .white
         
         for event in events{
             event.removeFromSuperview()
@@ -83,20 +87,31 @@ class DayViewController: UITableViewController {
             let end = makeMinutes(from: event.end!)
             let id = event.id
             
-            
-            overlap = calculateOverlap(start: start, end: end, id: id)
-            
-            if(index>0){
-                shift = calculateShift(index, start: start, end: end)
-            }
-            if(overlap > 1){
-                events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
-                prevView = events.last!
+            if(event.isAllDay){
+                overlap = calculateOverlapAllDay(id: event.id)
+                if(index>0){
+                    shift = calculateShiftAllDay(index)
+                }
+                if(overlap>1){
+                    events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
+                    prevView = events.last!
+                }else{
+                    events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
+                }
             }else{
-            events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
+                overlap = calculateOverlap(start: start, end: end, id: id)
+                
+                if(index>0){
+                    shift = calculateShift(index, start: start, end: end)
+                }
+                if(overlap > 1){
+                    events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
+                    prevView = events.last!
+                }else{
+                events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
+                }
             }
         }// end drawdrawEvent loop
-        
         
     }
     
@@ -144,11 +159,28 @@ class DayViewController: UITableViewController {
         }
     }
     
+    
     func drawEvent(_ event:Event, overlaps:Int, shiftBy:Int) -> EventContainerView{
-        
-      //  if(event.isAllDay){
-            
-        //}else{
+        if(event.isAllDay){
+            let eventView = EventContainerView(forEvent: event, today: self)
+            eventView.translatesAutoresizingMaskIntoConstraints = false
+            allDayLabel.addSubview(eventView)
+            eventView.topAnchor.constraint(equalTo: allDayLabel.topAnchor).isActive = true
+            eventView.bottomAnchor.constraint(equalTo: allDayLabel.bottomAnchor).isActive = true
+            if(shiftBy == 0){
+                eventView.leadingAnchor.constraint(equalTo: allDayLabel.leadingAnchor, constant: 65.0).isActive = true
+            }else{
+                // start this view at the right-end of the previous view + 5
+                eventView.leadingAnchor.constraint(equalTo: prevView.trailingAnchor, constant: 5.0).isActive = true
+                // make this view width equal to previous view width
+                if(shiftBy == overlaps){
+                    eventView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+                }
+            }
+            //calculate the rest of the constraints
+            eventView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1/CGFloat(overlaps), constant: -30).isActive = true
+                return eventView
+        }else{
             let start = makeMinutes(from: event.start!)
             let end = makeMinutes(from: event.end!)
             
@@ -164,81 +196,26 @@ class DayViewController: UITableViewController {
             
            let eventView = EventContainerView(forEvent: event, today: self)
                eventView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.addSubview(eventView)
-        //actuvate constriants
-        eventView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: startPoint).isActive = true
-        //Calculate the left(leading) edge
-        if(shiftBy == 0){
-            eventView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30.0).isActive = true
-        }else{
-            // start this view at the right-end of the previous view + 5
-            eventView.leadingAnchor.constraint(equalTo: prevView.trailingAnchor, constant: 5.0).isActive = true
-            // make this view width equal to previous view width
-            if(shiftBy == overlaps){
-                eventView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+            tableView.addSubview(eventView)
+            //actuvate constriants
+            eventView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: startPoint).isActive = true
+            //Calculate the left(leading) edge
+            if(shiftBy == 0){
+                eventView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30.0).isActive = true
+            }else{
+                // start this view at the right-end of the previous view + 5
+                eventView.leadingAnchor.constraint(equalTo: prevView.trailingAnchor, constant: 5.0).isActive = true
+                // make this view width equal to previous view width
+                if(shiftBy == overlaps){
+                    eventView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+                }
             }
-}
-        //calculate the rest of the constraints
-        eventView.heightAnchor.constraint(equalToConstant: endpoint).isActive = true
-        eventView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1/CGFloat(overlaps), constant: -30).isActive = true
-            return eventView
-       // }
+            //calculate the rest of the constraints
+            eventView.heightAnchor.constraint(equalToConstant: endpoint).isActive = true
+            eventView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1/CGFloat(overlaps), constant: -30).isActive = true
+                return eventView
+        }
         
-        
-        /*
-         
-         let shift = eventWidth * CGFloat(shiftBy)
-         
-         if(shiftBy > 0){
-             frame = CGRect(x: CGFloat(30 + (5*shiftBy)) + shift, y: startPoint, width: eventWidth, height: endpoint)
-             
-         }else{
-             frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
-             
-         }
-         */
-        
-       /* if(event.isAllDay){
-            let spacer: CGFloat = CGFloat(5) //the space between all day events
-            let eventWidth = (tableView.frame.width - 80) / CGFloat(overlaps)
-            let shift = (eventWidth + spacer) * CGFloat(shiftBy)
-            
-           let frame = CGRect(x: CGFloat(75 + shift), y: 5, width: eventWidth, height: 25)
-            
-            let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
-            tableView.addSubview(eventView)
-            return eventView
-            
-        }else{
-            let start = makeMinutes(from: event.start!)
-            let end = makeMinutes(from: event.end!)
-            
-            let tableLength = 50*25
-            let breakdown = CGFloat(tableLength) / CGFloat(1500) //split the table into it's minutes
-            
-            let startPoint: CGFloat = breakdown * CGFloat(start + 60) // multiply by the start time to push the event down the view
-            let duration = CGFloat(end) - CGFloat(start)
-            
-            let endpoint = breakdown * duration
-            
-            let e = tableView.frame.width
-            
-            let eventWidth = (tableView.frame.width - 30) / CGFloat(overlaps)
-            
-            let shift = eventWidth * CGFloat(shiftBy)
-            var frame: CGRect
-         if(shiftBy > 0){
-             frame = CGRect(x: CGFloat(30 + (5*shiftBy)) + shift, y: startPoint, width: eventWidth, height: endpoint)
-             
-         }else{
-             frame = CGRect(x: CGFloat(30) + shift, y: startPoint, width: eventWidth, height: endpoint)
-             
-         }
-            
-            let eventView = EventContainerView(withFrame: frame, forEvent: event, today: self)
-            tableView.addSubview(eventView)
-            return eventView
-        }*/
     }
     
     
@@ -257,6 +234,32 @@ class DayViewController: UITableViewController {
         return shift
     }
     
+    func calculateShiftAllDay(_ index: Int) -> Int{
+        var shift = 0
+        let count = index - 1
+        
+        for i in 0...count{
+            let event = today?.events[i]
+            if(event?.isAllDay == true){
+                shift = shift + 1
+            }
+        }
+        return shift
+    }
+    
+    func calculateOverlapAllDay(id: String)-> Int{
+        var overlap = 1
+        for event in (today?.events)!{
+            if(event.isAllDay == true){
+                if(event.id == id){
+                    
+                }else{
+                    overlap += 1
+                }
+            }
+        }
+        return overlap
+    }
     func calculateOverlap(start: Int, end: Int, id: String) -> Int{
         var overlap = 1
         for event in (today?.events)!{

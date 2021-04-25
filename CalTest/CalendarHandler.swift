@@ -192,17 +192,23 @@ class CalendarHandler{
             }
         }
     }
-    func getperson(forPhone: String, completion: @escaping (Person)->Void){
+    
+    func getperson(forPhone: String, completion: @escaping (Person, Bool)->Void){
         print("Retrieving user file for \(forPhone)")
         db.collection("User").whereField("mobile", isEqualTo: forPhone).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
                 print("Response recieved")
+                if(querySnapshot?.isEmpty == true){
+                    print("Empty")
+                    let p = Person(id: "", first: "", last: "")
+                    completion(p, false)
+                }
                 for document in (querySnapshot?.documents)! {
                         print("Response for: \(forPhone)")
                         let friend = Person(document: document)
-                        completion(friend)
+                        completion(friend, true)
                 }
             }
         }

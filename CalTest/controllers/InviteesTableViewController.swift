@@ -223,7 +223,7 @@ class InviteesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Friend", for: index) as! FriendsListViewCell
         
         let person = going[index.row]
-        cell.name.text = person.name
+        cell.name.text = person.name()
         cell.pic.image = person.picture
         cell.uid = person.uid
         
@@ -245,7 +245,7 @@ class InviteesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Friend", for: index) as! FriendsListViewCell
         
         let person = notGoing[index.row]
-        cell.name.text = person.name
+        cell.name.text = person.name()
         cell.pic.image = person.picture
         cell.uid = person.uid
         
@@ -266,7 +266,7 @@ class InviteesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Friend", for: index) as! FriendsListViewCell
         
         let person = invited[index.row]
-        cell.name.text = person.name
+        cell.name.text = person.name()
         cell.pic.image = person.picture
         cell.uid = person.uid
         cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)

@@ -250,14 +250,13 @@ class NewEventVC: UITableViewController {
         
         let cell1 = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! FormDatePickerCell
         
-        let dat = cell1.shortDate
-        let date = dat?.split(separator: "/") as Array<Substring>?
-        event.date = String(describing: date![0])
-        event.month = String(describing: date![1])
-        let year = date![2].split(separator: ",")
-        event.year = String(describing: year[0])
+        var dat = cell1.value.date
+        let cal = Calendar.current
+        event.date = String(describing: cal.component(.day, from: dat))
+        event.month = String(describing: cal.component(.month, from: dat))
+        event.year = String(describing: cal.component(.year, from: dat))
         
-        event.start = cell1.value.description
+        event.start = String(cal.component(.hour, from: dat)) + ":" + String(cal.component(.minute, from: dat))
         
         let cell2 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! NewEventToggleCell
         

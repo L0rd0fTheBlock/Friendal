@@ -16,7 +16,6 @@ class Person{
     var last_name: String
     var email: String
     var mobile: String
-    var name: String
     var picture: UIImage? = nil
     var link: String
     var friends: [Person] = [Person]()
@@ -25,7 +24,6 @@ class Person{
         uid = id
         first_name = first
         last_name = last
-        name = first + " " + last
         link = picture["url"] as! String
         email = ""
         mobile = ""
@@ -37,7 +35,6 @@ class Person{
         uid = id
         first_name = first
         last_name = last
-        name = first + " " + last
         link = ""
         email = ""
         mobile = ""
@@ -47,7 +44,6 @@ class Person{
         uid = id
         first_name = first
         last_name = last
-        name = first + " " + last
         link = ""
         self.email = email
         self.mobile = mobile
@@ -59,11 +55,14 @@ class Person{
         let d = document.data()
         first_name = d!["forename"] as! String
         last_name = d!["surname"] as! String
-        name = first_name + " " + last_name
         link = ""
         email = d!["email"] as! String
         mobile = d!["mobile"] as! String
         
+    }
+    
+    func name() -> String {
+        return first_name + " " + last_name
     }
     
     func toArray() -> [String:String]{

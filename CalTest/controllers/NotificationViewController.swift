@@ -111,7 +111,7 @@ class NotificationViewController: UITableViewController {
         
         let request = requests[indexPath.row]
         
-        if let sender = request.person?.name{
+        if let sender = request.person?.name(){
             
             if let event = request.event.title{
         

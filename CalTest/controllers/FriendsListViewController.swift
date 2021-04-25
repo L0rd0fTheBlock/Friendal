@@ -18,10 +18,12 @@ import Contacts
 class FriendsListViewController: UITableViewController {
 
     var friends: Array<Person> = []
+    var contacts: Array<Person> = []
     let errorLabel = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.title = "Friends"
             tableView.delegate = self
             self.tableView.register(FriendsListViewCell.self, forCellReuseIdentifier: "friend")
             tableView.rowHeight = 90
@@ -54,6 +56,7 @@ class FriendsListViewController: UITableViewController {
     func doLoad(){
         
         friends.removeAll()
+        contacts.removeAll()
         tableView.reloadData()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
         errorLabel.textAlignment = .center
@@ -65,8 +68,7 @@ class FriendsListViewController: UITableViewController {
         
         let calHandler = CalendarHandler()
         
-        var contacts = [CNContact]()
-        let keys = [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor]
+        let keys = [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
             
             let contactStore = CNContactStore()
@@ -74,12 +76,33 @@ class FriendsListViewController: UITableViewController {
                 try contactStore.enumerateContacts(with: request) {
                     (contact, stop) in
                     // Array containing all unified contacts from everywhere
-                    contacts.append(contact)
-                    let phone = contacts.last?.phoneNumbers[0].value.stringValue
+                    let phone = contact.phoneNumbers[0].value.stringValue
+                    var image: UIImage? = nil
+                    if(contact.imageDataAvailable == true){
+                        image = UIImage(data: (contact.imageData)!)!
+                    }else{
+                        image = UIImage(named: "default_profile")
+                    }
                     print("pHONE NUMBERS ================")
-                    let number = String(phone!.filter { !" \n\t\r".contains($0) })
+                    let number = String(phone.filter { !" \n\t\r".contains($0) })
                     print(number)
-                    calHandler.getperson(forPhone: number, completion: self.appendFriend(p:))
+                    calHandler.getperson(forPhone: number, completion: {(p: Person, isFriend: Bool) in
+                        p.picture = image
+                        if(isFriend == true){
+                            self.friends.append(p)
+                            self.tableView.reloadData()
+                            self.errorLabel.isHidden = true
+                            
+                        }else{
+                            p.first_name = contact.givenName
+                            p.last_name = contact.familyName
+                            self.contacts.append(p)
+                            self.tableView.reloadData()
+                        }
+                    })
+                }
+                if(friends.isEmpty){
+                    errorLabel.text = "None of your contacts have installed Friendal"
                 }
             }
             catch {
@@ -89,12 +112,9 @@ class FriendsListViewController: UITableViewController {
         
     }
     
-    func appendFriend(p: Person){
-        friends.append(p)
-        tableView.reloadData()
-    }
+    //MARK: Deprecated
     
-    func populateFriends(data: Dictionary<String, Any>) -> Array<Person>{
+    /*func populateFriends(data: Dictionary<String, Any>) -> Array<Person>{
         var people: Array<Person> = []
         let d = data["data"] as! Array<Dictionary<String, Any>>
         for person in d{
@@ -113,7 +133,7 @@ class FriendsListViewController: UITableViewController {
        
         return people
 
-    }
+    }*/
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -124,13 +144,17 @@ class FriendsListViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        if(section == 0){
+            return friends.count
+        }else{
+            return contacts.count
+        }
         
-        return friends.count
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -146,7 +170,7 @@ class FriendsListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
+        if(indexPath.section == 0){
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "friend", for: indexPath) as! FriendsListViewCell
 
@@ -157,12 +181,36 @@ class FriendsListViewController: UITableViewController {
        // cell.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
         
       cell.pic.image = friends[indexPath.row].picture
-        cell.name.text = friends[indexPath.row].name
+        cell.name.text = friends[indexPath.row].name()
         cell.uid = friends[indexPath.row].uid
         cell.addSubview(cell.pic)
         cell.addSubview(cell.name)
         
         return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "friend", for: indexPath) as! FriendsListViewCell
+
+            
+          //  cell.backgroundColor = .red
+            cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
+            cell.name.frame = CGRect(x: 100, y: 10, width: cell.frame.width - 100, height: cell.frame.height - 20)
+           // cell.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
+            
+          cell.pic.image = contacts[indexPath.row].picture
+            cell.name.text = contacts[indexPath.row].name()
+            cell.uid = contacts[indexPath.row].uid
+            cell.addSubview(cell.pic)
+            cell.addSubview(cell.name)
+            return cell
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if(section == 0){
+            return "Friends"
+        }else{
+            return "These contacts are not on Friendal"
+        }
     }
     
     

@@ -94,7 +94,7 @@ class SettingsViewController: UITableViewController {
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "option", for: indexPath)
                 let name = UILabel(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
-                name.text = me?.name
+                name.text = me?.name()
                 name.textAlignment = .center
                 name.font = UIFont(name: name.font.fontName, size: CGFloat(24))
                 cell.addSubview(name)
