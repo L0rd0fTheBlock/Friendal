@@ -41,7 +41,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
     func doLoad(){
        
         let calHandler = CalendarHandler()
-        
+        print("Getting Status list for: \(event?.id)")
         calHandler.getStatus(forEvent: event!.id, { (statuses) in
             self.statuses = statuses
             self.collectionViewLayout.collectionView?.reloadData()
@@ -117,19 +117,19 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
                 cell.message.text = statuses[indexPath.row - 1].message
                 cell.poster.text = statuses[indexPath.row - 1].name
                 
-                guard let link = statuses[indexPath.row - 1].link else{
-                    return cell
+               // guard let link = statuses[indexPath.row - 1].link else{
+               //     return cell
                     
-                }
+                //}
                 
-                let url = URL(string: link)
+                //let url = URL(string: link)
                 
-                getDataFromUrl(url: url!, completion: { data, response, error in
+               /* getDataFromUrl(url: url!, completion: { data, response, error in
                     guard let data = data, error == nil else { return }
                     DispatchQueue.main.async() {
                         cell.picture.image = UIImage(data: data)!
                     }
-                })
+                })*/
                 
                 return cell
             }

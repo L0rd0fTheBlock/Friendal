@@ -51,9 +51,9 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
         contentView.addSubview(post)
         
         post.topAnchor.constraint(equalTo: status.bottomAnchor, constant: 5).isActive = true
-        post.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -5).isActive = true
+        post.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10).isActive = true
         post.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        post.widthAnchor.constraint(equalToConstant: 75).isActive = true
+        post.widthAnchor.constraint(equalToConstant: 80).isActive = true
         post.setTitle("Post", for: .normal)
         post.setTitle("Continue", for: .disabled)
         post.addTarget(self, action: #selector(didPost), for: .touchUpInside)

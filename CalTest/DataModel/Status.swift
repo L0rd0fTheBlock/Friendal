@@ -36,12 +36,14 @@ class Status{
         let d = document.data()
         
         id = document.documentID
-        message = d["text"] as? String
+        message = d["message"] as? String
         posted = d["posted"] as? String
         link = ""
-        comments = getComments(from: document)
+        #warning("COMMENTS NOT YET IMPLEMENTED")
+        
+        comments = nil
         isAd = false
-        getPerson(p: d["poster"] as! String)
+        getPerson(p: d["userID"] as! String)
         
     }
     

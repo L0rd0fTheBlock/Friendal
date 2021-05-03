@@ -337,7 +337,7 @@ class CalendarHandler{
         print("retrieving status files for event: \(forEvent)")
         var statuses = [Status]()
         //get all invites for the event
-        db.collection("Status").whereField("eventId", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
+        db.collection("Status").whereField("eventID", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
