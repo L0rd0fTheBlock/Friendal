@@ -43,16 +43,14 @@ class Status{
         
         comments = nil
         isAd = false
-        getPerson(p: d["userID"] as! String)
-        
     }
     
-    func getPerson(p: String){
+    func getPerson(p: String, completion: @escaping ()->Void){
         let cal = CalendarHandler()
         cal.getperson(forUser: p, completion: {(person) in
             
             self.poster = person
-            
+            completion()
         })
     }
     

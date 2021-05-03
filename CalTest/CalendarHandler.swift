@@ -349,10 +349,16 @@ class CalendarHandler{
                 for document in (querySnapshot?.documents)! {
                         print("Response for: \(forEvent)")
                     let status = Status(document: document)
-                    statuses.append(status)
+                    status.getPerson(p: document.data()["userID"] as! String, completion: {() in
+                        statuses.append(status)
+                        completion(statuses)
+                    })
+                    
+                    
+                    
                 }
             }
-            completion(statuses)
+            
         }
     }
     

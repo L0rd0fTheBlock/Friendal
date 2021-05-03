@@ -115,7 +115,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
                 
                 cell.backgroundColor = .white
                 cell.message.text = statuses[indexPath.row - 1].message
-                cell.poster.text = statuses[indexPath.row - 1].name
+                cell.poster.text = statuses[indexPath.row - 1].poster?.name()
                 
                // guard let link = statuses[indexPath.row - 1].link else{
                //     return cell
