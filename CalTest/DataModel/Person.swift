@@ -18,16 +18,15 @@ class Person{
     var email: String
     var mobile: String
     var picture: UIImage? = nil
-    var link: String
     var friends: [Person] = [Person]()
     
     init(id: String, first: String, last: String, picture: Dictionary<String, Any>) {
         uid = id
         first_name = first
         last_name = last
-        link = picture["url"] as! String
         email = ""
         mobile = ""
+        self.picture = UIImage(named: "default_profile")
         
         
     }
@@ -36,18 +35,18 @@ class Person{
         uid = id
         first_name = first
         last_name = last
-        link = ""
         email = ""
         mobile = ""
+        picture = UIImage(named: "default_profile")
         
     }
     init(id: String, first: String, last: String, email:String, mobile:String) {
         uid = id
         first_name = first
         last_name = last
-        link = ""
         self.email = email
         self.mobile = mobile
+        picture = UIImage(named: "default_profile")
         
     }
     
@@ -56,9 +55,21 @@ class Person{
         let d = document.data()
         first_name = d!["forename"] as! String
         last_name = d!["surname"] as! String
-        link = ""
         email = d!["email"] as! String
         mobile = d!["mobile"] as! String
+        picture = UIImage(named: "default_profile")
+        
+        
+        
+    }
+    
+    init() {
+        uid = ""
+        first_name = ""
+        last_name = ""
+        email = ""
+        mobile = ""
+        picture = UIImage(named: "default_profile")
         
     }
     

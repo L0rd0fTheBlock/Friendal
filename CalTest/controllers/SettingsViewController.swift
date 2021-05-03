@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 //import FacebookLogin
 
 class SettingsViewController: UITableViewController {
@@ -15,6 +16,8 @@ class SettingsViewController: UITableViewController {
         super.viewDidLoad()
         
         title = "Options"
+        
+        tableView.register(SettingsUserProfileCell.self, forCellReuseIdentifier: "user")
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "option")
         
@@ -34,7 +37,12 @@ class SettingsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-      //  let calHandler = CalendarHandler()
+        let calHandler = CalendarHandler()
+        
+        calHandler.getperson(forUser: Auth.auth().currentUser!.uid, completion: {(p) in
+            self.me = p
+            self.tableView.reloadData()
+        })
         
       //  calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
             
@@ -92,12 +100,10 @@ class SettingsViewController: UITableViewController {
         if(indexPath.section == 0){
             switch indexPath.row{
             case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "option", for: indexPath)
-                let name = UILabel(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height))
-                name.text = me?.name()
-                name.textAlignment = .center
-                name.font = UIFont(name: name.font.fontName, size: CGFloat(24))
-                cell.addSubview(name)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as! SettingsUserProfileCell
+                let profilePic = me?.picture
+                cell.pic.image = profilePic
+                cell.name.text = me?.name()
                 
                 return cell
             case 1:
@@ -140,6 +146,13 @@ class SettingsViewController: UITableViewController {
         }else{
             return UITableViewCell()
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if(indexPath.row == 0){
+            navigationController?.present(UserManagerViewController(), animated: true, completion: {()})
+        }
+        
     }
 
 

@@ -26,6 +26,8 @@
 		7D4483D32039DADC00071CB3 /* LoginViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4483D22039DADC00071CB3 /* LoginViewCell.swift */; };
 		7D45F4592005329D0096A205 /* NewStatusViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D45F4582005329D0096A205 /* NewStatusViewCell.swift */; };
 		7D476FB42014F6710004E490 /* TextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D476FB32014F6710004E490 /* TextTableViewCell.swift */; };
+		7D4AA0A0264042F9002EFAF2 /* SettingsUserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */; };
+		7D4AA0A226404B98002EFAF2 /* UserManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */; };
 		7D4E7BAE1FFA88020085DA33 /* WebViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */; };
 		7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */; };
 		7D5E0FF31FC9D8BB006A9D75 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF21FC9D8BB006A9D75 /* WelcomeViewController.swift */; };
@@ -101,6 +103,8 @@
 		7D4483D22039DADC00071CB3 /* LoginViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewCell.swift; sourceTree = "<group>"; };
 		7D45F4582005329D0096A205 /* NewStatusViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStatusViewCell.swift; sourceTree = "<group>"; };
 		7D476FB32014F6710004E490 /* TextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTableViewCell.swift; sourceTree = "<group>"; };
+		7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserProfileCell.swift; sourceTree = "<group>"; };
+		7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagerViewController.swift; sourceTree = "<group>"; };
 		7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTableViewCell.swift; sourceTree = "<group>"; };
 		7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventToggleCell.swift; sourceTree = "<group>"; };
 		7D5E0FF21FC9D8BB006A9D75 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -207,6 +211,7 @@
 				7D0F87D02004554A00CB0058 /* StatusTableViewCell.swift */,
 				7D476FB32014F6710004E490 /* TextTableViewCell.swift */,
 				7DA1D91E203B5F800058580D /* SelectableTableViewCell.swift */,
+				7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */,
 			);
 			path = tableView;
 			sourceTree = "<group>";
@@ -304,6 +309,7 @@
 				7DCE3F711FD305D500322939 /* CalendarNavigationController.swift */,
 				7D90D53E1FD44B7D00FE2E89 /* SettingsViewController.swift */,
 				7D2A498B1FED42A800CDEEB3 /* InviteesTableViewController.swift */,
+				7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -760,6 +766,7 @@
 				7D838361261F1FDA000464F4 /* LoginViewController.swift in Sources */,
 				7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */,
 				7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */,
+				7D4AA0A226404B98002EFAF2 /* UserManagerViewController.swift in Sources */,
 				7DA95A4720080B02004DB003 /* AdMobCollectionViewCell.swift in Sources */,
 				7D5E0FF31FC9D8BB006A9D75 /* WelcomeViewController.swift in Sources */,
 				7D0F87CC2004244F00CB0058 /* Status.swift in Sources */,
@@ -784,6 +791,7 @@
 				7D90D53F1FD44B7D00FE2E89 /* SettingsViewController.swift in Sources */,
 				7D5F5D851FC207A800129830 /* AppDelegate.swift in Sources */,
 				7DE55C261FCF15F800016A83 /* NotificationViewController.swift in Sources */,
+				7D4AA0A0264042F9002EFAF2 /* SettingsUserProfileCell.swift in Sources */,
 				7D45F4592005329D0096A205 /* NewStatusViewCell.swift in Sources */,
 				7D3127C71FF9C6CE009752F0 /* BugReportViewController.swift in Sources */,
 				7D117BA71FC33EB2009E5932 /* Event.swift in Sources */,

@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }catch{
             print("Error")
         }
-        window?.rootViewController = TabBarController()//TODO: set this back to tab bar controller after testing
+        window?.rootViewController = UserManagerViewController()//TODO: set this back to tab bar controller after testing
        // print("-=-=-=-=-=-=-=-=-=-=-=")
         //print(AccessToken.current)
     return true
