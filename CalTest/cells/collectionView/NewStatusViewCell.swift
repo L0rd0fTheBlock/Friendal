@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
     
@@ -80,10 +81,12 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
         }
         print("posting")
         
-       // calHandler.saveNewStatus(event: event.id, title: event.title!, sender: Settings.sharedInstance.uid, senderName: Settings.sharedInstance.me.name, message: status.text!) { (data) in
-            self.status.text = ""
-            self.placeholder.isHidden = false
+        calHandler.submitStatus(forEvent: event.id, fromUser: Auth.auth().currentUser!.uid, withMessage: status.text, { () in
             (self.superview as! StatusView).doLoad()
+        })
+        self.status.text = ""
+        self.setPlaceholder()
+            
         }
     
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
@@ -94,14 +97,17 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
         return true
     }
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-        if(status.text.isEmpty){
-            status.text = "Say Something..."
-            status.textColor = .lightGray
-        }
+        setPlaceholder()
         post.isEnabled = true
         return true
     }
     
+    func setPlaceholder(){
+        if(status.text.isEmpty){
+            status.text = "Say Something..."
+            status.textColor = .lightGray
+        }
+    }
     func setupTutorial(){
         
        /* tutorialView.translatesAutoresizingMaskIntoConstraints = false

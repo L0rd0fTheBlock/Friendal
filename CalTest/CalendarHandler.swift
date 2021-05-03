@@ -237,7 +237,7 @@ class CalendarHandler{
         })
     }
     //Event Invites
-    
+    //MARK: Invites
     func saveNewRequest(event: String, user: String){
         print("")
         print("Running saveNewRequest()")
@@ -332,6 +332,7 @@ class CalendarHandler{
         })
     }
     
+    //MARK: Status
     func getStatus(forEvent: String, _ completion: @escaping([Status]) -> Void){
         print("retrieving status files for event: \(forEvent)")
         var statuses = [Status]()
@@ -352,6 +353,13 @@ class CalendarHandler{
                 }
             }
             completion(statuses)
+        }
+    }
+    
+    func submitStatus(forEvent: String, fromUser: String, withMessage: String, _ completion: @escaping()->Void){
+        let d = ["eventID": forEvent, "userID": fromUser, "message": withMessage]
+        db.collection("Status").addDocument(data: d){(response) in
+            completion()
         }
     }
 

@@ -93,7 +93,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
             print("creating newStatus")
             let cell = dequeueReusableCell(withReuseIdentifier: "NewStatusCell", for: indexPath) as! NewStatusViewCell
             
-           // cell.event = self.event
+            cell.event = self.event
             
             return cell
         }else{
