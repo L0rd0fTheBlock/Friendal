@@ -42,8 +42,11 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
        
         let calHandler = CalendarHandler()
         
-        calHandler.getEventStatus((event?.id)!) { (statuses, error) in
-        }
+        calHandler.getStatus(forEvent: event!.id, { (statuses) in
+            self.statuses = statuses
+            self.collectionViewLayout.collectionView?.reloadData()
+        })
+    }
         //do status handling
 
          /*   guard var status = statuses else{
@@ -73,7 +76,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
             
             self.reloadData()
         }*/
-    }
+    //}
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -159,3 +162,4 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
     }
 
 }
+

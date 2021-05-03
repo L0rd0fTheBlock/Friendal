@@ -29,7 +29,7 @@ class StatusTableViewCell: UITableViewCell {
     func doSetup(){
         
         //backgroundColor = .black
-        addSubview(collectionView)
+        contentView.addSubview(collectionView)
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0": collectionView]))
         

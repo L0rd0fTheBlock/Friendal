@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Contacts
 
 import FirebaseFirestore
 
@@ -81,6 +82,32 @@ class Person{
         URLSession.shared.dataTask(with: url) { data, response, error in
             completion(data, response, error)
             }.resume()
+    }
+    
+    func getContactImage() -> UIImage{
+        
+       let predicate = CNContact.predicateForContacts(matching: CNPhoneNumber(stringValue: mobile))
+        let keys = [CNContactImageDataKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor]
+        
+        let store = CNContactStore()
+        do {
+            let contacts = try store.unifiedContacts(matching: predicate, keysToFetch: keys)
+            print("Fetched contacts: \(contacts)")
+            
+            let contact = contacts[0]
+            if(contact.imageDataAvailable == true){
+                picture = UIImage(data: contact.imageData!)!
+                return picture!
+            }else{
+                picture = UIImage(named: "default_profile")
+                return picture!
+            }
+        } catch {
+            print("Failed to fetch contact, error: \(error)")
+            // Handle the error
+        }
+        
+        return UIImage()
     }
     
     func downloadImage(url: URL, table: UITableView) {

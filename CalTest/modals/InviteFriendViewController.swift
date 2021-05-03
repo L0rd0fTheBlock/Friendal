@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 //import FacebookCore
 
 class InviteFriendViewController: FriendsListViewController {
@@ -80,10 +81,10 @@ class InviteFriendViewController: FriendsListViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath) as! FriendsListViewCell
         
-       /* if(cell.uid == AccessToken.current?.userId){
+        if(cell.uid == Auth.auth().currentUser?.uid){
             cell.name.text = cell.name.text! + " (You)"
         }
-        */
+        
         for invitee in invited{
             if(invitee.uid == cell.uid){
                 cell.isUserInteractionEnabled = false
@@ -102,10 +103,10 @@ class InviteFriendViewController: FriendsListViewController {
     @objc
     func sendInvites(){
         
-     //  let handler = CalendarHandler()
+    let handler = CalendarHandler()
         
         for id in selected{
-           // handler.saveNewRequest(event: (topView?.event?.id)!, user: id, name: (me?.name)!, isNotMe: true)
+            handler.saveNewRequest(event: (topView?.event?.id)!, user: id)
         }
         dismissView()
     }

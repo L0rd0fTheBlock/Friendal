@@ -15,6 +15,7 @@ class EventViewController: UITableViewController {
     var cells = 6
     var event:Event? = nil
     var today: DayViewController? = nil
+    var count = 0
     var isEdit:Bool = false
     var isMyCalendar = true
     let alert: UIAlertController = UIAlertController(title: "Delete", message: "Are you sure? This cannot be undone.", preferredStyle: UIAlertController.Style.alert)
@@ -22,6 +23,17 @@ class EventViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let cal = CalendarHandler()
+        
+        cal.getRequestCount(forEvent: event!.id, completion: { (c) in
+            
+            self.count = c
+            self.tableView.reloadData()
+            
+        })
+        
+        
         hideKeyboardWhenTappedAround()
         
       //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIResponder.keyboardWillShowNotification, object: nil)
@@ -48,7 +60,7 @@ class EventViewController: UITableViewController {
         
         tableView.allowsSelection = true
         
-       // self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didBeginEditing))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didBeginEditing))
         registerCells()
         self.tabBarController?.tabBar.isHidden = true
         
@@ -294,7 +306,7 @@ class EventViewController: UITableViewController {
                 let cell = UITableViewCell(style: .value1, reuseIdentifier: "selectcell")
                 
                 cell.textLabel?.text = "Invitees "
-                cell.detailTextLabel?.text = event?.count
+                cell.detailTextLabel?.text = String(count)
                 cell.accessoryType = .disclosureIndicator
                 return cell
             case 5:

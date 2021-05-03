@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import FirebaseAuth
 //import FacebookCore
-class InviteesTableViewController: UITableViewController {
-
+class InviteesTableViewController: UITableViewController, UIContextMenuInteractionDelegate {
     var event:Event? = nil
+    var count = 0
     var going:[Person] = []
     var notGoing: [Person] = []
     var invited: [Person] = []
@@ -36,131 +37,69 @@ class InviteesTableViewController: UITableViewController {
         invited = []
         
         //get all invitees for an event
-        getGoing()
-        getNotGoing()
         getInvited()
         if(!(event?.canInvite)!){
-            /*if(event?.creator == AccessToken.current?.userId){
+            //if the event does not allow invites
+            if(event?.creator == Auth.auth().currentUser?.uid){
+                //if the user is the event creator create the add button
                 let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(beginInvites))
                 
                 navigationItem.setRightBarButton(add, animated: true)
-            }*/
+            }
         }else{
+            //if inviting is allowed create the add button
             let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(beginInvites))
             
             navigationItem.setRightBarButton(add, animated: true)
         }
+        
+        
     }
-    
-    
-    func getGoing(){
-        
-        //let calHandler = CalendarHandler()
-        
-      /*  calHandler.getGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
-           
-            print("======GOING======")
-            print(invitees as Any)
-            guard let invite = invitees else{return}
-            for invitee in invite{
-                
-                calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
-                    
-                    guard let data  = data else{return}
-                    
-                    let pic = data["picture"] as! Dictionary<String, Any>
-                    
-                    let person = Person(id: data["id"] as! String, first: data["first_name"] as! String, last: data["last_name"] as! String, picture: pic["data"] as! Dictionary<String, Any>)
-                    
-                    self.going.append(person)
-                    
-                    
-                    
-                        person.downloadImage(url: URL(string: person.link)!, table: self.tableView)
-                    
-                    self.tableView.reloadData()
-                    
-                })//end graph
-                
-            }//end invitees loop
-            self.tableView.reloadData()
-        })//end getGoing*/
-    }//end function
-    
-    func getNotGoing(){
-        
-       // let calHandler = CalendarHandler()
-        
-      /*  calHandler.getNotGoing(forEvent: (event?.id)!, completion: {(invitees, error) in
-            
-            print("======NOT GOING======")
-            print(invitees)
-            
-            guard let invite = invitees else{return}
-            
-            for invitee in invite{
-                
-                calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
-                    
-                    guard let data = data else{return}
-                    
-                    let pic = data["picture"] as! Dictionary<String, Any>
-                    
-                    let person = Person(id: data["id"] as! String, first: data["first_name"] as! String, last: data["last_name"] as! String, picture: pic["data"] as! Dictionary<String, Any>)
-                    
-                    self.notGoing.append(person)
-                    
-                    
-                    
-                    person.downloadImage(url: URL(string: person.link)!, table: self.tableView)
-                    
-                    self.tableView.reloadData()
-                    
-                })//end graph
-                
-            }//end invitees loop
-            self.tableView.reloadData()
-        })//end getNotGoing*/
-    }//end function
     
     func getInvited(){
         
-   //     let calHandler = CalendarHandler()
+        let calHandler = CalendarHandler()
         
-       /* calHandler.getInvited(forEvent: (event?.id)!, completion: {(invitees, error) in
-            print("======Invited======")
-            print(invitees)
+        calHandler.getRequests(forEvent: event!.id, completion: {(g, ng, inv) in
             
-            guard let invite = invitees else{return}
-            
-            for invitee in invite{
-                
-                calHandler.doGraph(request: invitee.UID, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
-                    
-                    guard let data = data else{return}
-                    
-                    let pic = data["picture"] as! Dictionary<String, Any>
-                    
-                    let person = Person(id: data["id"] as! String, first: data["first_name"] as! String, last: data["last_name"] as! String, picture: pic["data"] as! Dictionary<String, Any>)
-                    
-                    self.invited.append(person)
-                    
-                    
-                    
-                    person.downloadImage(url: URL(string: person.link)!, table: self.tableView)
-                    
-                    self.tableView.reloadData()
-                    
-                })//end graph
-                
-            }//end invitees loop
+            self.going = g
+            self.notGoing = ng
+            self.invited = inv
             self.tableView.reloadData()
-        })//end getInvited*/
+            
+        })
+       
     }//end function
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func removeInvite(atIndexPath: IndexPath){
+        let cal = CalendarHandler()
+        let sec = atIndexPath.section
+        let index = atIndexPath.row
+        
+        
+        switch sec{
+        
+        case 0:
+            cal.removeRequest(foruser: going[index].uid, fromEvent: event!.id)
+            going.remove(at: index)
+            tableView.reloadData()
+            break
+        case 1:
+            cal.removeRequest(foruser: notGoing[index].uid, fromEvent: event!.id)
+            notGoing.remove(at: index)
+            tableView.reloadData()
+            break
+        default:
+            cal.removeRequest(foruser: invited[index].uid, fromEvent: event!.id)
+            invited.remove(at: index)
+            tableView.reloadData()
+        }
+        
     }
 
     // MARK: - Table view data source
@@ -220,11 +159,13 @@ class InviteesTableViewController: UITableViewController {
     
     func populateGoing(_ index: IndexPath) -> UITableViewCell{
         
+        let interaction = UIContextMenuInteraction(delegate: self)
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "Friend", for: index) as! FriendsListViewCell
         
         let person = going[index.row]
         cell.name.text = person.name()
-        cell.pic.image = person.picture
+        cell.pic.image = person.getContactImage()
         cell.uid = person.uid
         
         cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
@@ -233,9 +174,11 @@ class InviteesTableViewController: UITableViewController {
         cell.addSubview(cell.name)
         cell.addSubview(cell.pic)
         
-       /* if(cell.uid == AccessToken.current?.userId){
+       // cell.addInteraction(interaction)
+        
+        if(cell.uid == Auth.auth().currentUser?.uid){
             cell.name.text = cell.name.text! + " (You)"
-        }*/
+        }
         
         return cell
     }
@@ -246,7 +189,7 @@ class InviteesTableViewController: UITableViewController {
         
         let person = notGoing[index.row]
         cell.name.text = person.name()
-        cell.pic.image = person.picture
+        cell.pic.image = person.getContactImage()
         cell.uid = person.uid
         
         cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
@@ -255,9 +198,9 @@ class InviteesTableViewController: UITableViewController {
         cell.addSubview(cell.name)
         cell.addSubview(cell.pic)
         
-        /*if(cell.uid == AccessToken.current?.userId){
+        if(cell.uid == Auth.auth().currentUser?.uid){
             cell.name.text = cell.name.text! + " (You)"
-        }*/
+        }
         
         return cell
     }
@@ -267,7 +210,7 @@ class InviteesTableViewController: UITableViewController {
         
         let person = invited[index.row]
         cell.name.text = person.name()
-        cell.pic.image = person.picture
+        cell.pic.image = person.getContactImage()
         cell.uid = person.uid
         cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
         cell.name.frame = CGRect(x: 100, y: 10, width: cell.frame.width - 100, height: cell.frame.height - 20)
@@ -275,9 +218,9 @@ class InviteesTableViewController: UITableViewController {
         cell.addSubview(cell.name)
         cell.addSubview(cell.pic)
         
-       /* if(cell.uid == AccessToken.current?.userId){
-            cell.name.text = cell.name.text! + " (You)"
-        }*/
+       if(cell.uid == Auth.auth().currentUser?.uid){
+        cell.name.text = cell.name.text! + " (You)"
+    }
         
         return cell
     }
@@ -295,5 +238,25 @@ class InviteesTableViewController: UITableViewController {
         navigationController?.present(navItem, animated: true, completion: nil)
         
     }
-
+    
+    //MARK: context Delegate
+    
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration()
+    }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil,
+                                          previewProvider: nil,
+                                          actionProvider: {
+                suggestedActions in
+            let deleteAction =
+                UIAction(title: NSLocalizedString("Uninvite", comment: "Delete this user's invite"),
+                         image: UIImage(systemName: "trash"),
+                         attributes: .destructive) { action in
+                    self.removeInvite(atIndexPath: indexPath)
+                }
+            return UIMenu(title: "", children: [deleteAction])
+        })
+    }
 }

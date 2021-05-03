@@ -16,7 +16,7 @@ class CalendarHandler{
     var cal: CalendarViewController? = nil
     var db: Firestore!
     var month = [CalendarDay]()
-    
+    //MARK: Initialisers
     init(_ calendar:CalendarViewController){
 
         cal = calendar
@@ -30,7 +30,7 @@ class CalendarHandler{
         print("Calendar Handler Initialised")
     }
     
-    
+    //MARK: Calendar Month Day and Events
     func getMonth(forMonth: Int, ofYear: Int, withUser: String, completion:([CalendarDay]) -> Void){
         print("CalendarHandler GetMonth")
         var dateComponents = DateComponents()
@@ -130,6 +130,8 @@ class CalendarHandler{
                     }
                 }
     }
+    
+    //MARK: Get and set User and Person
     func saveUser(person: Person){
         print("")
         print("Running saveUser()")
@@ -142,6 +144,7 @@ class CalendarHandler{
         }
     }
     
+    @available(swift, obsoleted:4.0, message:"I have no idea what this does, use getPerson() to retrieve user information")
     func setUser(){
         
         db.collection("User")
@@ -213,217 +216,146 @@ class CalendarHandler{
             }
         }
     }
-}
-   /* let BASE_URL = "http://friendal.co.uk"
-    //let BASE_URL = "http://192.168.0.67"
-    //let BASE_URL = "http://localhost"
     
-    func getCalMonth(forMonth: String, ofYear: String, withUser: String, completion: @escaping ([CalendarDay]?, String?, NSError?) ->()){
-        DispatchQueue.global(qos: .userInteractive).async {
-            
-            var month: Array<CalendarDay> = []
-            var m = ""
-            let url = URL(string: self.BASE_URL + "/calendar/getMonth.php?")//month=" + forMonth  + "&year=" + ofYear + "&user=" + withUser)
-            
-            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
-            
-            request.httpMethod = "POST"
-            
-            var postString:String
-            
-            postString = "month=" + forMonth
-            
-            postString += "&year=" + ofYear
-            
-            postString += "&user=" + withUser
-            
-            print(postString)
-            request.httpBody = postString.data(using: String.Encoding.utf8)
-            
-            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
-                if error != nil {
-                    print("ERROR in request")
-                    DispatchQueue.main.async {
-                        completion(nil, nil, self.getError(from: error! as NSError))
-                    }
+    func getperson(withUID: String, completion: @escaping (Person, Bool)->Void){
+        print("Retrieving user file for \(withUID)")
+        db.collection("User").document(withUID).getDocument(completion: { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                print("Response recieved")
+                if(querySnapshot?.data() == nil){
+                    print("Empty")
+                    let p = Person(id: "", first: "", last: "")
+                    completion(p, false)
                 }else{
-                    if let content = data{
-                        do{
-                            //Array
-                            let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
-                            let jdata = json as! Array<[String: Any]>
-                            for day in jdata {
-                                m = day["month"] as! String
-                                var hasEvent: Bool = false
-                                if let events = day["Events"] as? Array<[String: Any]>{
-                                    if(events.count > 0){
-                                        hasEvent = true
-                                    }
-                                }
-                                let thisDay = CalendarDay(onDay: day["date"] as! String, ofMonth: day["month"] as! String, ofYear: ofYear, hasEvent: hasEvent)
-
-                                if(hasEvent){
-                                    for event in day["Events"] as! Array<[String: String]> {
-                                        thisDay.addEvent(event: Event(event["id"]!, title: event["title"]!, date: event["day"]!, month: event["month"]!, year: event["year"]!, start: event["start"]!, end: event["end"]!, count: event["inviteCount"]!, creator: event["UID"]!, privacy: event["make_private"]!, allDay: event["allDay"]!))
-                                    }
-                                }
-                                month.append(thisDay)
-                            }
-                            DispatchQueue.main.async {
-                                completion(month, m, nil)
-                            }
-                        }catch let err{
-                            DispatchQueue.main.async {
-
-                                print(err)
-                                completion(nil, nil, self.getError(from: err as NSError))
-
-                            }
-                        }
-                    }
-                }
-            }//end Task
-            task.resume()
-        }//end async
-    }//end getCalMonth
-    
-    
-    func getCalendarDay(_ today: CalendarDay, forUser: String, onDay: String, ofMonth: String, forYear: String, completion: @escaping (NSError?) ->()){
-        DispatchQueue.global(qos: .userInteractive).async {
-        let url = URL(string: self.BASE_URL + "/calendar/getCalendarDay.php")//?month=" + ofMonth  + "&year=" + forYear + "&day=" + onDay + "&user=" + forUser)
-        
-        print(url?.absoluteString)
-            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
-            
-            request.httpMethod = "POST"
-            
-            var postString:String
-            
-            postString = "month=" + ofMonth
-            
-            postString += "&year=" + forYear
-            
-            postString += "&day=" + onDay
-            
-            postString += "&user=" + forUser
-            
-            print(postString)
-            request.httpBody = postString.data(using: String.Encoding.utf8)
-            
-            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
-            if error != nil {
-                print("ERROR in request")
-                DispatchQueue.main.async {
-                    completion(self.getError(from: error! as NSError))
-                }
-            }else{
-                
-                if let content = data{
-                    do{
-                        //Array
-                        let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
-                        let jdata = json as! Array<[String: String]>
-                        print(jdata)
-                        today.events = []
-                            for event in jdata{
-                                print(today)
-                                
-                                for (key, value) in event{
-                                    print(key + ": ", value)
-                                }
-                                
-                                let e = Event(event["id"]!, title: event["title"]!, date: event["day"]!, month: event["month"]!, year: event["year"]!, start: event["start"]!, end: event["end"]!, count: event["inviteCount"]!, creator: event["UID"]!, privacy: event["make_private"]!, allDay: event["allDay"]!)
-                                
-                                today.addEvent(event: e)
-                            }
-                        DispatchQueue.main.async {
-                            completion(nil)
-                        }
-                    }catch let err{
-                        DispatchQueue.main.async {
-                            
-                            print(err)
-                            completion(self.getError(from: err as NSError))
-                            
-                        }
-                    }
+                    print("Response for: \(withUID)")
+                    let friend = Person(document: querySnapshot!)
+                    completion(friend, true)
                 }
             }
-        }//end Task
-        task.resume()
-    }//end async
-    }//end calendar day
+        })
+    }
+    //Event Invites
     
-    func getRequests(forUser: String, completion: @escaping ([Request]?, NSError?) ->()){
-       
-        DispatchQueue.global(qos: .userInteractive).async {
-            
-            var requests: Array<Request> = []
-            
-            let url = URL(string: self.BASE_URL + "/calendar/getRequests.php")//?user=" + forUser)
-            
-            var request = URLRequest(url: url!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(exactly: 10.00)!)
-            
-            request.httpMethod = "POST"
-            
-            var postString:String
-            
-            postString = "user=" + forUser
-            
-            print(postString)
-            request.httpBody = postString.data(using: String.Encoding.utf8)
-            
-            let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
-                if error != nil {
-                    print("ERROR")
-                    DispatchQueue.main.async {
-                        completion(nil, self.getError(from: error! as NSError))
-                    }
-                }else{
-                    if let content = data{
-                        
-                        do{
-                            //Array
-                            let json = try JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers) as AnyObject
-                           
-                            let jdata = json as! Array<[String: Any]>
-                           
-                            for request in jdata {
-                                
-                               
-                                
-                                
-                                
-                                
-                                let ev = request["0"]! as! Dictionary<String, Any>
-                                let events = ev["events"] as! Array<Dictionary<String, String>>
-                               //print(events.count)
-                                let anEvent = events[0]
-                                
-                                let thisEvent = Event(anEvent["id"]!, title: anEvent["title"]!, date: anEvent["day"]!, month: anEvent["month"]!, year: anEvent["year"]!, start: anEvent["start"]!, end: anEvent["end"]!, count: "0", creator: anEvent["UID"]!, privacy: anEvent["make_private"]!, allDay: anEvent["allDay"]!)
-                                
-                                if(request["message"] != nil){
-                                    requests.append(Request(request["id"] as! String, e: thisEvent, s: request["sender"] as! String, m: request["message"] as! String))
-                                }else{
-                                    requests.append(Request(request["id"] as! String, e: thisEvent, s: request["sender"] as! String))
-                                }
-                           
-                            }
-                            DispatchQueue.main.async {
-                                completion(requests, nil)
-                            }
-                    }catch let e{
-                        
-                        DispatchQueue.main.async {
-                            completion(nil, self.getError(from: e as NSError))
-                        }
-                        }
-                    }
+    func saveNewRequest(event: String, user: String){
+        print("")
+        print("Running saveNewRequest()")
+        db.collection("Invite").addDocument(data: ["eventId":event, "user":user, "sender": Auth.auth().currentUser!.uid, "response": "no"])
+        { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            }
+        }
+    }
+    
+    func getRequests(forEvent: String, completion: @escaping ([Person], [Person], [Person])->Void){
+        print("Retrieving invite files for event: \(forEvent)")
+        var going = [Person]()
+        var notGoing = [Person]()
+        var invited = [Person]()
+        //get all invites for the event
+        db.collection("Invite").whereField("eventId", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                print("Response recieved")
+                if(querySnapshot?.isEmpty == true){
+                    print("Empty")
+                    completion([], [], [])
                 }
-            }//end Task
-            task.resume()
-        }//end async
-    }//end getCalMonth
+                for document in (querySnapshot?.documents)! {
+                        print("Response for: \(forEvent)")
+                    let data = document.data()
+                    //get the user data for the invitee
+                    self.getperson(withUID: data["user"] as! String, completion: { (p, e) in
+                       // put the user in the correct array
+                        switch data["response"] as! String{
+                        case "going":
+                            going.append(p)
+                            break
+                        case "not":
+                            notGoing.append(p)
+                            break
+                        default:
+                            invited.append(p)
+                        }
+                        completion(going, notGoing, invited)
+                    })
+                        
+                }
+            }
+        }
+        
+    }
+    
+    func getRequestCount(forEvent: String, completion: @escaping (Int)->Void){
+        print("counting invite files for event: \(forEvent)")
+        var going = 0
+        //get all invites for the event
+        db.collection("Invite").whereField("eventId", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                print("Response recieved")
+                if(querySnapshot?.isEmpty == true){
+                    print("Empty")
+                    completion(0)
+                }
+                for document in (querySnapshot?.documents)! {
+                        print("Response for: \(forEvent)")
+                    let data = document.data()
+                    //get the user data for the invitee
+                    self.getperson(withUID: data["user"] as! String, completion: { (p, e) in
+                       // put the user in the correct array
+                        if(data["response"] as! String == "going"){
+                            going += 1
+                        
+                        }
+                        completion(going)
+                        })
+                }
+            }
+        }
+        
+    }
+    
+    func removeRequest(foruser: String, fromEvent: String){
+        
+        db.collection("Invite").whereField("eventId", isEqualTo: fromEvent).whereField("user", isEqualTo: foruser).getDocuments(completion: {(querySnapshot, err) in
+            
+            for document in (querySnapshot!.documents){
+                let id = document.documentID
+                    self.db.collection("Invite").document(id).delete()
+            }
+            
+        })
+    }
+    
+    func getStatus(forEvent: String, _ completion: @escaping([Status]) -> Void){
+        print("retrieving status files for event: \(forEvent)")
+        var statuses = [Status]()
+        //get all invites for the event
+        db.collection("Status").whereField("eventId", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                print("Response recieved")
+                if(querySnapshot?.isEmpty == true){
+                    print("Empty")
+                    completion([])
+                }
+                for document in (querySnapshot?.documents)! {
+                        print("Response for: \(forEvent)")
+                    let status = Status(document: document)
+                    statuses.append(status)
+                }
+            }
+            completion(statuses)
+        }
+    }
+
+  /*
     
     func cancelEvent(event: String, forUser:String, completion:@escaping (_ respond:Bool)->()){
         DispatchQueue.global(qos: .userInteractive).async {
@@ -588,33 +520,7 @@ class CalendarHandler{
         task.resume()
     }//end update Event
     
-    func saveNewRequest(event: String, user: String, name: String, isNotMe: Bool){
-        
-        let url = URL(string: self.BASE_URL + "/calendar/addRequest.php")
-        
-        let request = NSMutableURLRequest(url: url!)
-        request.httpMethod = "POST"
-        
-        var postString:String
-        postString = "eventID=" + event
-        
-        postString += "&id=" + user
-        
-//        postString += "&sender=" + (AccessToken.current?.userId)!
-        
-        postString += "&senderName=" + name
-        
-        postString += "&notMe=" + String(isNotMe)
-        //print(postString)
-        request.httpBody = postString.data(using: String.Encoding.utf8)
-        let task = URLSession.shared.dataTask(with: request as URLRequest){ (data, response, error) in
-            if error != nil {
-                print("ERROR")
-                print(error!)
-            }
-        }//end task
-        task.resume()
-    }//end save request
+    
     
     
     func acceptRequest(_ id: String, completion: @escaping () ->()){
@@ -1053,15 +959,15 @@ class CalendarHandler{
             })//end request*/
         }//end async
     }//end doGraph
-    
+    */
     func getError(from: NSError) ->NSError{
         print("===GETERROR===")
         if(from.domain == "NSCocoaErrorDomain"){
-            return NSError(domain: "uk.co.friendal", code: 101, userInfo: ["message": "An error occured while accessing the calendar."])
+            return NSError(domain: "biz.appit.friendal", code: 101, userInfo: ["message": "An error occured while accessing the calendar."])
         }else if(from.domain == NSURLErrorDomain && from.code == -1009){
-            return NSError(domain: "uk.co.friendal", code: 100, userInfo: ["message": "The Internet connection appears to be offline."])
+            return NSError(domain: "biz.appit.friendal", code: 100, userInfo: ["message": "The Internet connection appears to be offline."])
         }else{
-            return NSError(domain: "uk.co.friendal", code: 001, userInfo: ["message": "An unknown error has occured while making your request."])
+            return NSError(domain: "biz.appit.friendal", code: 001, userInfo: ["message": "An unknown error has occured while making your request."])
         }
     }
 
@@ -1117,8 +1023,7 @@ class CalendarHandler{
                     
                     if(chance < 3 && !stat[index - 1].isAd!){
                         print("adding an add at: ", index)
-                        var statAd = Status(id: nil, poster: nil, message: nil, name: nil, link: nil, comments: nil, isAd: true)
-                        statAd.isAd = true
+                        let statAd = Status(isAd: true)
                         
                         stat.insert(statAd, at: index)
                         // print(statuses)
@@ -1127,7 +1032,7 @@ class CalendarHandler{
                 index = index + 1
             }while(index <= stat.count)
         }else{
-            let statAd = Status(id: nil, poster: nil, message: nil, name: nil, link: nil, comments: nil, isAd: true)
+            let statAd = Status(isAd: true)
             
             stat.insert(statAd, at: 0)
         }
@@ -1141,5 +1046,5 @@ class CalendarHandler{
 //        print("=================================")
         
         return stat
-    }*/
-//}//end class
+    }
+}//end class

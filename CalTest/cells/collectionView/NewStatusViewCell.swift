@@ -10,7 +10,7 @@ import UIKit
 
 class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
     
-   /* let status = UITextView()
+    let status = UITextView()
     var event: Event? = nil
     let placeholder = UILabel(frame: .zero)
     let post = UIButton(type: .custom)
@@ -25,42 +25,39 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
         status.frame = .zero
         
         status.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(status)
-        status.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
-        status.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        status.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50).isActive = true
-        status.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
+        contentView.addSubview(status)
+        status.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+        status.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10).isActive = true
+        status.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -50).isActive = true
+        status.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10).isActive = true
         
         status.layer.borderWidth = 1.0
         status.layer.borderColor = UIColor.lightGray.cgColor
-        
-        
-        placeholder.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(placeholder)
-        placeholder.text = "Say something..."
-        
-        placeholder.topAnchor.constraint(equalTo: status.topAnchor, constant: 5).isActive = true
-        placeholder.leftAnchor.constraint(equalTo: leftAnchor, constant: 15).isActive = true
-        placeholder.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        placeholder.rightAnchor.constraint(equalTo: rightAnchor, constant: -6).isActive = true
+        status.isEditable = true
         
         status.delegate = self
+        
+        status.text = "Say Something..."
+        status.textColor = .lightGray
+        
+        status.font = UIFont(name: status.font!.fontName, size: 18)
         
         post.frame = .zero
         post.translatesAutoresizingMaskIntoConstraints = false
         
         post.backgroundColor = UIColor(rgb: 0x01B30A)
         post.setTitleColor(.white, for: .normal)
-        addSubview(post)
+        contentView.addSubview(post)
         
         post.topAnchor.constraint(equalTo: status.bottomAnchor, constant: 5).isActive = true
-        post.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
+        post.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -5).isActive = true
         post.heightAnchor.constraint(equalToConstant: 40).isActive = true
         post.widthAnchor.constraint(equalToConstant: 75).isActive = true
         post.setTitle("Post", for: .normal)
         post.setTitle("Continue", for: .disabled)
         post.addTarget(self, action: #selector(didPost), for: .touchUpInside)
         
+        status.becomeFirstResponder()
         if let tut = UserDefaults.standard.object(forKey: "didCloseStatusTutorial") as? Bool{
             if(!tut){
                 setupTutorial()
@@ -68,7 +65,6 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
         }else{
             setupTutorial()
         }
-        
         
     }
     
@@ -89,21 +85,26 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
             self.placeholder.isHidden = false
             (self.superview as! StatusView).doLoad()
         }
-    }
     
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        placeholder.isHidden = true
+        print("editing!")
+        status.text = ""
+        status.textColor = .black
         post.isEnabled = false
         return true
     }
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        if(status.text.isEmpty){
+            status.text = "Say Something..."
+            status.textColor = .lightGray
+        }
         post.isEnabled = true
         return true
     }
     
     func setupTutorial(){
         
-        tutorialView.translatesAutoresizingMaskIntoConstraints = false
+       /* tutorialView.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(tutorialView)
         
@@ -151,14 +152,13 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
         let tapHandler = UITapGestureRecognizer(target: self, action: #selector(didTapToClose))
         
         tutorialView.addGestureRecognizer(tapHandler)
-        
+        */
     }
     
-    @objc func didTapToClose(){
+  //  @objc func didTapToClose(){
+        /*
         print("tap")
         tutorialView.removeFromSuperview()
-        UserDefaults.standard.set(true, forKey: "didCloseStatusTutorial")
-    }
-    
-    */
+        UserDefaults.standard.set(true, forKey: "didCloseStatusTutorial")*/
+   // }
 }
