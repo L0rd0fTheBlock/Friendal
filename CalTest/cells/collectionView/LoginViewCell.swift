@@ -67,7 +67,6 @@ class LoginViewCell: UICollectionViewCell, FUIAuthDelegate {
     
     @objc func buttonAction(sender: UIButton!) {
         print("Button tapped")
-        let lgvc = LoginViewController()
         
         let authViewController = authUI.authViewController()
         parent?.present(authViewController  , animated: true, completion:  nil)
@@ -86,8 +85,16 @@ class LoginViewCell: UICollectionViewCell, FUIAuthDelegate {
             print("Error Logging In \(String(describing: error))")
         }else{
             let cal = CalendarHandler()
-            cal.doesUserExist(make: true)
-            parent?.dismiss(animated: true, completion: nil)
+            cal.doesUserExist({(exists: Bool) in
+                if(exists){
+                    self.parent?.dismiss(animated: true, completion: nil)
+                }else{
+                    let manager = UserManagerViewController()
+                    manager.shouldCreateUser = true
+                    let nvc = CalendarNavigationController(rootViewController: manager)
+                    self.parent?.present(nvc, animated: true, completion: nil)
+            }
+            })
         }
     }
 }

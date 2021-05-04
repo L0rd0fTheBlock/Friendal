@@ -44,12 +44,7 @@ class FriendsListViewController: UITableViewController {
             doLoad()
         }else{
             //Access Token does not exist
-            let loginVC = LoginViewController()
-           // loginVC.calendarVC = self
-            //loginVC.vc = "friend"
-            self.present(loginVC, animated: true, completion: ({() in
-                
-            }))
+            #warning("Implement User checks here")
         }
     }
     
@@ -68,7 +63,7 @@ class FriendsListViewController: UITableViewController {
         
         let calHandler = CalendarHandler()
         
-        let keys = [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor]
+        let keys = [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
             
             let contactStore = CNContactStore()
@@ -77,17 +72,10 @@ class FriendsListViewController: UITableViewController {
                     (contact, stop) in
                     // Array containing all unified contacts from everywhere
                     let phone = contact.phoneNumbers[0].value.stringValue
-                    var image: UIImage? = nil
-                    if(contact.imageDataAvailable == true){
-                        image = UIImage(data: (contact.imageData)!)!
-                    }else{
-                        image = UIImage(named: "default_profile")
-                    }
                     print("pHONE NUMBERS ================")
                     let number = String(phone.filter { !" \n\t\r".contains($0) })
                     print(number)
                     calHandler.getperson(forPhone: number, completion: {(p: Person, isFriend: Bool) in
-                        p.picture = image
                         if(isFriend == true){
                             self.friends.append(p)
                             self.tableView.reloadData()

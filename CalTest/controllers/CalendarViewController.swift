@@ -74,28 +74,9 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                 showLoginScreen()
             }
         }else{
-           // print("View Will Appear -> Do Load")
+           print("View Will Appear -> Do Load")
             doLoad()
         }
-        
-        
-      /*  if AccessToken.current != nil {
-            // User is logged in, use 'accessToken' here.
-            doLoad()
-        }else{
-            if(!shouldLoadMyCalendar){
-                AppEventsLogger.log("Viewed Friend Calendar")
-            }else{
-                AppEventsLogger.log("viewed Own Calendar")
-            }
-            //Access Token does not exist
-            let loginVC = LoginViewController()
-            loginVC.calendarVC = self
-            loginVC.vc = "cal"
-            self.present(loginVC, animated: true, completion: ({() in
-                
-            }))
-        }*/
     }
     
     func isLoggedIn() ->Bool {
@@ -117,7 +98,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     func showLoginScreen(){
         let welcomeVC = WelcomeViewController()
         welcomeVC.calendarVC = self
-        welcomeVC.modalPresentationStyle = .overFullScreen
+        welcomeVC.modalPresentationStyle = .fullScreen
         navigationController?.present(welcomeVC, animated: true, completion: nil)
     }
     

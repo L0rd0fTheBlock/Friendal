@@ -40,9 +40,6 @@
 		7D5F5DA51FC207A800129830 /* CalTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5F5DA41FC207A800129830 /* CalTestUITests.swift */; };
 		7D74E0C51FC7888D00DB91AF /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D74E0C41FC7888D00DB91AF /* CalendarViewCell.swift */; };
 		7D7DEB891FC23AAA00F5443D /* CalendarHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DEB881FC23AAA00F5443D /* CalendarHandler.swift */; };
-		7D838361261F1FDA000464F4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D838360261F1FDA000464F4 /* LoginViewController.swift */; };
-		7D838362261F1FDA000464F4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D838360261F1FDA000464F4 /* LoginViewController.swift */; };
-		7D838363261F1FDA000464F4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D838360261F1FDA000464F4 /* LoginViewController.swift */; };
 		7D88FFD51FCB966400E6773E /* FriendsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D88FFD41FCB966400E6773E /* FriendsListViewController.swift */; };
 		7D88FFD71FCC58CB00E6773E /* FriendsListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D88FFD61FCC58CB00E6773E /* FriendsListViewCell.swift */; };
 		7D88FFD91FCC5E4700E6773E /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D88FFD81FCC5E4700E6773E /* Person.swift */; };
@@ -123,7 +120,6 @@
 		7D5F5DA61FC207A800129830 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7D74E0C41FC7888D00DB91AF /* CalendarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewCell.swift; sourceTree = "<group>"; };
 		7D7DEB881FC23AAA00F5443D /* CalendarHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHandler.swift; sourceTree = "<group>"; };
-		7D838360261F1FDA000464F4 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7D88FFD41FCB966400E6773E /* FriendsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListViewController.swift; sourceTree = "<group>"; };
 		7D88FFD61FCC58CB00E6773E /* FriendsListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListViewCell.swift; sourceTree = "<group>"; };
 		7D88FFD81FCC5E4700E6773E /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
@@ -321,7 +317,6 @@
 				7DCE3F6B1FD07A5600322939 /* NewRequestVC.swift */,
 				7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */,
 				7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */,
-				7D838360261F1FDA000464F4 /* LoginViewController.swift */,
 				7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */,
 			);
 			path = modals;
@@ -763,7 +758,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D838361261F1FDA000464F4 /* LoginViewController.swift in Sources */,
 				7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */,
 				7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */,
 				7D4AA0A226404B98002EFAF2 /* UserManagerViewController.swift in Sources */,
@@ -814,7 +808,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D838362261F1FDA000464F4 /* LoginViewController.swift in Sources */,
 				7D5F5D9A1FC207A800129830 /* CalTestTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -823,7 +816,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D838363261F1FDA000464F4 /* LoginViewController.swift in Sources */,
 				7D5F5DA51FC207A800129830 /* CalTestUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

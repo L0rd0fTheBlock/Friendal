@@ -34,15 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         
         Auth.auth().addStateDidChangeListener { (auth, user) in }
-       // Messaging.messaging().delegate = self
-        
-       // let token = Messaging.messaging().fcmToken
-        //print("FCM token: \(token ?? "")")
-        
-        /*if(AccessToken.current != nil && token != nil){
-            let ch = CalendarHandler()
-            ch.registerDviceToken()
-        }*/
+       
         
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
@@ -60,6 +52,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         application.registerForRemoteNotifications()
         
+      /*  do {
+            try  Auth.auth().signOut()
+        } catch {
+            
+        }(*/
+       
         
       //  AppEventsLogger.activate(application)
         //GADMobileAds.configure(withApplicationID: "ca-app-pub-8694139400395039~1830749784")

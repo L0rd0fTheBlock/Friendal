@@ -148,6 +148,20 @@ class CalendarHandler{
         }
     }
     
+    func createUser(person: Person){
+        print("")
+        print("Running createUser()")
+        print(person.toArray())
+        db.collection("User").document(Auth.auth().currentUser!.uid).setData(person.toArray())
+        { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            }else{
+                self.saveProfilePicture(forUser: Auth.auth().currentUser!.uid, withPicture: person.picture!)
+            }
+        }
+    }
+    
     func saveProfilePicture(forUser: String, withPicture: UIImage){
         
         //create reference
@@ -191,19 +205,18 @@ class CalendarHandler{
             }
     }
    
-    func doesUserExist(make: Bool){
+    func doesUserExist(_ completion: @escaping (Bool)->Void){
         db.collection("User").document(Auth.auth().currentUser!.uid).getDocument() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
+                fatalError("Unable to Retrieve documents to determine if user exists")
             } else {
                 if(querySnapshot?.data() == nil){
-                    print("User document does not exist, Creating")
-                    //Should create "more information" form here
-                    let p = Person(id: Auth.auth().currentUser!.uid, first: "Andrew", last: "Mac", email: "andrew.macfarlane93@gmail.com", mobile: "07940255130")
-                    self.saveUser(person: p)
+                    print("User document does not exist, Instructing App to begin creation")
+                    completion(false)
+                }else{
+                    completion(true)
                 }
-               //let friend = Person(document: querySnapshot!)
-              //  completion(friend)
             }
         }
         
@@ -250,9 +263,24 @@ class CalendarHandler{
                     completion(p, false)
                 }
                 for document in (querySnapshot?.documents)! {
-                        print("Response for: \(forPhone)")
-                        let friend = Person(document: document)
-                        completion(friend, true)
+                    print("Response for: \(forPhone)")
+                    let person = Person(document: document)
+                    //Get profile Pic
+                    let storageRef = self.storage.reference()
+                    let picRef = storageRef.child("profiles/\(person.uid)/profile.jpg")
+
+                    // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+                    picRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+                      if let error = error {
+                        print("No Image Exists for this user")
+                        completion(person, true)
+                        // Uh-oh, an error occurred!
+                      } else {
+                        let image = UIImage(data: data!)
+                        person.picture = image
+                        completion(person, true)
+                      }
+                    }
                 }
             }
         }

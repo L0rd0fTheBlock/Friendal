@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class UserManagerViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     var user = Person()
+    var shouldCreateUser = false
     
     override func viewDidLoad() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -24,6 +26,9 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
         let buttonRight = UIBarButtonItem(barButtonSystemItem: .done , target: self, action: #selector(didSave))
         
         navigationItem.setRightBarButton(buttonRight, animated: true)
+        if(user.email == ""){
+            user.email = (Auth.auth().currentUser?.email)!
+        }
     }
     
     
@@ -31,9 +36,14 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
         
         setUserDetails()
         let cal = CalendarHandler()
+        if(shouldCreateUser){
+           cal.createUser(person: user)
+            presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        }else{
+            cal.saveUser(person: user)
+            self.dismiss(animated: true, completion: nil)
+        }
         
-        cal.saveUser(person: user)
-        self.dismiss(animated: true, completion: nil)
         
     }
     
