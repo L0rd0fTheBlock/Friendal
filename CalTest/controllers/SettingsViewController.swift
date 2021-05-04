@@ -18,15 +18,12 @@ class SettingsViewController: UITableViewController {
         title = "Options"
         
         tableView.register(SettingsUserProfileCell.self, forCellReuseIdentifier: "user")
-        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "option")
-        
         tableView.register(SettingsToggleCell.self, forCellReuseIdentifier: "toggle")
-        
         tableView.register(WebViewTableViewCell.self, forCellReuseIdentifier: "web")
 
         tableView.isScrollEnabled = false
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -149,10 +146,19 @@ class SettingsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(indexPath.row == 0){
-            navigationController?.present(UserManagerViewController(), animated: true, completion: {()})
+        print("tap \(indexPath.row)")
+        if(indexPath.section == 0){
+            if(indexPath.row == 0){
+                let manager = UserManagerViewController()
+                manager.user = me!
+                
+                let managerVC = CalendarNavigationController(rootViewController: manager)
+                
+                self.present(managerVC, animated: true, completion: ({() in
+                    
+                }))
+            }
         }
-        
     }
 
 

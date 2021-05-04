@@ -309,7 +309,6 @@
 				7DCE3F711FD305D500322939 /* CalendarNavigationController.swift */,
 				7D90D53E1FD44B7D00FE2E89 /* SettingsViewController.swift */,
 				7D2A498B1FED42A800CDEEB3 /* InviteesTableViewController.swift */,
-				7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -323,6 +322,7 @@
 				7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */,
 				7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */,
 				7D838360261F1FDA000464F4 /* LoginViewController.swift */,
+				7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */,
 			);
 			path = modals;
 			sourceTree = "<group>";

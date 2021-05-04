@@ -78,63 +78,7 @@ class LoginViewCell: UICollectionViewCell, FUIAuthDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
-/*extension LoginViewCell: LoginButtonDelegate{
-    func loginButtonDidLogOut(_ loginButton: LoginButton) {
-        
-    }
-    
-    
-    func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
-       print("didCompleteLogin")
-        guard let p = parent else{
-            print("crashing: ", "parent is null")
-            let crash = Crashlytics()
-            let error = NSError(domain: "uk.co.friendal", code: 003, userInfo: ["message": "The parent object returned null while guarding during login"])
-            crash.recordError(error)
-            return
-        }
-        
-        if(p.isModal){
-            print("isModal")
-            switch result {
-            case LoginResult.success:
-                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: {(result, error) in
-                    
-                    let calHandler = CalendarHandler()
-                    calHandler.registerDviceToken()
-                    
-                    p.dismiss(animated: true, completion: ({() in
-                        
-                        if(p.vc == "cal"){
-                            let cal = p.calendarVC as! CalendarViewController
-                            cal.doLoad()
-                        }else if(p.vc == "friend"){
-                            let cal = p.calendarVC as! FriendsListViewController
-                            cal.doLoad()
-                        }else{
-                            print("crashing: ", p.vc)
-                            let crash = Crashlytics()
-                            let error = NSError(domain: "uk.co.friendal", code: 001, userInfo: ["message": "An Unidentified VC was used while logging in"])
-                            crash.recordError(error)
-                        }
-                    }))
-                    
-                })
-                //TODO: handle new UID
-                
-            default:
-                print("fail")
-            }
-        }else{
-            print("crashing: ", p.isModal)
-            let crash = Crashlytics()
-            let error = NSError(domain: "uk.co.friendal", code: 002, userInfo: ["message": "p.isModal returned false while logging in"])
-            crash.recordError(error)
-        }
-        
-    }
 
-}*/
     //MARK: Authentication Delegate
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
       // handle user and error as necessary

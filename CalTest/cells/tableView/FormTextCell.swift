@@ -12,6 +12,7 @@ class FormTextCell: UITableViewCell {
 
     let desc = UILabel()
     let value = UITextField()
+    var shouldDisplayDescription = true
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -20,10 +21,49 @@ class FormTextCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        desc.frame = CGRect(x: 10, y: 10, width: self.frame.width/3-20, height: self.frame.height)
-        value.frame = CGRect(x: 20, y: 10, width: self.frame.width, height: self.frame.height)
-        self.addSubview(desc)
+        desc.translatesAutoresizingMaskIntoConstraints = false
+        value.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(desc)
         contentView.addSubview(value)
+        
+        value.text = "Hellooooooo Woooorrrlllddd"
+        setConstraints()
+    }
+    
+    
+    func setConstraints(){
+        
+        if(shouldDisplayDescription){
+            //Description Constraints
+            
+            desc.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+            desc.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20).isActive = true
+            desc.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
+            desc.rightAnchor.constraint(equalTo: desc.leftAnchor, constant: 100).isActive = true
+            
+            //Value Constraints
+            value.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+            value.leftAnchor.constraint(equalTo: desc.rightAnchor, constant: 20).isActive = true
+            value.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
+            value.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -30).isActive = true
+        }
+        
+        
+    }
+    
+    
+    
+    func displayDescription(_ v: Bool){
+        if(v == false){
+            shouldDisplayDescription = false
+            let index = contentView.subviews.firstIndex(of: desc)
+            desc.removeFromSuperview()
+            setConstraints()
+        }else{
+            shouldDisplayDescription = true
+            contentView.addSubview(desc)
+            setConstraints()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

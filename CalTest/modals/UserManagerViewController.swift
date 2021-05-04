@@ -14,6 +14,49 @@ class UserManagerViewController: UITableViewController{
     override func viewDidLoad() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.register(FormTextCell.self, forCellReuseIdentifier: "text")
+        
+        self.title = "Your Details"
+        
+        let buttonLeft = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancel) )
+        
+        navigationItem.setLeftBarButton(buttonLeft, animated: true)
+        
+        let buttonRight = UIBarButtonItem(barButtonSystemItem: .done , target: self, action: #selector(didSave))
+        
+        navigationItem.setRightBarButton(buttonRight, animated: true)
+    }
+    
+    
+    @objc func didSave(){
+        
+        setUserDetails()
+        let cal = CalendarHandler()
+        
+        cal.saveUser(person: user)
+        self.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    @objc func didCancel(){
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func setUserDetails(){
+        //get Forename
+        var cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! FormTextCell
+        user.first_name = cell.value.text!
+        
+        //get Surname
+        cell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormTextCell
+        user.last_name = cell.value.text!
+        
+        //get email
+        cell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! FormTextCell
+        user.email = cell.value.text!
+        
+        //get mobile
+        cell = tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as! FormTextCell
+        user.mobile = cell.value.text!
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -77,8 +120,6 @@ class UserManagerViewController: UITableViewController{
             
             cell.desc.text = "Mobile: "
             cell.value.text = user.mobile
-            
-            
             return cell
             
         default:
