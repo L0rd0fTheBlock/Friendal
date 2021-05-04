@@ -120,16 +120,5 @@ class Person{
         
         return UIImage()
     }
-    
-    func downloadImage(url: URL, table: UITableView) {
-       
-        getDataFromUrl(url: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            DispatchQueue.main.async() {
-                self.picture = UIImage(data: data)!
-                table.reloadData()
-            }
-        }
-    }
 }
 

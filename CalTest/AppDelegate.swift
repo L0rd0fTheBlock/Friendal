@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         FirebaseApp.configure()
         let db = Firestore.firestore()
+        let storage = Storage.storage()
         
         
         Auth.auth().addStateDidChangeListener { (auth, user) in }
@@ -64,11 +65,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //GADMobileAds.configure(withApplicationID: "ca-app-pub-8694139400395039~1830749784")
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        do{
-        // try Auth.auth().signOut()
-        }catch{
-            print("Error")
-        }
         window?.rootViewController = TabBarController()//TODO: set this back to tab bar controller after testing
        // print("-=-=-=-=-=-=-=-=-=-=-=")
         //print(AccessToken.current)

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserManagerViewController: UITableViewController{
+class UserManagerViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     var user = Person()
     
     override func viewDidLoad() {
@@ -127,5 +127,38 @@ class UserManagerViewController: UITableViewController{
             return UITableViewCell()
         
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if(indexPath.row == 0){
+            
+            let ip = UIImagePickerController()
+            ip.sourceType = .photoLibrary
+            ip.allowsEditing = true
+            ip.delegate = self
+            
+            ip.mediaTypes = ["public.image"]
+            
+            present(ip, animated: true, completion: nil)
+            
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true)
+        
+        var image = info[.editedImage] as? UIImage
+        
+        if(image == nil){
+            image = info[.originalImage] as? UIImage
+        }
+        
+        if(image == nil){
+            print("Error Retrieving Image")
+        }else{
+            user.picture = image
+            tableView.reloadData()
+        }
+        
     }
 }

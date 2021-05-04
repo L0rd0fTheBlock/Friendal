@@ -14,19 +14,21 @@ import FirebaseFirestoreSwift
 
 class CalendarHandler{
     var cal: CalendarViewController? = nil
-    var db: Firestore!
+    let db: Firestore!
+    let storage: Storage
     var month = [CalendarDay]()
     //MARK: Initialisers
     init(_ calendar:CalendarViewController){
 
         cal = calendar
         db = Firestore.firestore()
+        storage = Storage.storage()
         
         print("Calendar Handler Initialised")
     }
    init(){
         db = Firestore.firestore()
-        
+        storage = Storage.storage()
         print("Calendar Handler Initialised")
     }
     
@@ -140,8 +142,32 @@ class CalendarHandler{
         { err in
             if let err = err {
                 print("Error adding document: \(err)")
+            }else{
+                self.saveProfilePicture(forUser: person.uid, withPicture: person.picture!)
             }
         }
+    }
+    
+    func saveProfilePicture(forUser: String, withPicture: UIImage){
+        
+        //create reference
+        let storageRef = storage.reference()
+        
+        //upload Image to cloud storage
+        var picRef = storageRef.child("profiles/\(forUser)/profile.jpg")
+        
+        // Upload the file to the path
+        let data = withPicture.jpegData(compressionQuality: 1)
+        let uploadTask = picRef.putData(data!, metadata: nil) { (metadata, error) in
+          guard let metadata = metadata else {
+            print("something apparently went wrong")
+            return
+          }
+        }
+
+        
+        
+        
     }
     
     @available(swift, obsoleted:4.0, message:"I have no idea what this does, use getPerson() to retrieve user information")
@@ -189,8 +215,23 @@ class CalendarHandler{
                 print("Error getting documents: \(err)")
             } else {
                 if(querySnapshot?.data() != nil){
-                    let friend = Person(document: querySnapshot!)
-                    completion(friend)
+                    let person = Person(document: querySnapshot!)
+                    // Create a reference to the file you want to download
+                    let storageRef = self.storage.reference()
+                    let picRef = storageRef.child("profiles/\(person.uid)/profile.jpg")
+
+                    // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+                    picRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+                      if let error = error {
+                        print("No Image Exists for this user")
+                        completion(person)
+                        // Uh-oh, an error occurred!
+                      } else {
+                        let image = UIImage(data: data!)
+                        person.picture = image
+                        completion(person)
+                      }
+                    }
                 }
             }
         }
