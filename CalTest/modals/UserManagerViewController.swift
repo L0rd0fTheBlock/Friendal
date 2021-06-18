@@ -16,6 +16,7 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
     override func viewDidLoad() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.register(FormTextCell.self, forCellReuseIdentifier: "text")
+        tableView.register(LogoutButtonCell.self, forCellReuseIdentifier: "logout")
         
         self.title = "Your Details"
         
@@ -69,12 +70,27 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
         user.mobile = cell.value.text!
     }
     
+    
+    @objc func doLogout(){
+        do {
+            try  Auth.auth().signOut()
+            self.dismiss(animated: true) {
+                if let tab = (UIApplication.shared.delegate as! AppDelegate).window?.rootViewController as? UITabBarController {
+                    tab.selectedIndex = 0
+                }
+            }
+        } catch {
+            
+        }
+    }
+
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 11
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -131,9 +147,16 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
             cell.desc.text = "Mobile: "
             cell.value.text = user.mobile
             return cell
+        case 10:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "logout", for: indexPath) as! LogoutButtonCell
+            
+            cell.button.setTitle("Logout", for: .normal)
+            cell.button.addTarget(self, action: #selector(doLogout), for: .touchUpInside)
+            cell.button.backgroundColor = .systemRed
+            
+            return cell
             
         default:
-            print("SOMETHING WENT WRONG=========================================================")
             return UITableViewCell()
         
         }

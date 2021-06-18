@@ -7,20 +7,19 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 class Request{
 
-    let event: Event
-    let sender:String
-    let message:String?
-    var accepted: Int = 0
+    var event: Event
+    var message:String?
+    var accepted: String = "no"
     var person: Person? = nil
-    let id:String
+    var id:String
 
-    init(_ id:String, e: Event, s: String, m: String){
+    init(_ id:String, e: Event, m: String){
         
         event = e
-        sender = s
         message = m
         self.id = id
         
@@ -29,9 +28,21 @@ class Request{
     init(_ id:String, e: Event, s: String){
         
         event = e
-        sender = s
         message = nil
         self.id = id
     }
     
+    init(){
+        event = Event()
+        message = ""
+        id = ""
+    }
+    
+    func apply(document: DocumentSnapshot){
+        let d = document.data()!
+        message = d["message"] as? String
+        accepted = d["response"] as! String
+        id = document.documentID
+        
+    }
 }

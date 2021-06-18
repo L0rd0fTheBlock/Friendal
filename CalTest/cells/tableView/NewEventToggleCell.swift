@@ -51,7 +51,6 @@ class NewEventToggleCell: UITableViewCell {
     }
     
     @objc func didToggle() {
-        print("toggle")
         if(type == 0){
             let p = parent as! NewEventVC
             if(title.text == "All-Day" && toggle.isOn){

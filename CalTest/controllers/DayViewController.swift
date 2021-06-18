@@ -126,7 +126,6 @@ class DayViewController: UITableViewController {
             sorted = true
             for (index, event) in (sortedEvents.enumerated()){
                 if(index == 0){
-                    print("Index is 0: doing nothing")
                 }else{
                     let thisTime = event.start?.split(separator: ":" )
                     let lastTime = sortedEvents[index-1].start?.split(separator: ":")

@@ -26,7 +26,6 @@ class FormTextCell: UITableViewCell {
         contentView.addSubview(desc)
         contentView.addSubview(value)
         
-        value.text = "Hellooooooo Woooorrrlllddd"
         setConstraints()
     }
     
@@ -43,7 +42,7 @@ class FormTextCell: UITableViewCell {
             
             //Value Constraints
             value.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
-            value.leftAnchor.constraint(equalTo: desc.rightAnchor, constant: 20).isActive = true
+            value.leftAnchor.constraint(equalTo: desc.rightAnchor, constant: 10).isActive = true
             value.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
             value.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -30).isActive = true
         }

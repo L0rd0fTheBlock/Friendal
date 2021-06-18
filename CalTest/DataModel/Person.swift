@@ -102,9 +102,7 @@ class Person{
         
         let store = CNContactStore()
         do {
-            let contacts = try store.unifiedContacts(matching: predicate, keysToFetch: keys)
-            print("Fetched contacts: \(contacts)")
-            
+            let contacts = try store.unifiedContacts(matching: predicate, keysToFetch: keys)            
             let contact = contacts[0]
             if(contact.imageDataAvailable == true){
                 picture = UIImage(data: contact.imageData!)!

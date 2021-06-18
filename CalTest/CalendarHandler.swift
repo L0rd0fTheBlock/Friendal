@@ -9,6 +9,8 @@
 import Foundation
 //import FacebookCore
 import Firebase
+import FirebaseStorage
+import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
@@ -23,18 +25,14 @@ class CalendarHandler{
         cal = calendar
         db = Firestore.firestore()
         storage = Storage.storage()
-        
-        print("Calendar Handler Initialised")
     }
    init(){
         db = Firestore.firestore()
         storage = Storage.storage()
-        print("Calendar Handler Initialised")
-    }
+   }
     
     //MARK: Calendar Month Day and Events
     func getMonth(forMonth: Int, ofYear: Int, withUser: String, completion:([CalendarDay]) -> Void){
-        print("CalendarHandler GetMonth")
         var dateComponents = DateComponents()
         dateComponents.year = ofYear
         dateComponents.month = forMonth
@@ -116,12 +114,22 @@ class CalendarHandler{
             }
         
     }
+    func getEvent(withId: String, completion: @escaping(Event) -> Void){
+        
+        db.collection("Event").document(withId).getDocument() { (document, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                let event = Event(document: document!)
+                completion(event)
+            }
+                
+        }
+                
+    }
     
     
     func addEvent(event: Event){
-        print("")
-        print("Running addEvent()")
-        print(event.toArray())
         var ref: DocumentReference? = nil
         ref = db.collection("Event").addDocument(data: event.toArray())
             { err in
@@ -133,11 +141,22 @@ class CalendarHandler{
                 }
     }
     
+    func addEvent(event: Event, completion: @escaping (String) -> Void){
+        var ref: DocumentReference? = nil
+        ref = db.collection("Event").addDocument(data: event.toArray())
+            { err in
+                    if let err = err {
+                        print("Error adding document: \(err)")
+                        completion("Error")
+                    } else {
+                        print("Document added with ID: \(ref!.documentID)")
+                        completion(ref!.documentID)
+                    }
+                }
+    }
+    
     //MARK: Get and set User and Person
     func saveUser(person: Person){
-        print("")
-        print("Running saveUser()")
-        print(person.toArray())
         db.collection("User").document(person.uid).setData(person.toArray())
         { err in
             if let err = err {
@@ -149,8 +168,6 @@ class CalendarHandler{
     }
     
     func createUser(person: Person){
-        print("")
-        print("Running createUser()")
         print(person.toArray())
         db.collection("User").document(Auth.auth().currentUser!.uid).setData(person.toArray())
         { err in
@@ -251,19 +268,15 @@ class CalendarHandler{
     }
     
     func getperson(forPhone: String, completion: @escaping (Person, Bool)->Void){
-        print("Retrieving user file for \(forPhone)")
         db.collection("User").whereField("mobile", isEqualTo: forPhone).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
-                print("Response recieved")
                 if(querySnapshot?.isEmpty == true){
-                    print("Empty")
                     let p = Person(id: "", first: "", last: "")
                     completion(p, false)
                 }
                 for document in (querySnapshot?.documents)! {
-                    print("Response for: \(forPhone)")
                     let person = Person(document: document)
                     //Get profile Pic
                     let storageRef = self.storage.reference()
@@ -287,18 +300,14 @@ class CalendarHandler{
     }
     
     func getperson(withUID: String, completion: @escaping (Person, Bool)->Void){
-        print("Retrieving user file for \(withUID)")
         db.collection("User").document(withUID).getDocument(completion: { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
-                print("Response recieved")
                 if(querySnapshot?.data() == nil){
-                    print("Empty")
                     let p = Person(id: "", first: "", last: "")
                     completion(p, false)
                 }else{
-                    print("Response for: \(withUID)")
                     let friend = Person(document: querySnapshot!)
                     completion(friend, true)
                 }
@@ -308,18 +317,18 @@ class CalendarHandler{
     //Event Invites
     //MARK: Invites
     func saveNewRequest(event: String, user: String){
-        print("")
-        print("Running saveNewRequest()")
-        db.collection("Invite").addDocument(data: ["eventId":event, "user":user, "sender": Auth.auth().currentUser!.uid, "response": "no"])
+        var ref: DocumentReference?
+        ref = db.collection("Invite").addDocument(data: ["eventId":event, "user":user, "sender": Auth.auth().currentUser!.uid, "response": "no"])
         { err in
             if let err = err {
                 print("Error adding document: \(err)")
+            }else{
+               // self.sendMessage(to: user, type: 1, withRef: ref!)
             }
         }
     }
     
     func getRequests(forEvent: String, completion: @escaping ([Person], [Person], [Person])->Void){
-        print("Retrieving invite files for event: \(forEvent)")
         var going = [Person]()
         var notGoing = [Person]()
         var invited = [Person]()
@@ -328,13 +337,10 @@ class CalendarHandler{
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
-                print("Response recieved")
                 if(querySnapshot?.isEmpty == true){
-                    print("Empty")
                     completion([], [], [])
                 }
                 for document in (querySnapshot?.documents)! {
-                        print("Response for: \(forEvent)")
                     let data = document.data()
                     //get the user data for the invitee
                     self.getperson(withUID: data["user"] as! String, completion: { (p, e) in
@@ -358,21 +364,44 @@ class CalendarHandler{
         
     }
     
+    func getRequests(forUser: String, completion: @escaping ([Request]) -> Void){
+        
+        var requests = [Request]()
+        
+        db.collection("Invite").whereField("user", isEqualTo: forUser).whereField("response", isEqualTo: "no").getDocuments(completion: {(querySnapshot, err) in
+            if(querySnapshot?.isEmpty == true){
+                completion([])
+            }
+            for document in (querySnapshot?.documents)! {
+                let r = Request()
+                let d = document.data()
+                r.apply(document: document)
+                self.getperson(forUser: d["sender"] as! String, completion: {(p) in
+                    r.person = p
+                    self.getEvent(withId: d["eventId"] as! String, completion: {(e) in
+                        r.event = e
+                        requests.append(r)
+                        completion(requests)
+                    })
+                })
+                
+            }
+            
+        })
+        
+    }
+    
     func getRequestCount(forEvent: String, completion: @escaping (Int)->Void){
-        print("counting invite files for event: \(forEvent)")
         var going = 0
         //get all invites for the event
         db.collection("Invite").whereField("eventId", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
-                print("Response recieved")
                 if(querySnapshot?.isEmpty == true){
-                    print("Empty")
                     completion(0)
                 }
                 for document in (querySnapshot?.documents)! {
-                        print("Response for: \(forEvent)")
                     let data = document.data()
                     //get the user data for the invitee
                     self.getperson(withUID: data["user"] as! String, completion: { (p, e) in
@@ -389,6 +418,13 @@ class CalendarHandler{
         
     }
     
+    func respondToRequest(_ request: String, with: String, completion: @escaping ()->Void){
+        
+        db.collection("Invite").document(request).updateData(["response" : with]){_ in
+            completion()
+        }
+    }
+    
     func removeRequest(foruser: String, fromEvent: String){
         
         db.collection("Invite").whereField("eventId", isEqualTo: fromEvent).whereField("user", isEqualTo: foruser).getDocuments(completion: {(querySnapshot, err) in
@@ -403,28 +439,21 @@ class CalendarHandler{
     
     //MARK: Status
     func getStatus(forEvent: String, _ completion: @escaping([Status]) -> Void){
-        print("retrieving status files for event: \(forEvent)")
         var statuses = [Status]()
         //get all invites for the event
         db.collection("Status").whereField("eventID", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
-                print("Response recieved")
                 if(querySnapshot?.isEmpty == true){
-                    print("Empty")
                     completion([])
                 }
                 for document in (querySnapshot?.documents)! {
-                        print("Response for: \(forEvent)")
                     let status = Status(document: document)
                     status.getPerson(p: document.data()["userID"] as! String, completion: {() in
                         statuses.append(status)
                         completion(statuses)
                     })
-                    
-                    
-                    
                 }
             }
             
@@ -438,6 +467,27 @@ class CalendarHandler{
         }
     }
 
+    
+    //MARK: Message
+    
+    func sendMessage(to: String, type: Int, withRef: String){
+        
+        //let message = ["user": to, "type": type, "read": false, "sender": Auth.auth().currentUser?.uid] as [String : Any]
+        
+        //db.collection("Message").addDocument(data: message)
+        
+    }
+    
+    func getMessages(){
+        /*
+         1: Request Recieved
+         2: Request Responded
+         3: Event Calncelled
+         4: Event Moved
+         */
+        
+    }
+    
   /*
     
     func cancelEvent(event: String, forUser:String, completion:@escaping (_ respond:Bool)->()){

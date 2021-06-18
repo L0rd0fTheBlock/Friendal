@@ -74,12 +74,10 @@ class NewEventVC: UITableViewController {
             if(event.start == event.end){
                 present(alert, animated: true, completion: nil)
             }else{
-                print("saving....")
                 handler.addEvent(event: event)
                 dismiss(animated: true, completion: nil)
             }
         }else{
-            print("saving....")
             handler.addEvent(event: event)
             dismiss(animated: true, completion: nil)
         }

@@ -62,19 +62,14 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("View Will Appear")
         
         
         //MARK: Uncomment this line to debug login features
         //do{ try Auth.auth().signOut() }catch{}
         super.viewDidLoad()
-        
         if(!isLoggedIn()){
-            if(shouldLoadMyCalendar){
-                showLoginScreen()
-            }
+            showLoginScreen()
         }else{
-           print("View Will Appear -> Do Load")
             doLoad()
         }
     }
@@ -82,7 +77,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     func isLoggedIn() ->Bool {
         
         if(Auth.auth().currentUser != nil){
-            print("User is Logged in")
                return true
             }else{
                 if(!self.shouldLoadMyCalendar){
@@ -103,9 +97,12 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setupCalendar(){
-        
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(collectionView)
-        collectionView.frame = CGRect(x: 0, y: 10, width: view.frame.width, height: view.frame.height)
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
         if let tut = UserDefaults.standard.object(forKey: "didCloseCalendarTutorial") as? Bool{
             if(!tut){
@@ -151,32 +148,46 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         navigationItem.title = monthAsString(month) + " " + String(self.year)
-        
-        cal.getMonth(forMonth: month, ofYear: year, withUser: Auth.auth().currentUser!.uid, completion: applyMonth(days:))
-        setupCalendar()
-        collectionView.register(CalendarViewCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        if(shouldLoadMyCalendar){
+            cal.getMonth(forMonth: month, ofYear: year, withUser: Auth.auth().currentUser!.uid, completion: applyMonth(days:))
+            setupCalendar()
+            collectionView.register(CalendarViewCell.self, forCellWithReuseIdentifier: cellId)
+            collectionView.dataSource = self
+            collectionView.delegate = self
+        }else{
+            cal.getMonth(forMonth: month, ofYear: year, withUser: Settings.sharedInstance.selectedFriendId!, completion: applyMonth(days:))
+            setupCalendar()
+            collectionView.register(CalendarViewCell.self, forCellWithReuseIdentifier: cellId)
+            collectionView.dataSource = self
+            collectionView.delegate = self
+        }
     }
     
     func applyMonth(days : [CalendarDay]){
         let cal = CalendarHandler(self)
         dates = days
-        
-        for day in dates{
-            cal.getEvents(forDay: day.date, ofMonth: day.month, inYear: day.year, fromUser: Auth.auth().currentUser!.uid){(events: [Event]) in
-               // print("Got Events -=-=-=-=-=-=-=-=-=-=-=-=-=-=")
-                //print(events)
-                for event in events{
-                    day.addEvent(event: event)
+        if(shouldLoadMyCalendar){
+            for day in dates{
+                cal.getEvents(forDay: day.date, ofMonth: day.month, inYear: day.year, fromUser: Auth.auth().currentUser!.uid){(events: [Event]) in
+                    for event in events{
+                        day.addEvent(event: event)
+                    }
+                    self.collectionView.reloadData()
                 }
-                self.collectionView.reloadData()
+            }
+        }else{
+            for day in dates{
+                cal.getEvents(forDay: day.date, ofMonth: day.month, inYear: day.year, fromUser: Settings.sharedInstance.selectedFriendId!){(events: [Event]) in
+                    for event in events{
+                        day.addEvent(event: event)
+                    }
+                    self.collectionView.reloadData()
+                }
             }
         }
         
         collectionView.reloadData()
         errorLabel.isHidden = true
-        print("data reloaded")
     }
     
     
@@ -361,7 +372,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func didTapToClose(){
-        print("tap")
         tutorialView.removeFromSuperview()
         UserDefaults.standard.set(true, forKey: "didCloseCalendarTutorial")
     }
@@ -380,7 +390,7 @@ extension CalendarViewController: UICollectionViewDataSource{
        // cell.date.layer.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height - 50)
         cell.date.layer.backgroundColor = UIColor.white.cgColor
         
-       cell.backgroundColor = .white
+        cell.backgroundColor = .white
         
         if(indexPath.row < 7){
             
@@ -414,19 +424,17 @@ extension CalendarViewController: UICollectionViewDataSource{
                 cell.date.text = " "
             }
             if(thisDay.doesHaveEvents()){
-                print("Setting colour: green")
-                cell.date.layer.backgroundColor = UIColor.green.cgColor
-                
+                //cell.date.layer.backgroundColor = UIColor.day.cgColor
+                cell.eventCircle.isHidden = false
+            }else{
+                cell.eventCircle.isHidden = true
             }
             
-            let date = Date()
-            let calendar = Calendar.current
-
-            if(String(month) == String(calendar.component(.month, from: date))){
-                if(thisDay.getDate() == String(calendar.component(.day, from: date))){
-                    cell.date.layer.backgroundColor = UIColor.lightGray.cgColor
+            if(thisDay.isToday){
                     selectedCell = indexPath.row
-                }
+                cell.dayCircle.isHidden = false
+            }else{
+                cell.dayCircle.isHidden = true
             }
         }
         return cell
@@ -460,10 +468,8 @@ extension CalendarViewController: UICollectionViewDataSource{
 extension CalendarViewController: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-       
         
-        
-        if(dates.count == 6*7){
+        if(dates.count >= 35){
             return CGSize(width: view.frame.width/7, height: view.frame.height/9)
         }else{
             return CGSize(width: view.frame.width/7, height: view.frame.height/8)

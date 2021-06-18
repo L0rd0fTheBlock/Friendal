@@ -51,13 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         application.registerForRemoteNotifications()
-        
-      /*  do {
+     /*
+        do {
             try  Auth.auth().signOut()
         } catch {
             
-        }(*/
-       
+        }
+       */
         
       //  AppEventsLogger.activate(application)
         //GADMobileAds.configure(withApplicationID: "ca-app-pub-8694139400395039~1830749784")

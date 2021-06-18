@@ -73,7 +73,7 @@ class WelcomeViewController: UIViewController, UICollectionViewDelegate, UIColle
             
             cell.imageView.image = UIImage(named: "friends2")
             cell.title.text = "Connect with your friends like never before."
-            cell.text.text = "Friendal let's you see when your Facebook friends are free"
+            cell.text.text = "Palendar let's you see when your friends are free"
             return cell
         }else if(indexPath.item == 1){
             cell.imageView.image = UIImage(named: "sunset")

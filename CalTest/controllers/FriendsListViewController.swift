@@ -24,9 +24,10 @@ class FriendsListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.title = "Friends"
-            tableView.delegate = self
-            self.tableView.register(FriendsListViewCell.self, forCellReuseIdentifier: "friend")
-            tableView.rowHeight = 90
+        tableView.delegate = self
+        self.tableView.register(FriendsListViewCell.self, forCellReuseIdentifier: "friend")
+        tableView.rowHeight = 90
+
         
        
         
@@ -72,9 +73,7 @@ class FriendsListViewController: UITableViewController {
                     (contact, stop) in
                     // Array containing all unified contacts from everywhere
                     let phone = contact.phoneNumbers[0].value.stringValue
-                    print("pHONE NUMBERS ================")
                     let number = String(phone.filter { !" \n\t\r".contains($0) })
-                    print(number)
                     calHandler.getperson(forPhone: number, completion: {(p: Person, isFriend: Bool) in
                         if(isFriend == true){
                             self.friends.append(p)
@@ -197,7 +196,7 @@ class FriendsListViewController: UITableViewController {
         if(section == 0){
             return "Friends"
         }else{
-            return "These contacts are not on Friendal"
+            return "These contacts are not on Palendar"
         }
     }
     
@@ -235,3 +234,4 @@ class FriendsListViewController: UITableViewController {
     
 
 }
+

@@ -8,6 +8,7 @@
 
 import Foundation
 import Firebase
+import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
@@ -180,11 +181,9 @@ class Event{
         dateString += prefixedMonth() + "/"
         dateString += self.year! + " "
         dateString += self.start!
-        print(dateString)
         let date = DateFormatter()
         date.dateFormat = "dd/mm/yyyy HH:mm"
         let r = date.date(from: dateString)
-        print(r)
         return r!
     }
     

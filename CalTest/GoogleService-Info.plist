@@ -3,34 +3,32 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>149154097789-di4nvbgat06kdnoemghqg8f7sg2qmc8k.apps.googleusercontent.com</string>
+	<string>815038913210-ts90f67r3v3j4dgk105o3f358e1q1leo.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.149154097789-di4nvbgat06kdnoemghqg8f7sg2qmc8k</string>
+	<string>com.googleusercontent.apps.815038913210-ts90f67r3v3j4dgk105o3f358e1q1leo</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDlejMGkWrQE1RMzSLuPxvoHVZ0qdpl00U</string>
+	<string>AIzaSyB9TSIAJzC6kuM6nX688o_WqEhlj_t-CG4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>149154097789</string>
+	<string>815038913210</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.appit.friendal</string>
+	<string>com.makeitfortheweb.palendar</string>
 	<key>PROJECT_ID</key>
-	<string>friendal</string>
+	<string>palendar-d9bc3</string>
 	<key>STORAGE_BUCKET</key>
-	<string>friendal.appspot.com</string>
+	<string>palendar-d9bc3.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:149154097789:ios:38cad0c36c8cc900019f14</string>
-	<key>DATABASE_URL</key>
-	<string>https://friendal-default-rtdb.firebaseio.com</string>
+	<string>1:815038913210:ios:b296c96098b54d3affc083</string>
 </dict>
 </plist>

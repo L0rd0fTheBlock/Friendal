@@ -13,6 +13,7 @@ class CalendarDay{
     var month: Int
     var year: Int
     var hasEvents: Bool
+    var isToday = false
     
     
     
@@ -22,6 +23,7 @@ class CalendarDay{
         year = ofYear
         hasEvents = false
         events = [Event]()
+        setIsToday()
     }
     
     init() {
@@ -30,6 +32,7 @@ class CalendarDay{
         year = 0
         hasEvents = false
         events = [Event]()
+        setIsToday()
     }
     
     func getDate() -> String{
@@ -43,6 +46,20 @@ class CalendarDay{
             return false
         }
     }
+    
+    func setIsToday(){
+        let date = Date()
+        let calendar = Calendar.current
+
+        if(String(month) == String(calendar.component(.month, from: date))){
+            if(getDate() == String(calendar.component(.day, from: date))){
+                if(String(year) == String(calendar.component(.year, from: date))){
+                    isToday = true
+                }
+            }
+        }
+    }
+    
     func countEvents() -> Int{
         return events.count
     }
@@ -62,8 +79,6 @@ class CalendarDay{
         
         for (index, event) in events.enumerated(){
             if(event.id == id){
-                print("Removing event from index: ", index)
-                print(events.count)
                 events.remove(at: index)
             }
         }

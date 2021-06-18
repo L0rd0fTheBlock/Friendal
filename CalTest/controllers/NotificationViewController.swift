@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 //import FacebookLogin
 //import FacebookCore
 
@@ -14,20 +15,29 @@ class NotificationViewController: UITableViewController {
 
     let errorLabel = UILabel()
     var requests: [Request] = []
+    var notificationAlert = NotificationResponseAlert()
+    var alert = UIAlertController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Notifications"
-        
-        
-        
         tableView.register(NotificationRequestViewCell.self, forCellReuseIdentifier: "request")
         tableView.rowHeight = 150
+        tableView.allowsSelection = true
         
+    }
+    @objc
+    func willViewEvent(action: UIAlertAction){
+        let r = requests[tableView.indexPathForSelectedRow!.row]
+        let e = r.event
+        let eventView = EventViewController()
+        eventView.event = e
+        eventView.isFromRequest = true
+        eventView.requestId = r.id
+        navigationController?.pushViewController(eventView, animated: true)
     }
     
     func loadData(){
-        print("loading data for notifications")
         requests.removeAll()
         tableView.reloadData()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
@@ -36,52 +46,19 @@ class NotificationViewController: UITableViewController {
         errorLabel.numberOfLines = 0
         errorLabel.backgroundColor = UIColor.lightGray.withAlphaComponent(CGFloat(0.5))
         tableView.addSubview(errorLabel)
+        errorLabel.isHidden = false
         
-       // let cal = CalendarHandler()
-        requests = []
-/*        cal.getRequests(forUser: (AccessToken.current?.userId)!, completion: { (request, error) in
-            print("Notification completion handler")
-            guard let r = request else{
-                
-                guard let code = error?.code else{return}
-                
-                self.errorLabel.text = error?.userInfo["message"] as! String + " Code: " + String(describing: code)
-                self.errorLabel.isHidden = false
-                self.tableView.reloadData()
-                return
-            }
-            
-            self.requests = r
-            print("Requests assigned: ", self.requests.count)
-            
-            let calHandler = CalendarHandler()
-            
-            for request in self.requests{
-                
-                calHandler.doGraph(request: "/" + String(request.sender), params: "id, first_name, last_name, picture", completion: {(data, error)  in
-                    
-                    guard let p = data else{
-                        return
-                    }
-                    
-                    let picture = p["picture"]!
-                    var pict = picture as! Dictionary<String, Any>
-                    let pic = pict["data"] as! Dictionary<String, Any>
-                    let person = Person(id: p["id"] as! String, first: p["first_name"] as! String, last: p["last_name"] as! String, picture: pic)
-                    
-                    request.person = person
-                    
-                    self.tabBarItem.badgeValue = String(self.requests.count)
-                    person.downloadImage(url: URL(string: (person.link))!, table: self.tableView)
-                    self.tableView.reloadData()
-                })
-                
-            }
-            self.errorLabel.isHidden = true
+        let cal = CalendarHandler()
+        cal.getRequests(forUser: Auth.auth().currentUser!.uid, completion: {(requests) in
+            self.requests = requests
+            self.tabBarItem.badgeValue = String(self.requests.count)
             self.tableView.reloadData()
-            
-        })*/
-        
+            if(self.requests.count > 0){
+                self.errorLabel.isHidden = true
+            }else{
+                self.errorLabel.text = "You have no Notifications."
+            }
+        })
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -94,7 +71,7 @@ class NotificationViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -114,15 +91,15 @@ class NotificationViewController: UITableViewController {
         if let sender = request.person?.name(){
             
             if let event = request.event.title{
-        
-                cell.title.text = sender + " would like to arrange '" + event + "' with you"
-                cell.title.sizeToFit()
+                cell.senderLabel.text = sender
+                cell.descriptionLabel.text = "Would like you to attend: "
+                cell.titleLabel.text = event
             }
             cell.timeLabel.text = "on " + (request.event.date)! + "-" + (request.event.month)! + "-" + (request.event.year)! + " at: " + (request.event.start)!
         }
         cell.id = request.id
         cell.table = self
-        cell.pic.image = request.person?.picture
+        cell.senderPic.image = request.person?.picture
         
         return cell
     }
@@ -131,8 +108,15 @@ class NotificationViewController: UITableViewController {
         return 150
     }
     
-    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return false
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)!
+        cell.isHighlighted = false
+        let request =   requests[indexPath.row]
+        notificationAlert = NotificationResponseAlert(forRequest: request.id, sender: self)
+        alert = notificationAlert.alertWithView(willViewEvent)
+        present(alert, animated: true, completion: {() in
+            
+        })
     }
 
 

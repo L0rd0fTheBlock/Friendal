@@ -79,7 +79,6 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
             print("No event found")
             return
         }
-        print("posting")
         
         calHandler.submitStatus(forEvent: event.id, fromUser: Auth.auth().currentUser!.uid, withMessage: status.text, { () in
             (self.superview as! StatusView).doLoad()
@@ -90,7 +89,6 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
         }
     
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        print("editing!")
         status.text = ""
         status.textColor = .black
         post.isEnabled = false

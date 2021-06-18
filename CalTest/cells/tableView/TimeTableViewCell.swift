@@ -60,7 +60,6 @@ class TimeTableViewCell: UITableViewCell {
         eventLabel.layer.addSublayer(border)
         eventLabel.layer.masksToBounds = true
         
-        print(event?.title as Any)
         if(isTitle){
             let minute = event?.start?.components(separatedBy: ":").compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }
             if(minute![1] != 00){
@@ -75,8 +74,6 @@ class TimeTableViewCell: UITableViewCell {
             eventLabel.backgroundColor = UIColor.yellow.withAlphaComponent(0.55)
             
            // eventLabel.backgroundColor = UIColor(red: CGFloat(208.0/255.0), green: CGFloat(189.0/255.0), blue: CGFloat(12.0/255.0), alpha: CGFloat(10.0/255.0))
-            
-            print(CGFloat(208.0/255.0))
         }
         
     }

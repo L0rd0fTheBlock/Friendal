@@ -41,7 +41,6 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
     func doLoad(){
        
         let calHandler = CalendarHandler()
-        print("Getting Status list for: \(event?.id)")
         calHandler.getStatus(forEvent: event!.id, { (statuses) in
             self.statuses = statuses
             self.collectionViewLayout.collectionView?.reloadData()
@@ -87,10 +86,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("=====INDEX===== ", indexPath.row - 1)
-        print("number of statuses: ", statuses.count)
         if(indexPath.row == 0){
-            print("creating newStatus")
             let cell = dequeueReusableCell(withReuseIdentifier: "NewStatusCell", for: indexPath) as! NewStatusViewCell
             
             cell.event = self.event
@@ -98,19 +94,13 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
             return cell
         }else{
             if(statuses[indexPath.row - 1].isAd != nil){
-                print("not nil: ", statuses[indexPath.row - 1].isAd)
             }else{
                 statuses[indexPath.row - 1].isAd = false
-                print("was nil - now: ", statuses[indexPath.row - 1].isAd)
             }
             if(statuses[indexPath.row - 1].isAd!){
-                print(indexPath.row, ": Is Ad")
                 let cell = dequeueReusableCell(withReuseIdentifier: "AdvertStatusCell", for: indexPath) as! AdMobCollectionViewCell
-                //cell.rootView = rootView
-               // cell.loadBannerView()
                 return cell
             }else{
-                print(indexPath.row, ": Is Not Ad")
                 let cell = dequeueReusableCell(withReuseIdentifier: "StatusCell", for: indexPath) as! StatusViewCell
                 
                 cell.backgroundColor = .white
@@ -141,7 +131,6 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
         //print ("getting size")
         if(indexPath.row > 0){
             if(statuses[indexPath.row - 1].isAd!){
-                print("Ad-Size at: ", indexPath.row)
                 return CGSize(width: frame.width, height: frame.height)
             }else{
                 return CGSize(width: frame.width, height: frame.height)

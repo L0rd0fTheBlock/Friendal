@@ -31,18 +31,6 @@ class InviteFriendViewController: FriendsListViewController {
         navigationItem.setLeftBarButton(done, animated: true)
         
         navigationItem.setRightBarButton(save, animated: true)
-        
-        
-       // let calHandler = CalendarHandler()
-        
-       /* calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
-            
-            guard let person = person else{
-                return
-            }
-            
-            self.me = Person(id: person["id"]as! String, first: person["first_name"] as! String, last: person["last_name"] as! String)
-        })*/
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -59,7 +47,6 @@ class InviteFriendViewController: FriendsListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! FriendsListViewCell
         selected.append(cell.uid!)
-        print(selected)
         navigationItem.rightBarButtonItem?.isEnabled = true
     }
     
@@ -75,7 +62,6 @@ class InviteFriendViewController: FriendsListViewController {
         if(selected.count == 0){
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
-        print(selected)
         
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

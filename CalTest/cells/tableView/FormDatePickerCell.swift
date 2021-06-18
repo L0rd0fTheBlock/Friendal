@@ -66,13 +66,9 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
     
     @objc func pickerChanged(sender: UIDatePicker){
         
-        
-        print(sender.date)
-        
         let formatter = DateFormatter()
         formatter.timeStyle = .short
        formatter.dateStyle = .none
-        print(formatter.string(from: sender.date))
         if(desc.text == "Start"){
             formatter.dateStyle = .none
             start = formatter.string(from: sender.date)

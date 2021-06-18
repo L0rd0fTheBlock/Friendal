@@ -10,12 +10,11 @@ import UIKit
 //import FacebookCore
 
 class NotificationRequestViewCell: UITableViewCell {
-
-    let title = UILabel()
+    let senderLabel = UILabel()
+    let descriptionLabel = UILabel()
+    let titleLabel = UILabel()
     let timeLabel = UILabel()
-    let pic = UIImageView()
-    let accept = UIButton(type: .roundedRect)
-    let decline = UIButton(type: .roundedRect)
+    let senderPic = UIImageView()
     var id:String = "0"
     var table: NotificationViewController? = nil
     override func awakeFromNib() {
@@ -24,13 +23,19 @@ class NotificationRequestViewCell: UITableViewCell {
     }
     
     
-    /*override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        title.frame = CGRect(x: 70, y: 20, width: frame.width-75, height: 120)
+        
+        setupSender()
+        setupDesc()
+        setupTitle()
+        setupTime()
+        
+        /*title.frame = CGRect(x: 70, y: 20, width: frame.width-75, height: 120)
         
         title.numberOfLines = 0
         
-        //title.sizeToFit()
+        title.sizeToFit()
         
         timeLabel.frame = CGRect(x: 10, y: 90, width: frame.width, height: 30)
         
@@ -76,14 +81,79 @@ class NotificationRequestViewCell: UITableViewCell {
         addSubview(pic)
         
         addSubview(accept)
-        addSubview(decline)
+        addSubview(decline)*/
         
-    }*/
+    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
+    func setupSender(){
+        
+        senderLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(senderLabel)
+        
+        senderPic.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(senderPic)
+        
+        senderPic.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+        senderPic.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10).isActive = true
+        senderPic.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        senderPic.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        senderLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+        senderLabel.leftAnchor.constraint(equalTo: senderPic.rightAnchor, constant: 10).isActive = true
+        senderLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10).isActive = true
+        senderLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+       // senderLabel.addBorders(edges: .all, color: .black)
+        senderLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        
+    }
+    
+    func setupTitle(){
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(titleLabel)
+        
+        titleLabel.topAnchor.constraint(equalTo: senderPic.bottomAnchor, constant: 10).isActive = true
+        titleLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10).isActive = true
+        titleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        //titleLabel.addBorders(edges: .all, color: .black)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 25)
+        titleLabel.textAlignment = .center
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.minimumScaleFactor = 0.5
+    }
+    
+    func setupDesc(){
+        
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(descriptionLabel)
+        
+        descriptionLabel.topAnchor.constraint(equalTo: senderLabel.bottomAnchor, constant: 3).isActive = true
+        descriptionLabel.leftAnchor.constraint(equalTo: senderPic.rightAnchor, constant: 10).isActive = true
+        descriptionLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10).isActive = true
+        descriptionLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        //descriptionLabel.addBorders(edges: .all, color: .black)
+        
+        
+    }
+
+    func setupTime(){
+        
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(timeLabel)
+        
+        timeLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true
+        timeLabel.leftAnchor.constraint(equalTo: senderPic.rightAnchor, constant: 10).isActive = true
+        timeLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10).isActive = true
+        timeLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        //timeLabel.addBorders(edges: .all, color: .black)
+        
+        
+    }
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
@@ -91,7 +161,6 @@ class NotificationRequestViewCell: UITableViewCell {
     }
     
     @objc func didAccept(){
-        print("Accepted")
        // AppEventsLogger.log("Accepted Calendar Event with Friend")
       //  let calHandler = CalendarHandler()
         
@@ -102,7 +171,6 @@ class NotificationRequestViewCell: UITableViewCell {
     }
     
     @objc func didDecline(){
-        print("Declined")
        // AppEventsLogger.log("Declined Calendar Event with Friend")
      //   let calHandler = CalendarHandler()
         

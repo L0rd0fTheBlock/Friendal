@@ -30,7 +30,7 @@ class NewRequestVC: NewEventVC {
 
     
     @objc override func didSave(){
-      //  let handler = CalendarHandler()
+        let handler = CalendarHandler()
         var event = Event()
         
 //        Crashlytics.sharedInstance().setBoolValue(isAllDay, forKey: "isAllDay")
@@ -46,21 +46,27 @@ class NewRequestVC: NewEventVC {
             if(event.start == event.end){
                 present(alert, animated: true, completion: nil)
             }else{
-                print("saving....")
-              //  handler.saveNewEvent(event: event, completion:{(data) in
-                   // print(data)
-                  //  print(Settings.sharedInstance.selectedFriendId)
-                  //  handler.saveNewRequest(event: data, user: (Settings.sharedInstance.selectedFriendId)!, name: "null", isNotMe: false)
-               // })
+                
+                handler.addEvent(event: event, completion: {(eventId) in
+                    if(eventId == "Error"){
+                        print("Error")
+                    }else{
+                        handler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!)
+                    }
+                })
+
                 dismiss(animated: true, completion: nil)
             }
         }else{
-            print("saving....")
-           // handler.saveNewEvent(event: event, completion:{(data) in
-               // print(data)
-               // print(Settings.sharedInstance.selectedFriendId)
-               // handler.saveNewRequest(event: data, user: (Settings.sharedInstance.selectedFriendId)!, name: "null", isNotMe: false)
-           // })
+            
+            handler.addEvent(event: event, completion: {(eventId) in
+                if(eventId == "Error"){
+                    print("Error")
+                }else{
+                    handler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!)
+                }
+            })
+           
             dismiss(animated: true, completion: nil)
         }
     }

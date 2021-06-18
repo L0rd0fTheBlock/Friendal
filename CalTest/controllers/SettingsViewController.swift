@@ -20,7 +20,6 @@ class SettingsViewController: UITableViewController {
         tableView.register(SettingsUserProfileCell.self, forCellReuseIdentifier: "user")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "option")
         tableView.register(SettingsToggleCell.self, forCellReuseIdentifier: "toggle")
-        tableView.register(WebViewTableViewCell.self, forCellReuseIdentifier: "web")
 
         tableView.isScrollEnabled = false
         tableView.allowsSelection = true
@@ -62,12 +61,12 @@ class SettingsViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(section == 0){
-            return 3
+            return 2
         }else{
             return 2
         }
@@ -111,32 +110,7 @@ class SettingsViewController: UITableViewController {
                 return cell
             case 2:
                let cell = tableView.dequeueReusableCell(withIdentifier: "option", for: indexPath)
-/*                let loginButton = LoginButton(readPermissions: [ .publicProfile, .userFriends ])
-
-                loginButton.delegate = self
-                let width = loginButton.frame.width / 2
-                let x = (cell.frame.width / 2) - width
-                loginButton.frame = CGRect(origin: CGPoint(x: x, y: 10), size: loginButton.bounds.size)
-                cell.addSubview(loginButton)*/
-                
                 return cell
-            default:
-                print("Screwed up a little, no?")
-                return UITableViewCell()
-            }
-        }else if(indexPath.section == 1){
-         //T&C
-        //Bug reports
-            
-            switch indexPath.row{
-            case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "web", for: indexPath) as! WebViewTableViewCell
-                cell.table = self
-                print("cell 0")
-                
-                
-                return cell
-                //navigationController?.present(BugReportViewController(), animated: true, completion: nil)
             default:
                 return UITableViewCell()
             }
@@ -146,33 +120,24 @@ class SettingsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("tap \(indexPath.row)")
         if(indexPath.section == 0){
             if(indexPath.row == 0){
                 let manager = UserManagerViewController()
-                manager.user = me!
-                
-                let managerVC = CalendarNavigationController(rootViewController: manager)
-                
-                self.present(managerVC, animated: true, completion: ({() in
+                if(me != nil){
+                    manager.user = me!
+                    let managerVC = CalendarNavigationController(rootViewController: manager)
                     
-                }))
+                    self.present(managerVC, animated: true, completion: ({() in
+                        
+                    }))
+                }else{
+                    do{
+                      //  try Auth.auth().signOut()
+                        
+                    }catch{}
+                   // navigationController?.pushViewController(WelcomeViewController(), animated: true)
+                }
             }
         }
     }
-
-
-
 }
-
-/*extension SettingsViewController: LoginButtonDelegate{
-    func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
-        print("well... this is akward... it appears you have found a bug in me.")
-    }
-    
-    func loginButtonDidLogOut(_ loginButton: LoginButton) {
-        tabBarController?.selectedIndex = 0
-    }
-    
-    
-}*/

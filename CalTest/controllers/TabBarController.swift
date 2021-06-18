@@ -15,12 +15,11 @@ class TabBarController: UITabBarController {
 
       //  hideKeyboardWhenTappedAround()
         
-        tabBar.barTintColor = UIColor(rgb: 0x01B30A)
+        tabBar.barTintColor = .nav
         //tabBar.tintColor = UIColor.orange
         tabBar.unselectedItemTintColor = UIColor(rgb:0xE3E3E3)
         
-        let calendar = CalendarViewController()
-        let myMonth = CalendarNavigationController(rootViewController: calendar)
+        let myMonth = CalendarNavigationController(rootViewController: CalendarViewController())
         myMonth.title = "My Month"
         myMonth.tabBarItem.image = UIImage(named: "icon_me")
         
@@ -29,6 +28,7 @@ class TabBarController: UITabBarController {
         friends.tabBarItem.image = UIImage(named: "icon_friends")
         
         let more = CalendarNavigationController(rootViewController: SettingsViewController())
+       // let more = SettingsViewController()
         more.title = "Options"
         more.tabBarItem.image = UIImage(named: "hamburger")
         

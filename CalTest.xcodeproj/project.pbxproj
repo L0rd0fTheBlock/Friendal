@@ -21,14 +21,11 @@
 		7D2A49901FF0335900CDEEB3 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */; };
 		7D3127C31FF98B65009752F0 /* SettingsToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C21FF98B65009752F0 /* SettingsToggleCell.swift */; };
 		7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C41FF9A32C009752F0 /* Settings.swift */; };
-		7D3127C71FF9C6CE009752F0 /* BugReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */; };
-		7D3FA24B2629962400DDB14A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D3FA24A2629962400DDB14A /* GoogleService-Info.plist */; };
 		7D4483D32039DADC00071CB3 /* LoginViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4483D22039DADC00071CB3 /* LoginViewCell.swift */; };
 		7D45F4592005329D0096A205 /* NewStatusViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D45F4582005329D0096A205 /* NewStatusViewCell.swift */; };
 		7D476FB42014F6710004E490 /* TextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D476FB32014F6710004E490 /* TextTableViewCell.swift */; };
 		7D4AA0A0264042F9002EFAF2 /* SettingsUserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */; };
 		7D4AA0A226404B98002EFAF2 /* UserManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */; };
-		7D4E7BAE1FFA88020085DA33 /* WebViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */; };
 		7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */; };
 		7D5E0FF31FC9D8BB006A9D75 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF21FC9D8BB006A9D75 /* WelcomeViewController.swift */; };
 		7D5E0FF51FCA4110006A9D75 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF41FCA4110006A9D75 /* TabBarController.swift */; };
@@ -50,6 +47,11 @@
 		7DAA49DE1FCCC2990056E033 /* NewEventVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAA49DD1FCCC2990056E033 /* NewEventVC.swift */; };
 		7DAA49E31FCCCE650056E033 /* FormTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAA49E21FCCCE650056E033 /* FormTextCell.swift */; };
 		7DAA49E51FCCCEAB0056E033 /* FormDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAA49E41FCCCEAB0056E033 /* FormDatePickerCell.swift */; };
+		7DB08E0726430339002C4B25 /* NotificationResponseAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB08E0626430338002C4B25 /* NotificationResponseAlert.swift */; };
+		7DBDE524265A897F00F4D630 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBDE523265A897F00F4D630 /* Theme.swift */; };
+		7DBDE526265AC89200F4D630 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DBDE525265AC89200F4D630 /* GoogleService-Info.plist */; };
+		7DBDE528265AFE2200F4D630 /* LogoutButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBDE527265AFE2200F4D630 /* LogoutButtonCell.swift */; };
+		7DC80BEB265D6B6E00C8378C /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC80BEA265D6B6E00C8378C /* Circle.swift */; };
 		7DCE27B41FC30E1C000981A9 /* CalendarDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCE27B31FC30E1C000981A9 /* CalendarDay.swift */; };
 		7DCE3F6A1FCF7F7500322939 /* NotificationRequestViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCE3F691FCF7F7500322939 /* NotificationRequestViewCell.swift */; };
 		7DCE3F6C1FD07A5600322939 /* NewRequestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCE3F6B1FD07A5600322939 /* NewRequestVC.swift */; };
@@ -95,18 +97,15 @@
 		7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteFriendViewController.swift; sourceTree = "<group>"; };
 		7D3127C21FF98B65009752F0 /* SettingsToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsToggleCell.swift; sourceTree = "<group>"; };
 		7D3127C41FF9A32C009752F0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
-		7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BugReportViewController.swift; sourceTree = "<group>"; };
-		7D3FA24A2629962400DDB14A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7D4483D22039DADC00071CB3 /* LoginViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewCell.swift; sourceTree = "<group>"; };
 		7D45F4582005329D0096A205 /* NewStatusViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStatusViewCell.swift; sourceTree = "<group>"; };
 		7D476FB32014F6710004E490 /* TextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTableViewCell.swift; sourceTree = "<group>"; };
 		7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserProfileCell.swift; sourceTree = "<group>"; };
 		7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagerViewController.swift; sourceTree = "<group>"; };
-		7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTableViewCell.swift; sourceTree = "<group>"; };
 		7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventToggleCell.swift; sourceTree = "<group>"; };
 		7D5E0FF21FC9D8BB006A9D75 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		7D5E0FF41FCA4110006A9D75 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
-		7D5F5D811FC207A800129830 /* Friendal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friendal.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D5F5D811FC207A800129830 /* Palendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Palendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D5F5D841FC207A800129830 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7D5F5D861FC207A800129830 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		7D5F5D8B1FC207A800129830 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,7 +129,12 @@
 		7DAA49DD1FCCC2990056E033 /* NewEventVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventVC.swift; sourceTree = "<group>"; };
 		7DAA49E21FCCCE650056E033 /* FormTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextCell.swift; sourceTree = "<group>"; };
 		7DAA49E41FCCCEAB0056E033 /* FormDatePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDatePickerCell.swift; sourceTree = "<group>"; };
+		7DB08E0626430338002C4B25 /* NotificationResponseAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseAlert.swift; sourceTree = "<group>"; };
 		7DB2FCD2200E8465009E6DE9 /* Friendal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Friendal.entitlements; sourceTree = "<group>"; };
+		7DBDE523265A897F00F4D630 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		7DBDE525265AC89200F4D630 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7DBDE527265AFE2200F4D630 /* LogoutButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutButtonCell.swift; sourceTree = "<group>"; };
+		7DC80BEA265D6B6E00C8378C /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		7DCE27B31FC30E1C000981A9 /* CalendarDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDay.swift; sourceTree = "<group>"; };
 		7DCE3F691FCF7F7500322939 /* NotificationRequestViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequestViewCell.swift; sourceTree = "<group>"; };
 		7DCE3F6B1FD07A5600322939 /* NewRequestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRequestVC.swift; sourceTree = "<group>"; };
@@ -202,12 +206,12 @@
 				7DAA49E41FCCCEAB0056E033 /* FormDatePickerCell.swift */,
 				7DCE3F691FCF7F7500322939 /* NotificationRequestViewCell.swift */,
 				7D3127C21FF98B65009752F0 /* SettingsToggleCell.swift */,
-				7D4E7BAD1FFA88020085DA33 /* WebViewTableViewCell.swift */,
 				7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */,
 				7D0F87D02004554A00CB0058 /* StatusTableViewCell.swift */,
 				7D476FB32014F6710004E490 /* TextTableViewCell.swift */,
 				7DA1D91E203B5F800058580D /* SelectableTableViewCell.swift */,
 				7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */,
+				7DBDE527265AFE2200F4D630 /* LogoutButtonCell.swift */,
 			);
 			path = tableView;
 			sourceTree = "<group>";
@@ -239,7 +243,7 @@
 		7D5F5D821FC207A800129830 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7D5F5D811FC207A800129830 /* Friendal.app */,
+				7D5F5D811FC207A800129830 /* Palendar.app */,
 				7D5F5D951FC207A800129830 /* CalTestTests.xctest */,
 				7D5F5DA01FC207A800129830 /* CalTestUITests.xctest */,
 			);
@@ -261,7 +265,9 @@
 				7D5F5D8B1FC207A800129830 /* Assets.xcassets */,
 				7D5F5D8D1FC207A800129830 /* LaunchScreen.storyboard */,
 				7D5F5D901FC207A800129830 /* Info.plist */,
-				7D3FA24A2629962400DDB14A /* GoogleService-Info.plist */,
+				7DBDE525265AC89200F4D630 /* GoogleService-Info.plist */,
+				7DBDE523265A897F00F4D630 /* Theme.swift */,
+				7DC80BEA265D6B6E00C8378C /* Circle.swift */,
 			);
 			path = CalTest;
 			sourceTree = "<group>";
@@ -316,8 +322,8 @@
 				7DAA49DD1FCCC2990056E033 /* NewEventVC.swift */,
 				7DCE3F6B1FD07A5600322939 /* NewRequestVC.swift */,
 				7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */,
-				7D3127C61FF9C6CE009752F0 /* BugReportViewController.swift */,
 				7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */,
+				7DB08E0626430338002C4B25 /* NotificationResponseAlert.swift */,
 			);
 			path = modals;
 			sourceTree = "<group>";
@@ -367,7 +373,7 @@
 			);
 			name = CalTest;
 			productName = CalTest;
-			productReference = 7D5F5D811FC207A800129830 /* Friendal.app */;
+			productReference = 7D5F5D811FC207A800129830 /* Palendar.app */;
 			productType = "com.apple.product-type.application";
 		};
 		7D5F5D941FC207A800129830 /* CalTestTests */ = {
@@ -469,8 +475,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D5F5D8F1FC207A800129830 /* LaunchScreen.storyboard in Resources */,
-				7D3FA24B2629962400DDB14A /* GoogleService-Info.plist in Resources */,
 				7D5F5D8C1FC207A800129830 /* Assets.xcassets in Resources */,
+				7DBDE526265AC89200F4D630 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -758,6 +764,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DB08E0726430339002C4B25 /* NotificationResponseAlert.swift in Sources */,
 				7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */,
 				7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */,
 				7D4AA0A226404B98002EFAF2 /* UserManagerViewController.swift in Sources */,
@@ -768,6 +775,7 @@
 				7DCE3F741FD3176600322939 /* EventViewController.swift in Sources */,
 				7DCE3F6C1FD07A5600322939 /* NewRequestVC.swift in Sources */,
 				7D2A498E1FED498D00CDEEB3 /* Invitee.swift in Sources */,
+				7DBDE528265AFE2200F4D630 /* LogoutButtonCell.swift in Sources */,
 				7D117BAB1FC45DAE009E5932 /* TimeTableViewCell.swift in Sources */,
 				7D3127C31FF98B65009752F0 /* SettingsToggleCell.swift in Sources */,
 				7DAA49DE1FCCC2990056E033 /* NewEventVC.swift in Sources */,
@@ -776,6 +784,7 @@
 				7D5F5D871FC207A800129830 /* CalendarViewController.swift in Sources */,
 				7D0F87D820050F7800CB0058 /* StatusViewCell.swift in Sources */,
 				7D88FFD51FCB966400E6773E /* FriendsListViewController.swift in Sources */,
+				7DC80BEB265D6B6E00C8378C /* Circle.swift in Sources */,
 				7D5E0FF51FCA4110006A9D75 /* TabBarController.swift in Sources */,
 				7DE55C281FCF165E00016A83 /* Request.swift in Sources */,
 				7D7DEB891FC23AAA00F5443D /* CalendarHandler.swift in Sources */,
@@ -787,7 +796,7 @@
 				7DE55C261FCF15F800016A83 /* NotificationViewController.swift in Sources */,
 				7D4AA0A0264042F9002EFAF2 /* SettingsUserProfileCell.swift in Sources */,
 				7D45F4592005329D0096A205 /* NewStatusViewCell.swift in Sources */,
-				7D3127C71FF9C6CE009752F0 /* BugReportViewController.swift in Sources */,
+				7DBDE524265A897F00F4D630 /* Theme.swift in Sources */,
 				7D117BA71FC33EB2009E5932 /* Event.swift in Sources */,
 				7D88FFD91FCC5E4700E6773E /* Person.swift in Sources */,
 				7D74E0C51FC7888D00DB91AF /* CalendarViewCell.swift in Sources */,
@@ -795,7 +804,6 @@
 				7D0F87D12004554A00CB0058 /* StatusTableViewCell.swift in Sources */,
 				7D2A498C1FED42A800CDEEB3 /* InviteesTableViewController.swift in Sources */,
 				7D4483D32039DADC00071CB3 /* LoginViewCell.swift in Sources */,
-				7D4E7BAE1FFA88020085DA33 /* WebViewTableViewCell.swift in Sources */,
 				7D2A49901FF0335900CDEEB3 /* InviteFriendViewController.swift in Sources */,
 				7D476FB42014F6710004E490 /* TextTableViewCell.swift in Sources */,
 				7DCE3F6A1FCF7F7500322939 /* NotificationRequestViewCell.swift in Sources */,
@@ -966,6 +974,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CalTest/Friendal.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -974,8 +983,10 @@
 				INFOPLIST_FILE = CalTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appit.friendal;
-				PRODUCT_NAME = Friendal;
+				MARKETING_VERSION = 0.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.Palendar;
+				PRODUCT_NAME = Palendar;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -987,6 +998,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CalTest/Friendal.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 57WNKNHVA2;
@@ -994,8 +1006,10 @@
 				INFOPLIST_FILE = CalTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appit.friendal;
-				PRODUCT_NAME = Friendal;
+				MARKETING_VERSION = 0.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.Palendar;
+				PRODUCT_NAME = Palendar;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

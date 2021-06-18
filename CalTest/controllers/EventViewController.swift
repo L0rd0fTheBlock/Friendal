@@ -18,6 +18,8 @@ class EventViewController: UITableViewController {
     var count = 0
     var isEdit:Bool = false
     var isMyCalendar = true
+    var isFromRequest = false
+    var requestId: String?
     let alert: UIAlertController = UIAlertController(title: "Delete", message: "Are you sure? This cannot be undone.", preferredStyle: UIAlertController.Style.alert)
     let warning: UIAlertController = UIAlertController(title: "Invalid end time", message: "The end time must not be the same or before the start time.", preferredStyle: UIAlertController.Style.alert)
     
@@ -35,10 +37,6 @@ class EventViewController: UITableViewController {
         
         
         hideKeyboardWhenTappedAround()
-        
-      //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIResponder.keyboardWillShowNotification, object: nil)
-        
-       // NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: .UIResponder.keyboardWillHideNotification, object: nil)
         
         if(isMyCalendar){
             let delete = UIButton()
@@ -60,25 +58,15 @@ class EventViewController: UITableViewController {
         
         tableView.allowsSelection = true
         
+        if(!isFromRequest){
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(didBeginEditing))
+        }else{
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Respond", style: .plain, target: self, action: #selector(willRespond))
+        }
         registerCells()
         self.tabBarController?.tabBar.isHidden = true
         
         alert.addAction(UIAlertAction(title: "I'm Sure", style: .default, handler: { (action: UIAlertAction!) in
-         //   AppEventsLogger.log("Deleted Calendar Event")
-           // let handler = CalendarHandler()
-            //handler.cancelEvent(event: self.event!.id, forUser: (AccessToken.current?.userId)!, completion: {(response) in
-                
-                /*if(response){
-                    self.today?.today?.cancelEvent(self.event!.id)
-                    self.navigationController?.popViewController(animated: true)
-                }else{
-                    self.alert.message = "Something went wrong. Ensure you are connected to the internet and try again."
-                    self.present(self.alert, animated: true, completion: nil)
-                }*/
-                
-           // })
-    //}))
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
         }))
@@ -90,6 +78,15 @@ class EventViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         title = event?.title
+        tabBarController?.hidesBottomBarWhenPushed = false
+    }
+    
+    @objc func willRespond(){
+        
+        let notificationAlert = NotificationResponseAlert(forRequest: requestId!, sender: self)
+        
+        let alert = notificationAlert.alertWithoutView()
+        present(alert, animated: true, completion: nil)
     }
     
     func registerCells(){
@@ -128,7 +125,6 @@ class EventViewController: UITableViewController {
         let cell1 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormDatePickerCell
         let dat = cell1.shortDate
         let date = dat?.split(separator: "/") as Array<Substring>?
-        print("date at save: ", date)
         event?.date = String(describing: date![0])
         let month = Int(date![1])
         event?.month = String(describing: month! + 1)
@@ -316,7 +312,6 @@ class EventViewController: UITableViewController {
                 cell.collectionView.rootView = self
                 return cell
             default:
-                print("defaulting")
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath)
                 return cell
         }
@@ -363,7 +358,6 @@ class EventViewController: UITableViewController {
     }
     
     func dateString(_ date:String) ->String{
-        print(date.first)
         if(date.first == "0"){
         switch date{
             case "01":

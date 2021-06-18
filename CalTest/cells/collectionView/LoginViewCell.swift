@@ -28,11 +28,11 @@ class LoginViewCell: UICollectionViewCell, FUIAuthDelegate {
         text = UILabel(frame: CGRect(x: 0, y: frame.height/4, width: frame.width, height: frame.height/2))
         
         authUI = FUIAuth.defaultAuthUI()!
+        
         super.init(frame: frame)
         
-        let providers: [FUIAuthProvider] = [FUIEmailAuth()
-         // FUIGoogleAuth(),
-         // FUIFacebookAuth(),
+        let providers: [FUIAuthProvider] = [FUIGoogleAuth(authUI: authUI), FUIEmailAuth()
+          //FUIFacebookAuth(),
          // FUITwitterAuth(),
          // FUIPhoneAuth(authUI:FUIAuth.defaultAuthUI()),
         ]
@@ -59,15 +59,13 @@ class LoginViewCell: UICollectionViewCell, FUIAuthDelegate {
         
         let loginButton = UIButton(frame: CGRect(x: 100, y: 100, width: 300, height: 50))
         loginButton.backgroundColor = .blue
-          loginButton.setTitle("Login with Email", for: .normal)
+          loginButton.setTitle("Let's Get Started!", for: .normal)
           loginButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         loginButton.center = CGPoint(x: frame.width / 2, y: ((frame.height/4) * 3) + 50)
         addSubview(loginButton)
     }
     
     @objc func buttonAction(sender: UIButton!) {
-        print("Button tapped")
-        
         let authViewController = authUI.authViewController()
         parent?.present(authViewController  , animated: true, completion:  nil)
         

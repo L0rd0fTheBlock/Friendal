@@ -50,16 +50,16 @@ class EventContainerView: UIView {
     
     func setupBackground(){
         if(event?.isAllDay == true){
-            backgroundColor = .orange
+            backgroundColor = .allDay
         }else{
-            backgroundColor = UIColor.yellow.withAlphaComponent(0.55)
+            backgroundColor = .event
         }
     }
     
     func setupBorder(){
         
-        addBorders(edges: .left, color: .orange, inset: 0, thickness: 5)
-        addBorders(edges: .top, color: .orange, inset: 0, thickness: 30)
+        addBorders(edges: .left, color: .eventBorder, inset: 0, thickness: 5)
+        addBorders(edges: .top, color: .eventBorder, inset: 0, thickness: 30)
         
     }
     
@@ -67,29 +67,25 @@ class EventContainerView: UIView {
         
       //  label.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 30)
         label.translatesAutoresizingMaskIntoConstraints = false
-        
-        let layout = [
-            label.topAnchor.constraint(equalTo: self.topAnchor),
-            label.leftAnchor.constraint(equalTo: self.leftAnchor),
-            label.widthAnchor.constraint(equalTo: self.widthAnchor),
-            //label.heightAnchor.constraint(equalTo: self.heightAnchor)
-        ]
+        label.textColor = .white
        // label.backgroundColor = UIColor.orange
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.1
-        print("======WRITING LABEL========")
         if(event?.isVisible())!{
-            print("Event is visible")
             label.text = event?.title
         }else{
-            print("event is NOT visible")
             label.text = "Busy"
         }
         
         
         
         addSubview(label)
+        
+        label.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        label.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
+        label.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -10).isActive = true
+        
     }
     
     func setupGuestures(){
