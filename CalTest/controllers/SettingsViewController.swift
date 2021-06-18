@@ -61,22 +61,28 @@ class SettingsViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(section == 0){
+        switch section {
+        case 0:
             return 2
-        }else{
+        case 1:
             return 2
+        default:
+            return 0
         }
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if(section == 0){
+        switch section{
+        case 0:
             return "My Account"
-        }else{
-            return "Other settings"
+        case 2:
+            return "Bugs and Feature Requests"
+        default:
+            return "Error"
         }
     }
     
@@ -94,26 +100,7 @@ class SettingsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(indexPath.section == 0){
-            switch indexPath.row{
-            case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as! SettingsUserProfileCell
-                let profilePic = me?.picture
-                cell.pic.image = profilePic
-                cell.name.text = me?.name()
-                
-                return cell
-            case 1:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! SettingsToggleCell
-                
-                cell.title.text = "Make New Events Private: "
-                
-                return cell
-            case 2:
-               let cell = tableView.dequeueReusableCell(withIdentifier: "option", for: indexPath)
-                return cell
-            default:
-                return UITableViewCell()
-            }
+           return generateAccountSettingCells(indexPath)
         }else{
             return UITableViewCell()
         }
@@ -139,5 +126,38 @@ class SettingsViewController: UITableViewController {
                 }
             }
         }
+    }
+    
+    func generateAccountSettingCells(_ indexPath: IndexPath) -> UITableViewCell{
+        switch indexPath.row{
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as! SettingsUserProfileCell
+            let profilePic = me?.picture
+            cell.pic.image = profilePic
+            cell.name.text = me?.name()
+            
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! SettingsToggleCell
+            
+            cell.title.text = "Make New Events Private: "
+            
+            return cell
+        case 2:
+           let cell = tableView.dequeueReusableCell(withIdentifier: "option", for: indexPath)
+            return cell
+        default:
+            return UITableViewCell()
+        }
+    }
+    func generateDebugSettingCells(_ indexPath: IndexPath) -> UITableViewCell{
+        //https://github.com/L0rd0fTheBlock/Palendar/issues
+        
+        switch indexPath.row{
+        
+        default:
+            return UITableViewCell()
+        }
+        
     }
 }

@@ -27,6 +27,7 @@
 		7D4AA0A0264042F9002EFAF2 /* SettingsUserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */; };
 		7D4AA0A226404B98002EFAF2 /* UserManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */; };
 		7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */; };
+		7D5ACE0F267CC35700C5CD75 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5ACE0E267CC35700C5CD75 /* Theme.swift */; };
 		7D5E0FF31FC9D8BB006A9D75 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF21FC9D8BB006A9D75 /* WelcomeViewController.swift */; };
 		7D5E0FF51FCA4110006A9D75 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5E0FF41FCA4110006A9D75 /* TabBarController.swift */; };
 		7D5F5D851FC207A800129830 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5F5D841FC207A800129830 /* AppDelegate.swift */; };
@@ -48,7 +49,6 @@
 		7DAA49E31FCCCE650056E033 /* FormTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAA49E21FCCCE650056E033 /* FormTextCell.swift */; };
 		7DAA49E51FCCCEAB0056E033 /* FormDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAA49E41FCCCEAB0056E033 /* FormDatePickerCell.swift */; };
 		7DB08E0726430339002C4B25 /* NotificationResponseAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB08E0626430338002C4B25 /* NotificationResponseAlert.swift */; };
-		7DBDE524265A897F00F4D630 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBDE523265A897F00F4D630 /* Theme.swift */; };
 		7DBDE526265AC89200F4D630 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DBDE525265AC89200F4D630 /* GoogleService-Info.plist */; };
 		7DBDE528265AFE2200F4D630 /* LogoutButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBDE527265AFE2200F4D630 /* LogoutButtonCell.swift */; };
 		7DC80BEB265D6B6E00C8378C /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC80BEA265D6B6E00C8378C /* Circle.swift */; };
@@ -103,6 +103,7 @@
 		7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserProfileCell.swift; sourceTree = "<group>"; };
 		7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagerViewController.swift; sourceTree = "<group>"; };
 		7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventToggleCell.swift; sourceTree = "<group>"; };
+		7D5ACE0E267CC35700C5CD75 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		7D5E0FF21FC9D8BB006A9D75 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		7D5E0FF41FCA4110006A9D75 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7D5F5D811FC207A800129830 /* Palendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Palendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,7 +132,6 @@
 		7DAA49E41FCCCEAB0056E033 /* FormDatePickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormDatePickerCell.swift; sourceTree = "<group>"; };
 		7DB08E0626430338002C4B25 /* NotificationResponseAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseAlert.swift; sourceTree = "<group>"; };
 		7DB2FCD2200E8465009E6DE9 /* Friendal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Friendal.entitlements; sourceTree = "<group>"; };
-		7DBDE523265A897F00F4D630 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		7DBDE525265AC89200F4D630 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7DBDE527265AFE2200F4D630 /* LogoutButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutButtonCell.swift; sourceTree = "<group>"; };
 		7DC80BEA265D6B6E00C8378C /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
@@ -264,9 +264,9 @@
 				7DCE27B51FC30E24000981A9 /* DataModel */,
 				7D5F5D8B1FC207A800129830 /* Assets.xcassets */,
 				7D5F5D8D1FC207A800129830 /* LaunchScreen.storyboard */,
+				7D5ACE0E267CC35700C5CD75 /* Theme.swift */,
 				7D5F5D901FC207A800129830 /* Info.plist */,
 				7DBDE525265AC89200F4D630 /* GoogleService-Info.plist */,
-				7DBDE523265A897F00F4D630 /* Theme.swift */,
 				7DC80BEA265D6B6E00C8378C /* Circle.swift */,
 			);
 			path = CalTest;
@@ -791,12 +791,12 @@
 				7D88FFD71FCC58CB00E6773E /* FriendsListViewCell.swift in Sources */,
 				7DCE27B41FC30E1C000981A9 /* CalendarDay.swift in Sources */,
 				7DAA49E31FCCCE650056E033 /* FormTextCell.swift in Sources */,
+				7D5ACE0F267CC35700C5CD75 /* Theme.swift in Sources */,
 				7D90D53F1FD44B7D00FE2E89 /* SettingsViewController.swift in Sources */,
 				7D5F5D851FC207A800129830 /* AppDelegate.swift in Sources */,
 				7DE55C261FCF15F800016A83 /* NotificationViewController.swift in Sources */,
 				7D4AA0A0264042F9002EFAF2 /* SettingsUserProfileCell.swift in Sources */,
 				7D45F4592005329D0096A205 /* NewStatusViewCell.swift in Sources */,
-				7DBDE524265A897F00F4D630 /* Theme.swift in Sources */,
 				7D117BA71FC33EB2009E5932 /* Event.swift in Sources */,
 				7D88FFD91FCC5E4700E6773E /* Person.swift in Sources */,
 				7D74E0C51FC7888D00DB91AF /* CalendarViewCell.swift in Sources */,
