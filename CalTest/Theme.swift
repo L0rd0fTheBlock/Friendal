@@ -9,11 +9,11 @@
 import UIKit
 
 extension UIColor{
-    public static var nav = UIColor(red: 51, green: 176, blue: 233, alpha: 1)
+    public static var nav = UIColor(rgb: 0x26BE2D)
     public static var event = UIColor(rgb: 0x33B0Df)
     public static var eventBorder = UIColor(rgb: 0x2EA4CF)
+    public static var day = UIColor(rgb: 0x26be2d)
     public static var allDay = UIColor.darkGray
-    public static var day = UIColor(red: 51, green: 176, blue: 233, alpha: 1)
     public static var today = UIColor.lightGray
     
     convenience init(red: Int, green: Int, blue: Int, alpha: CGFloat) {
