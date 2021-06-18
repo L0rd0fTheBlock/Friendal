@@ -984,7 +984,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 0.5;
-				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.Palendar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.palendar;
 				PRODUCT_NAME = Palendar;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1007,7 +1007,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 0.5;
-				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.Palendar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.palendar;
 				PRODUCT_NAME = Palendar;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
