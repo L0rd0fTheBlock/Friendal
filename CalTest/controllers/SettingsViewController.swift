@@ -20,6 +20,7 @@ class SettingsViewController: UITableViewController {
         tableView.register(SettingsUserProfileCell.self, forCellReuseIdentifier: "user")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "option")
         tableView.register(SettingsToggleCell.self, forCellReuseIdentifier: "toggle")
+        tableView.register(TextTableViewCell.self, forCellReuseIdentifier: "text")
 
         tableView.isScrollEnabled = false
         tableView.allowsSelection = true
@@ -99,15 +100,21 @@ class SettingsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if(indexPath.section == 0){
-           return generateAccountSettingCells(indexPath)
-        }else{
+        switch indexPath.section{
+        case 0:
+            return generateAccountSettingCells(indexPath)
+        case 1:
+            return generateDebugSettingCells(indexPath)
+        default:
             return UITableViewCell()
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(indexPath.section == 0){
+        
+        
+        switch indexPath.section{
+        case 0:
             if(indexPath.row == 0){
                 let manager = UserManagerViewController()
                 if(me != nil){
@@ -125,6 +132,29 @@ class SettingsViewController: UITableViewController {
                    // navigationController?.pushViewController(WelcomeViewController(), animated: true)
                 }
             }
+        case 1:
+            switch indexPath.row {
+            case 0:
+                //open link to Github bug reporting
+                if let url = URL(string: "https://github.com/L0rd0fTheBlock/Palendar/issues") {
+                    UIApplication.shared.open(url)
+                }
+            
+            case 1:
+                //open link to Discord server
+                if let url = URL(string: "https://discord.gg/NHFrrUbZ") {
+                    UIApplication.shared.open(url)
+                }
+            default:
+                print("Error: DidSelectRowAt impossible IndexPath: S-0-R->1")
+            }
+        default:
+            print("Error in Settings didSelectRowAt")
+        }
+        
+        
+        if(indexPath.section == 0){
+            
         }
     }
     
@@ -151,10 +181,30 @@ class SettingsViewController: UITableViewController {
         }
     }
     func generateDebugSettingCells(_ indexPath: IndexPath) -> UITableViewCell{
-        //https://github.com/L0rd0fTheBlock/Palendar/issues
+        
+        
         
         switch indexPath.row{
-        
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "text") as! TextTableViewCell
+            cell.title.frame = CGRect(x: 30, y: cell.frame.height/5, width: cell.frame.width, height: cell.frame.height)
+            cell.contentView.addSubview(cell.title)
+            cell.title.text = "Report a bug or request a feature with Github"
+            cell.title.textColor = .blue
+            cell.value.isHidden = true
+            cell.chevron.isHidden = true
+            print(cell)
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "text") as! TextTableViewCell
+            cell.title.frame = CGRect(x: 30, y: cell.frame.height/5, width: cell.frame.width, height: cell.frame.height)
+            cell.contentView.addSubview(cell.title)
+            cell.title.text = "Join Palendar's Discord for a faster response"
+            cell.title.textColor = .blue
+            cell.value.isHidden = true
+            cell.chevron.isHidden = true
+            print(cell)
+            return cell
         default:
             return UITableViewCell()
         }

@@ -15,19 +15,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="HhC-E0-Shq">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="HhC-E0-Shq">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="MakeItForTheWeb Ltd" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yud-2F-nMF">
+                                <rect key="frame" x="118" y="626" width="167" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Test Flight V0.1.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Gn-Cc-ynr">
+                                <rect key="frame" x="16" y="646" width="104" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.0039215686274509803" green="0.70196078431372544" blue="0.039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.69019607843137254" blue="0.87450980392156863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="HhC-E0-Shq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="143" id="0Qa-ru-p64"/>
-                            <constraint firstItem="HhC-E0-Shq" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="7o6-JY-XQ5"/>
-                            <constraint firstItem="HhC-E0-Shq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="FaE-wL-SFe"/>
-                            <constraint firstItem="HhC-E0-Shq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="O8e-6j-rb5"/>
-                            <constraint firstItem="HhC-E0-Shq" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="q1D-vt-Syb"/>
-                            <constraint firstAttribute="trailing" secondItem="HhC-E0-Shq" secondAttribute="trailing" id="rsR-tw-kjr"/>
+                            <constraint firstItem="HhC-E0-Shq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="9KW-sh-NRU"/>
+                            <constraint firstItem="HhC-E0-Shq" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="PzQ-yx-c0Y"/>
+                            <constraint firstItem="HhC-E0-Shq" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="ZRd-a9-iUw"/>
+                            <constraint firstItem="HhC-E0-Shq" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="g6z-76-4Hu"/>
                         </constraints>
                     </view>
                 </viewController>

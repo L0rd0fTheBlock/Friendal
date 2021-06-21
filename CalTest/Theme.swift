@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIColor{
-    public static var nav = UIColor(rgb: 0x26BE2D)
+    public static var nav = UIColor(rgb: 0x33B0Df)
     public static var event = UIColor(rgb: 0x33B0Df)
     public static var eventBorder = UIColor(rgb: 0x2EA4CF)
     public static var day = UIColor(rgb: 0x26be2d)
