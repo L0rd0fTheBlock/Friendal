@@ -38,6 +38,7 @@
 		7D5F5DA51FC207A800129830 /* CalTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5F5DA41FC207A800129830 /* CalTestUITests.swift */; };
 		7D74E0C51FC7888D00DB91AF /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D74E0C41FC7888D00DB91AF /* CalendarViewCell.swift */; };
 		7D7DEB891FC23AAA00F5443D /* CalendarHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DEB881FC23AAA00F5443D /* CalendarHandler.swift */; };
+		7D7E8D232680E409008FED25 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D7E8D222680E409008FED25 /* GoogleService-Info.plist */; };
 		7D88FFD51FCB966400E6773E /* FriendsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D88FFD41FCB966400E6773E /* FriendsListViewController.swift */; };
 		7D88FFD71FCC58CB00E6773E /* FriendsListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D88FFD61FCC58CB00E6773E /* FriendsListViewCell.swift */; };
 		7D88FFD91FCC5E4700E6773E /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D88FFD81FCC5E4700E6773E /* Person.swift */; };
@@ -119,6 +120,7 @@
 		7D5F5DA61FC207A800129830 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7D74E0C41FC7888D00DB91AF /* CalendarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewCell.swift; sourceTree = "<group>"; };
 		7D7DEB881FC23AAA00F5443D /* CalendarHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHandler.swift; sourceTree = "<group>"; };
+		7D7E8D222680E409008FED25 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7D88FFD41FCB966400E6773E /* FriendsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListViewController.swift; sourceTree = "<group>"; };
 		7D88FFD61FCC58CB00E6773E /* FriendsListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsListViewCell.swift; sourceTree = "<group>"; };
 		7D88FFD81FCC5E4700E6773E /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 				7D5F5D8D1FC207A800129830 /* LaunchScreen.storyboard */,
 				7D5ACE0E267CC35700C5CD75 /* Theme.swift */,
 				7D5F5D901FC207A800129830 /* Info.plist */,
+				7D7E8D222680E409008FED25 /* GoogleService-Info.plist */,
 				7DC80BEA265D6B6E00C8378C /* Circle.swift */,
 			);
 			path = CalTest;
@@ -473,6 +476,7 @@
 			files = (
 				7D5F5D8F1FC207A800129830 /* LaunchScreen.storyboard in Resources */,
 				7D5F5D8C1FC207A800129830 /* Assets.xcassets in Resources */,
+				7D7E8D232680E409008FED25 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
