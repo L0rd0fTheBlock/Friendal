@@ -90,10 +90,12 @@ class InviteFriendViewController: FriendsListViewController {
     func sendInvites(){
         
     let handler = CalendarHandler()
-        
+        let event = (topView?.event)! as Event
         for id in selected{
-            handler.saveNewRequest(event: (topView?.event?.id)!, user: id)
+            handler.saveNewRequest(event: event.id, user: id, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!)
         }
         dismissView()
+        
+        
     }
 }

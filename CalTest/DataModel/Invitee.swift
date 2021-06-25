@@ -7,7 +7,8 @@
 //
 
 import Foundation
-
+import FirebaseFirestore
+import FirebaseStorage
 
 class Invitee{
     
@@ -37,6 +38,5 @@ class Invitee{
         self.UID = uid
         self.eventId = eventId
     }
-    
     
 }

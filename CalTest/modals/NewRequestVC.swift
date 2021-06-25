@@ -51,7 +51,7 @@ class NewRequestVC: NewEventVC {
                     if(eventId == "Error"){
                         print("Error")
                     }else{
-                        handler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!)
+                        handler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!)
                     }
                 })
 
@@ -63,7 +63,7 @@ class NewRequestVC: NewEventVC {
                 if(eventId == "Error"){
                     print("Error")
                 }else{
-                    handler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!)
+                    handler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!)
                 }
             })
            

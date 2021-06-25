@@ -14,13 +14,21 @@ class Request{
     var event: Event
     var message:String?
     var accepted: String = "no"
-    var person: Person? = nil
+    var person: Person? = nil //sender if recieved,
     var id:String
 
     init(_ id:String, e: Event, m: String){
         
         event = e
         message = m
+        self.id = id
+        
+    }
+    
+    init(_ id:String, e: Event, p: Person){
+        person = p
+        event = e
+        message = ""
         self.id = id
         
     }

@@ -39,7 +39,7 @@ class CalendarHandler{
         dateComponents.day = 1
         
         let userCalendar = Calendar(identifier: .gregorian) // since the components above (like year 1980) are for Gregorian
-        let date = userCalendar.date(from: dateComponents)
+        let date = userCalendar.date(from: dateComponents) //create a Date() object from the date components of the 1st of the chosen month and year
         var weekday = userCalendar.component(.weekday, from: date!) as Int
         
         var length = 0
@@ -61,12 +61,33 @@ class CalendarHandler{
                 length = 31
             }
         }
+        /*
+         date:          Array
+         
+         Monday: 1      0
+         Tuesday: 2     1
+         Wed: 3         2
+         Thur: 4        3
+         Fri: 5         4
+         Sat: 6         5
+         sun: 7         6
+         
+         */
 
         weekday -= 1//shift day of the week backwards - sunday becomes 0, Monday 1 etc
-        //REMEMBER: Sunday is day 1
-        if(weekday>1){
-            while month.count < weekday{
+        //REMEMBER: Sunday is day 0
+        if(weekday>0){
+            while month.count < weekday-1{
                 month.append(CalendarDay())
+            }
+        }
+        else{
+            //weekday is less than 1 so MUST be sunday
+            //need 6 empty days
+            var day = 1
+            while day < 7 {
+                month.append(CalendarDay())
+                day += 1
             }
         }
 
@@ -85,12 +106,7 @@ class CalendarHandler{
     }
     
     
-    func getEvents(forDay: Int, ofMonth: Int, inYear: Int, fromUser: String, completion: @escaping([Event]) -> Void){
-        //TODO: Implement Events
-        //print("===================")
-        //print("Get Events started for day: " + String(forDay))
-       // print("user " + fromUser)
-       // print("ofMonth: " + String(ofMonth))
+    fileprivate func getUserEvents(_ fromUser: String, _ forDay: Int, _ ofMonth: Int, _ inYear: Int, _ completion: @escaping ([Event]) -> Void) {
         var events = [Event]()
         
         db.collection("Event")
@@ -104,7 +120,7 @@ class CalendarHandler{
                 } else {
                     for document in querySnapshot!.documents {
                         //print(document)
-                       // print("\(document.documentID) => \(document.data())")
+                        // print("\(document.documentID) => \(document.data())")
                         let event = Event(document: document)
                         events.append(event)
                     }
@@ -112,8 +128,23 @@ class CalendarHandler{
                 }
                 completion(events)
             }
+    }
+    
+    func getEvents(forDay: Int, ofMonth: Int, inYear: Int, fromUser: String, completion: @escaping([Event]) -> Void){
+       var events = [Event]()
+        
+        
+        getUserEvents(fromUser, forDay, ofMonth, inYear, {(userEvents) in
+            events.append(contentsOf: userEvents)
+            self.getRequestEvents(forUser: fromUser, onDay: forDay, ofMonth: ofMonth, inYear: inYear) { invites in
+                events.append(contentsOf: invites)
+                completion(events)
+            }
+        })
+        
         
     }
+    
     func getEvent(withId: String, completion: @escaping(Event) -> Void){
         
         db.collection("Event").document(withId).getDocument() { (document, err) in
@@ -316,14 +347,15 @@ class CalendarHandler{
     }
     //Event Invites
     //MARK: Invites
-    func saveNewRequest(event: String, user: String){
+    func saveNewRequest(event: String, user: String, day: Int, month: Int, year: Int){
         var ref: DocumentReference?
-        ref = db.collection("Invite").addDocument(data: ["eventId":event, "user":user, "sender": Auth.auth().currentUser!.uid, "response": "no"])
+        ref = db.collection("Invite").addDocument(data: ["eventId":event, "user":user, "sender": Auth.auth().currentUser!.uid, "response": "no", "day": day, "month": month, "year": year])
         { err in
             if let err = err {
                 print("Error adding document: \(err)")
             }else{
                // self.sendMessage(to: user, type: 1, withRef: ref!)
+                print(ref?.documentID)
             }
         }
     }
@@ -435,6 +467,31 @@ class CalendarHandler{
             }
             
         })
+    }
+    
+    func getRequestEvents(forUser: String, onDay: Int, ofMonth: Int, inYear: Int, completion: @escaping ([Event]) -> Void){
+        
+        var events = [Event]()
+        
+        db.collection("Invite").whereField("user", isEqualTo: forUser)
+            .whereField("response", isEqualTo: "going")
+            .whereField("day", isEqualTo: onDay)
+            .whereField("month", isEqualTo: ofMonth)
+            .whereField("year", isEqualTo: inYear)
+            .getDocuments(completion: {(querySnapshot, err) in
+            if(querySnapshot?.isEmpty == true){
+                completion([])
+            }else{
+                for document in (querySnapshot?.documents)! {
+                    let d = document.data()
+                    self.getEvent(withId: d["eventId"] as! String, completion: {(e) in
+                        events.append(e)
+                        completion(events)
+                    })
+                }
+            }
+        })
+        
     }
     
     //MARK: Status
