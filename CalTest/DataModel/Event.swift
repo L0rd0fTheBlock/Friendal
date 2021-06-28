@@ -176,11 +176,22 @@ class Event{
         }
     }
     
-    func getDate() -> Date{
+    func getStartDate() -> Date{
         var dateString = self.date! + "/"
         dateString += prefixedMonth() + "/"
         dateString += self.year! + " "
         dateString += self.start!
+        let date = DateFormatter()
+        date.dateFormat = "dd/mm/yyyy HH:mm"
+        let r = date.date(from: dateString)
+        return r!
+    }
+    
+    func getEndDate() -> Date{
+        var dateString = self.date! + "/"
+        dateString += prefixedMonth() + "/"
+        dateString += self.year! + " "
+        dateString += self.end!
         let date = DateFormatter()
         date.dateFormat = "dd/mm/yyyy HH:mm"
         let r = date.date(from: dateString)

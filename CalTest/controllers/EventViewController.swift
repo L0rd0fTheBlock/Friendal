@@ -142,7 +142,7 @@ class EventViewController: UITableViewController {
         
         if(event?.getAllDayBool())!{
             let ch = CalendarHandler()
-          //  ch.updateEvent(event: event!)
+            ch.update(event: event!, withId: event!.id)
             return true
         }else{
             if(event?.start == event?.end){
@@ -151,7 +151,7 @@ class EventViewController: UITableViewController {
                 return false
             }else{
                 let ch = CalendarHandler()
-               // ch.updateEvent(event: event!)
+                ch.update(event: event!, withId: event!.id)
                 return true
             }
         }
@@ -212,32 +212,16 @@ class EventViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "dateCell", for: indexPath) as! FormDatePickerCell
             cell.desc.text = "Start"
             cell.showDate = true
-            cell.startDate = event?.getDate()
-                let formatter = DateFormatter()
-                formatter.dateStyle = .medium
-                formatter.timeStyle = .short
-            //    cell.value.text = formatter.string(from: cell.startDate!)
-                formatter.dateStyle = .none
-                cell.start = formatter.string(from: cell.startDate!)
-                cell.end = formatter.string(from: cell.startDate!)
-                formatter.dateStyle = .short
-                formatter.timeStyle = .none
-                cell.shortDate = formatter.string(from: cell.startDate!)
-                cell.showDate = true
+            cell.value.date = event!.getStartDate()
+            cell.showDate = true
 
             return cell
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: "dateCell", for: indexPath) as! FormDatePickerCell
             cell.desc.text = "End"
-            let formatter = DateFormatter()
-            formatter.dateStyle = .none
-            formatter.timeStyle = .short
-            
-         //   cell.value.text = event?.end
-            formatter.dateStyle = .none
-            cell.start = formatter.string(from: Date())
-            cell.end = event?.end
-            cell.showDate = false
+            cell.showDate = true
+            cell.value.date = event!.getEndDate()
+            cell.showDate = true
             return cell
         case 4:
             let cell = tableView.dequeueReusableCell(withIdentifier: "toggleCell", for: indexPath) as! NewEventToggleCell
@@ -291,14 +275,6 @@ class EventViewController: UITableViewController {
     
                 return cell
             case 4:
-                //let cell = tableView.dequeueReusableCell(withIdentifier: "selectableCell", for: indexPath) as! SelectableTableViewCell
-                
-                
-//                cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
-//
-//                cell.title.text = "Invitees "
-//                cell.value.text = String(describing: event?.invitees.count)
-//
                 let cell = UITableViewCell(style: .value1, reuseIdentifier: "selectcell")
                 
                 cell.textLabel?.text = "Invitees "

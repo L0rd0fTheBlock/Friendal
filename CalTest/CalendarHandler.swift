@@ -186,6 +186,14 @@ class CalendarHandler{
                 }
     }
     
+    func update(event: Event, withId: String){
+        db.collection("Event").document(withId).setData(event.toArray()){err in
+            print("Update?")
+            
+        }
+        
+    }
+    
     //MARK: Get and set User and Person
     func saveUser(person: Person){
         db.collection("User").document(person.uid).setData(person.toArray())
