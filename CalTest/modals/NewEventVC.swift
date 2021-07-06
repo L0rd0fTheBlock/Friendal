@@ -250,11 +250,8 @@ class NewEventVC: UITableViewController {
         
         var dat = cell1.value.date
         let cal = Calendar.current
-        event.date = String(describing: cal.component(.day, from: dat))
-        event.month = String(describing: cal.component(.month, from: dat))
-        event.year = String(describing: cal.component(.year, from: dat))
         
-        event.start = String(cal.component(.hour, from: dat)) + ":" + String(cal.component(.minute, from: dat))
+        event.start = String(describing: cal.component(.day, from: dat)) + "/" + String(describing: cal.component(.month, from: dat)) + "/" + String(describing: cal.component(.year, from: dat)) + " " + String(cal.component(.hour, from: dat)) + ":" + String(cal.component(.minute, from: dat))
         
         let cell2 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! NewEventToggleCell
         
@@ -264,17 +261,18 @@ class NewEventVC: UITableViewController {
         
         event.setAllDay(cell3.toggle.isOn)
         
-        event.end = "00:00"
+        event.end = String(describing: cal.component(.day, from: dat)) + "/" + String(describing: cal.component(.month, from: dat)) + "/" + String(describing: cal.component(.year, from: dat)) + " " + "00" + ":" + "00"
         
         return event
     }
     
     func getEventWithEndTime() ->Event{
         let event = Event()
-        
+        var formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/YYYY HH:mm"
         //Get the title Cell
         let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! FormTextCell
-        event.title = cell.value.text
+        event.title = cell.value.text //title
         
         let cell1 = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! FormDatePickerCell
         
@@ -284,12 +282,13 @@ class NewEventVC: UITableViewController {
         event.month = String(describing: cal.component(.month, from: dat))
         event.year = String(describing: cal.component(.year, from: dat))
         
-        event.start = String(cal.component(.hour, from: dat)) + ":" + String(cal.component(.minute, from: dat))
+        event.start = formatter.string(from: dat)
         
         let cell2 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormDatePickerCell
         dat = cell2.value.date
         
-        event.end = String(cal.component(.hour, from: dat)) + ":" + String(cal.component(.minute, from: dat))
+        event.end = formatter.string(from: dat)
+        print("==== event.end when created: \(event.end)")
         
         let cell3 = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! NewEventToggleCell
         

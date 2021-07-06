@@ -59,14 +59,20 @@ class Event{
         self.id = document.documentID
         let d = document.data()
         self.title = d!["title"] as? String
-        self.date = d!["day"] as? String
+        
         self.start = d!["start"] as? String
         self.end = d!["end"] as? String
+        
         self.creator = d!["user"] as? String
-        self.month = d!["month"] as? String
-        self.year = d!["year"] as? String
+        
         self.isAllDay = (d!["isAllDay"] as? Bool)!
+        
         self.count = (d!["count"] as? String)!
+        
+        self.date = d?["day"] as? String
+        self.month = d?["month"] as? String
+        self.year = d?["year"] as? String
+        
         //MARK: re-implement these functions
         //setPrivacy(Int(privacy)!)
       //  setAllDay(Int(isad)!)
@@ -75,12 +81,13 @@ class Event{
         
     }
     
+    
     public func toArray() -> [String:Any]{
         var ev = [String:Any]()
         ev["title"] = title
-        ev["day"] = date
-        ev["month"] = month
-        ev["year"] = year
+        ev["day"] = date ?? "00"
+        ev["month"] = month ?? "00"
+        ev["year"] = year ?? "00"
         ev["start"] = start
         ev["end"] = end
         ev["user"] = creator
@@ -105,11 +112,52 @@ class Event{
         isPrivate = p
     }
     
-    
+    func getStartDay() -> String{
+        let split = start?.split(separator: "/")
+        return String(describing: split![0])
+        
+    }
+    func getStartMonth() -> String{
+        let split = start?.split(separator: "/")
+        return String(describing: split![1])
+    }
+    func getStartYear() -> String{
+        let split = start?.split(separator: "/")
+        let yearTime = split![2].split(separator: " ") // without this split[2] will look like "YYYY HH:mm"
+        return String(describing: yearTime[0])
+    }
+    func getStartTime() -> String{
+        let split = start?.split(separator: "/")
+        let yearTime = split![2].split(separator: " ") // without this split[2] will look like "YYYY HH:mm"
+        return String(describing: yearTime[1])
+    }
    
+    func getEndDay() -> String{
+        let split = end?.split(separator: "/")
+        return String(describing: split![0])
+    }
+    func getEndMonth() -> String{
+        let split = end?.split(separator: "/")
+        return String(describing: split![0])
+    }
+    func getEndYear() -> String{
+        let split = end?.split(separator: "/")
+        let yearTime = split![2].split(separator: " ") // without this split[2] will look like "YYYY HH:mm"
+        return String(describing: yearTime[0])
+    }
+    func getEndTime() -> String{
+        print("======= EndTime debug information start ========")
+        print("end: \(end)")
+        
+        
+        let split = end?.split(separator: "/")
+        let yearTime = split![2].split(separator: " ") // without this split[2] will look like "YYYY HH:mm"
+        return String(describing: yearTime[1])
+    }
+    
     func isInvitee(){
     //    let calHandler = CalendarHandler()
-     //   calHandler.isInvitee(Settings.sharedInstance.uid, forEvent: id, completion: {(invitee) in
+     //   Event.isInvitee(Settings.sharedInstance.uid, forEvent: id, completion: {(invitee) in
             //print(invitee)
           //  self.isUserInvited = true //TODO: re-implement this
        // })
@@ -177,24 +225,17 @@ class Event{
     }
     
     func getStartDate() -> Date{
-        var dateString = self.date! + "/"
-        dateString += prefixedMonth() + "/"
-        dateString += self.year! + " "
-        dateString += self.start!
         let date = DateFormatter()
-        date.dateFormat = "dd/mm/yyyy HH:mm"
-        let r = date.date(from: dateString)
+        date.dateFormat = "dd/MM/YYYY HH:mm"
+        let r = date.date(from: start!)
         return r!
     }
     
     func getEndDate() -> Date{
-        var dateString = self.date! + "/"
-        dateString += prefixedMonth() + "/"
-        dateString += self.year! + " "
-        dateString += self.end!
+        
         let date = DateFormatter()
-        date.dateFormat = "dd/mm/yyyy HH:mm"
-        let r = date.date(from: dateString)
+        date.dateFormat = "dd/MM/YYYY HH:mm"
+        let r = date.date(from: end!)
         return r!
     }
     

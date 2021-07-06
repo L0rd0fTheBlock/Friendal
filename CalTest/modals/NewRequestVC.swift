@@ -43,7 +43,7 @@ class NewRequestVC: NewEventVC {
         
         if(!isAllDay){
             
-            if(event.start == event.end){
+            if(event.getStartTime() == event.getEndTime()){
                 present(alert, animated: true, completion: nil)
             }else{
                 

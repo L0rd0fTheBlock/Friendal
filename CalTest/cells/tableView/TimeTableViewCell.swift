@@ -61,7 +61,7 @@ class TimeTableViewCell: UITableViewCell {
         eventLabel.layer.masksToBounds = true
         
         if(isTitle){
-            let minute = event?.start?.components(separatedBy: ":").compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }
+            let minute = event?.getStartTime().components(separatedBy: ":").compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }
             if(minute![1] != 00){
                 let eventHeight = (self.frame.height/CGFloat(60/Int(minute![1])))*CGFloat(-1)
                 let eventwidth = self.frame.width - CGFloat(50)

@@ -83,8 +83,8 @@ class DayViewController: UITableViewController {
             
             var overlap = 1
             var shift = 0
-            let start = makeMinutes(from: event.start!)
-            let end = makeMinutes(from: event.end!)
+            let start = makeMinutes(from: event.getStartTime())
+            let end = makeMinutes(from: event.getEndTime())
             let id = event.id
             
             if(event.isAllDay){
@@ -127,16 +127,16 @@ class DayViewController: UITableViewController {
             for (index, event) in (sortedEvents.enumerated()){
                 if(index == 0){
                 }else{
-                    let thisTime = event.start?.split(separator: ":" )
-                    let lastTime = sortedEvents[index-1].start?.split(separator: ":")
+                    let thisTime = event.getStartMonth().split(separator: ":" )
+                    let lastTime = sortedEvents[index-1].getStartTime().split(separator: ":")
                     //if hours are less than
-                    if(Int(thisTime![0])! < Int(lastTime![0])!){
+                    if(Int(thisTime[0])! < Int(lastTime[0])!){
                         sorted = false
                         let poppedTime = event
                         sortedEvents.remove(at: index)
                         sortedEvents.insert(poppedTime, at: index-1)
                     }else{
-                        if(Int(thisTime![0]) == Int(lastTime![0]) && Int(thisTime![1])! < Int(lastTime![1])!){
+                        if(Int(thisTime[0]) == Int(lastTime[0]) && Int(thisTime[1])! < Int(lastTime[1])!){
                             sorted = false
                             let poppedTime = event
                             sortedEvents.remove(at: index)
@@ -180,8 +180,8 @@ class DayViewController: UITableViewController {
             eventView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1/CGFloat(overlaps), constant: -30).isActive = true
                 return eventView
         }else{
-            let start = makeMinutes(from: event.start!)
-            let end = makeMinutes(from: event.end!)
+            let start = makeMinutes(from: event.getStartTime())
+            let end = makeMinutes(from: event.getEndTime())
             
             let tableLength = 50*25
             let breakdown = CGFloat(tableLength) / CGFloat(1500) //split the table into it's minutes
@@ -224,9 +224,9 @@ class DayViewController: UITableViewController {
         
         for i in 0...count{
             let event = today?.events[i]
-            if(start <= makeMinutes(from: (event?.start!)!) && end >= makeMinutes(from: (event?.start!)!)){
+            if(start <= makeMinutes(from: (event?.getStartTime())!) && end >= makeMinutes(from: (event?.getStartTime())!)){
                 shift = shift + 1
-            }else if(start > makeMinutes(from: (event?.start!)!) && start < makeMinutes(from: (event?.end!)!)){
+            }else if(start > makeMinutes(from: (event?.getStartTime())!) && start < makeMinutes(from: (event?.getEndTime())!)){
                 shift = shift + 1
             }
         }
@@ -264,10 +264,10 @@ class DayViewController: UITableViewController {
         for event in (today?.events)!{
             if(event.id == id){
             }else{
-                if(makeMinutes(from: event.start!) >= start && makeMinutes(from: event.start!) <= end){
+                if(makeMinutes(from: event.getStartTime()) >= start && makeMinutes(from: event.getStartTime()) <= end){
                       overlap = overlap + 1
                     
-                }else if(makeMinutes(from: event.end!) >= start && makeMinutes(from: event.start!) <= end){//if ends after event starts and starts before the event ends
+                }else if(makeMinutes(from: event.getEndTime()) >= start && makeMinutes(from: event.getStartTime()) <= end){//if ends after event starts and starts before the event ends
                     overlap = overlap + 1
                 }
             }

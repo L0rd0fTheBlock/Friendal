@@ -95,7 +95,7 @@ class NotificationViewController: UITableViewController {
                 cell.descriptionLabel.text = "Would like you to attend: "
                 cell.titleLabel.text = event
             }
-            cell.timeLabel.text = "on " + (request.event.date)! + "-" + (request.event.month)! + "-" + (request.event.year)! + " at: " + (request.event.start)!
+            cell.timeLabel.text = "on " + request.event.getStartDay() + "-" + request.event.getStartMonth() + "-" + request.event.getStartYear() + " at: " + request.event.getStartTime()
         }
         cell.id = request.id
         cell.table = self

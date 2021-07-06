@@ -145,7 +145,7 @@ class EventViewController: UITableViewController {
             ch.update(event: event!, withId: event!.id)
             return true
         }else{
-            if(event?.start == event?.end){
+            if(event?.getStartTime() == event?.getEndTime()){
                 navigationController?.present(warning, animated: true, completion: {
                 })
                 return false
@@ -212,7 +212,9 @@ class EventViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "dateCell", for: indexPath) as! FormDatePickerCell
             cell.desc.text = "Start"
             cell.showDate = true
-            cell.value.date = event!.getStartDate()
+            //cell.value.date = event!.getStartDate()
+            print(event!.getStartDate())
+            cell.value.setDate(event!.getStartDate(), animated: true)
             cell.showDate = true
 
             return cell
@@ -220,7 +222,8 @@ class EventViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "dateCell", for: indexPath) as! FormDatePickerCell
             cell.desc.text = "End"
             cell.showDate = true
-            cell.value.date = event!.getEndDate()
+            //cell.value.date = event!.getEndDate()
+            cell.value.setDate(event!.getEndDate(), animated: true)
             cell.showDate = true
             return cell
         case 4:
@@ -261,22 +264,23 @@ class EventViewController: UITableViewController {
                 return cell
             case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
-                cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
-                cell.title.text = (event?.date)! + daySuffix((event?.date)!) + " "
-                cell.title.text = cell.title.text! + dateString((event?.month)!)
-                cell.title.text = cell.title.text! + " " + (event?.year)!
+                cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width - 35, height: cell.frame.height)
+                cell.title.text = "Start: "
+                cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width - 60, height: cell.frame.height)
+                cell.value.textAlignment = .right
+                cell.value.text = event?.start
                 return cell
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
                 cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
-    
-                cell.title.text = "from " + (event?.start)!
-                cell.title.text = cell.title.text! + " to " + (event?.end)!
+                cell.title.text = "End: "
+                cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width - 60, height: cell.frame.height)
+                cell.value.textAlignment = .right
+                cell.value.text = event?.end
     
                 return cell
             case 4:
                 let cell = UITableViewCell(style: .value1, reuseIdentifier: "selectcell")
-                
                 cell.textLabel?.text = "Invitees "
                 cell.detailTextLabel?.text = String(count)
                 cell.accessoryType = .disclosureIndicator
