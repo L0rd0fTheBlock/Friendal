@@ -219,8 +219,6 @@ class EventViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "dateCell", for: indexPath) as! FormDatePickerCell
             cell.desc.text = "Start"
             cell.showDate = true
-            //cell.value.date = event!.getStartDate()
-            print(event!.getStartDate())
             cell.value.date = event!.getStartDate()
             cell.showDate = true
 

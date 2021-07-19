@@ -45,40 +45,9 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
             self.collectionViewLayout.collectionView?.reloadData()
         })
     }
-        //do status handling
-
-         /*   guard var status = statuses else{
-               
-                return
-            }
-            self.statuses = status
-            for (index, var stat) in status.enumerated(){
-               // print("line 52:" , stat)
-                if(!stat.isAd!){
-                    let poster = stat.poster!
-                    calHandler.doGraph(request: poster, params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
-                        
-                        let picture = data!["picture"] as? Dictionary<String, Any>
-                        let d = picture!["data"] as! Dictionary<String, Any>
-                        let url = d["url"] as! String
-                        
-                        
-                        stat.link = url
-                        stat.name = data!["name"] as? String
-                        self.statuses[index] = stat
-                        self.reloadData()
-                    })
-                }
-            }
-            
-            
-            self.reloadData()
-        }*/
-    //}
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //print("counting")
         
         return statuses.count + 1
         
@@ -127,7 +96,6 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        //print ("getting size")
         if(indexPath.row > 0){
             if(statuses[indexPath.row - 1].isAd!){
                 return CGSize(width: frame.width, height: frame.height)

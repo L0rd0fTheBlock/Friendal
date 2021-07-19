@@ -72,8 +72,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         window?.rootViewController = TabBarController()//TODO: set this back to tab bar controller after testing
-       // print("-=-=-=-=-=-=-=-=-=-=-=")
-        //print(AccessToken.current)
     return true
     }
     

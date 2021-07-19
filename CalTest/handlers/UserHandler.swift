@@ -27,7 +27,7 @@ class UserHandler: Handler{
     }
     
     func createUser(person: Person){
-        print(person.toArray())
+       
         db.collection("User").document(Auth.auth().currentUser!.uid).setData(person.toArray())
         { err in
             if let err = err {

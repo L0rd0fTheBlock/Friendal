@@ -75,7 +75,6 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
     
     @objc func didPost(){
         guard let event = self.event else{
-            print("No event found")
             return
         }
         

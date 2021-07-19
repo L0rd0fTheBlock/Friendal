@@ -136,11 +136,4 @@ class CalendarDay{
         let someDateTime = userCalendar.date(from: dateComponents)
         return someDateTime!
     }
-    
-    func eventsToString(){
-        print("There are: " + String(events.count) + " registered events")
-        print("[")
-        
-        print("]")
-    }
 }

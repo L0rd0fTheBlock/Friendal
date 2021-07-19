@@ -222,11 +222,11 @@ class Event{
     }
     
     func getStartDate() -> Date{
-        print("START: \(start!)")
+        
         let date = DateFormatter()
         date.dateFormat = "dd/MM/yyyy HH:mm"
         let r = date.date(from: start!)
-        print("r: \(r!)")
+        
         return r!
     }
     

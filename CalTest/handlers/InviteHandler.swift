@@ -30,13 +30,9 @@ class InviteHandler: Handler{
     
     func isUserInvited(_ user: String, toEvent: String, completion: @escaping(Bool)->Void){
         
-        print("user: \(user)")
-        print("Event: \(toEvent)")
-        
         db.collection("Invite").whereField("eventId", isEqualTo: toEvent).whereField("user", isEqualTo: user).getDocuments { snap, err in
             
             let docs = snap!.count
-            print("docs \(docs)")
             if(docs > 0){
                 completion(true)
             }else{

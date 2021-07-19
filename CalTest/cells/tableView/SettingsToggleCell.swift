@@ -24,9 +24,6 @@ class SettingsToggleCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        print(toggle.frame.width)
-        print(toggle.frame.height)
-        
         let subtraction = toggle.frame.height / 2
         
         title.frame = CGRect(x: 10, y: 0, width: frame.width - 100, height: frame.height)

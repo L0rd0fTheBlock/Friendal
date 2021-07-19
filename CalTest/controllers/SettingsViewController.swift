@@ -193,7 +193,6 @@ class SettingsViewController: UITableViewController {
             cell.title.textColor = .blue
             cell.value.isHidden = true
             cell.chevron.isHidden = true
-            print(cell)
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "text") as! TextTableViewCell
@@ -203,7 +202,6 @@ class SettingsViewController: UITableViewController {
             cell.title.textColor = .blue
             cell.value.isHidden = true
             cell.chevron.isHidden = true
-            print(cell)
             return cell
         default:
             return UITableViewCell()

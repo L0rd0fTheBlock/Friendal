@@ -159,26 +159,5 @@ class NotificationRequestViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    @objc func didAccept(){
-       // AppEventsLogger.log("Accepted Calendar Event with Friend")
-      //  let calHandler = CalendarHandler()
-        
-       /* calHandler.acceptRequest(id) {
-            print("didAccept: Completion handler")
-            self.table?.loadData()
-        }*/
-    }
-    
-    @objc func didDecline(){
-       // AppEventsLogger.log("Declined Calendar Event with Friend")
-     //   let calHandler = CalendarHandler()
-        
-       /* calHandler.declineRequest(id) {
-            self.table?.loadData()
-        }*/
-        
-        
-    }
 
 }
