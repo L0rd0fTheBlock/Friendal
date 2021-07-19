@@ -154,4 +154,18 @@ class UserHandler: Handler{
         })
     }
     
+    func getPersonAsFriend(withUID: String, completion: @escaping (DocumentSnapshot?)->Void){
+        db.collection("User").document(withUID).getDocument(completion: { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                if(querySnapshot == nil){
+                   completion(nil)
+                }else{
+                    completion(querySnapshot)
+                }
+            }
+        })
+    }
+    
 }

@@ -14,37 +14,40 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class FriendHandler: Handler{
-    func getFriendsList(_ completion: @escaping ([Person])->Void){
+    func getFriendsList(_ completion: @escaping ([Friend])->Void){
         
-        var friendList = [Person]()
+        var friendList = [Friend]()
         
         db.collection("friends").whereField("sender", isEqualTo: Auth.auth().currentUser!.uid).whereField("accepted", isEqualTo: true).getDocuments { snap, err in
             
             let docs = snap!.documents
             
-            for document in docs{
+            for friendship in docs{
+                let data = friendship.data()
+                let uid = data["target"] as! String //If the User's ID is in the target Field then the Friend MUST be the sender
                 
-                let data = document.data()
-                let uid = data["target"] as! String //If the User's ID is in the sender Field then the Friend MUST be the target
-                
-                userHandler.getperson(withUID: uid) { p, b in
-                    friendList.append(p)
-                    completion(friendList)
+                userHandler.getPersonAsFriend(withUID: uid) { document in
+                    if(document != nil){
+                        let friend = Friend(document: document!, withFriendId: friendship.documentID)
+                        friendList.append(friend)
+                        completion(friendList)
+                    }
                 }
-                
-                
             }
             
             self.db.collection("friends").whereField("target", isEqualTo: Auth.auth().currentUser!.uid).whereField("accepted", isEqualTo: true).getDocuments { snap, err in
                 let docs = snap!.documents
                 
-                for document in docs{
-                    let data = document.data()
+                for friendship in docs{
+                    let data = friendship.data()
                     let uid = data["sender"] as! String //If the User's ID is in the target Field then the Friend MUST be the sender
                     
-                    userHandler.getperson(withUID: uid) { p, b in
-                        friendList.append(p)
-                        completion(friendList)
+                    userHandler.getPersonAsFriend(withUID: uid) { document in
+                        if(document != nil){
+                            let friend = Friend(document: document!, withFriendId: friendship.documentID)
+                            friendList.append(friend)
+                            completion(friendList)
+                        }
                     }
                 }
             }
@@ -55,8 +58,10 @@ class FriendHandler: Handler{
         fatalError("Not Implemented Yet")
     }
     
-    func removeFriend(){
-            fatalError("Not Implemented Yet")
+    func removeFriend(withId: String, then: @escaping ()->Void){
+        db.collection("friends").document(withId).delete { err in
+            then()
+        }
         }
     func acceptFriendRequest(){
         fatalError("Not Implemented Yet")
@@ -64,15 +69,6 @@ class FriendHandler: Handler{
     
     func rejectFriendRequest(){
         fatalError("Not Implemented Yet")
-    }
-    
-    func sortFriendList() -> [Person]{
-        
-        
-        
-        
-        
-        return []
     }
     
 }

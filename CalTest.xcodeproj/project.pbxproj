@@ -29,6 +29,7 @@
 		7D4A89F226A5D83700ABF0FE /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89F126A5D83700ABF0FE /* Handler.swift */; };
 		7D4A89F426A5F29F00ABF0FE /* FriendHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89F326A5F29D00ABF0FE /* FriendHandler.swift */; };
 		7D4A89F626A5F74000ABF0FE /* StatusHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89F526A5F74000ABF0FE /* StatusHandler.swift */; };
+		7D4A89FA26A60F8900ABF0FE /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89F926A60F8900ABF0FE /* Friend.swift */; };
 		7D4AA0A0264042F9002EFAF2 /* SettingsUserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */; };
 		7D4AA0A226404B98002EFAF2 /* UserManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */; };
 		7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */; };
@@ -110,6 +111,7 @@
 		7D4A89F126A5D83700ABF0FE /* Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handler.swift; sourceTree = "<group>"; };
 		7D4A89F326A5F29D00ABF0FE /* FriendHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendHandler.swift; sourceTree = "<group>"; };
 		7D4A89F526A5F74000ABF0FE /* StatusHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusHandler.swift; sourceTree = "<group>"; };
+		7D4A89F926A60F8900ABF0FE /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserProfileCell.swift; sourceTree = "<group>"; };
 		7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagerViewController.swift; sourceTree = "<group>"; };
 		7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventToggleCell.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				7D2A498D1FED498D00CDEEB3 /* Invitee.swift */,
 				7D3127C41FF9A32C009752F0 /* Settings.swift */,
 				7D0F87CB2004244F00CB0058 /* Status.swift */,
+				7D4A89F926A60F8900ABF0FE /* Friend.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -835,6 +838,7 @@
 				7D2A49901FF0335900CDEEB3 /* InviteFriendViewController.swift in Sources */,
 				7D476FB42014F6710004E490 /* TextTableViewCell.swift in Sources */,
 				7DCE3F6A1FCF7F7500322939 /* NotificationRequestViewCell.swift in Sources */,
+				7D4A89FA26A60F8900ABF0FE /* Friend.swift in Sources */,
 				7D8B86901FF6B91F006D4284 /* EventContainerView.swift in Sources */,
 				7DA1D91F203B5F800058580D /* SelectableTableViewCell.swift in Sources */,
 			);

@@ -17,9 +17,11 @@ import Contacts
 
 class FriendsListViewController: UITableViewController {
 
-    var friends: Array<Person> = []
-    var contacts: Array<Person> = []
+    var friends: [Friend] = [Friend]()
+    var selectedFriend = -1
     let errorLabel = UILabel()
+    
+    let menu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +31,23 @@ class FriendsListViewController: UITableViewController {
         self.tableView.register(FriendsListViewCell.self, forCellReuseIdentifier: "friend")
         tableView.rowHeight = 90
 
+        errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
+        errorLabel.textAlignment = .center
+        errorLabel.numberOfLines = 0
+        errorLabel.backgroundColor = UIColor.lightGray.withAlphaComponent(CGFloat(0.5))
         
+        tableView.addSubview(errorLabel)
+        
+        let viewAction = UIAlertAction(title: "View", style: .default) { action in
+            self.view()
+        }
+        
+        let removeAction = UIAlertAction(title: "Remove Friend", style: .destructive) { action in
+            self.removeFriend()
+        }
+        
+        menu.addAction(viewAction)
+        menu.addAction(removeAction)
        
         
         // Uncomment the following line to preserve selection between presentations
@@ -42,7 +60,7 @@ class FriendsListViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         friends.removeAll()
         if Auth.auth().currentUser != nil {
-            // User is logged in, use 'accessToken' here.
+            //User is Logged in
             doLoad()
         }else{
             //Access Token does not exist
@@ -53,13 +71,9 @@ class FriendsListViewController: UITableViewController {
     func doLoad(){
         friends.removeAll()
         tableView.reloadData()
-        errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
-        errorLabel.textAlignment = .center
+        
         errorLabel.text = "Your Friends List is loading."
-        errorLabel.numberOfLines = 0
-        errorLabel.backgroundColor = UIColor.lightGray.withAlphaComponent(CGFloat(0.5))
         errorLabel.isHidden = false
-        tableView.addSubview(errorLabel)
         
         friendHandler.getFriendsList { friendList in
             
@@ -89,33 +103,31 @@ class FriendsListViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if(section == 0){
-            return friends.count
-        }else{
-            return contacts.count
-        }
+        return friends.count
         
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        selectedFriend = indexPath.row
+        present(menu, animated: true) {
+            
+        }
         
-        let friendCal = CalendarViewController()
-        friendCal.shouldLoadMyCalendar = false
+        
+        
         Settings.sharedInstance.selectedFriendId = friends[indexPath.row].uid
         
-        navigationController?.pushViewController(friendCal, animated: true)
+        
         
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if(indexPath.section == 0){
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "friend", for: indexPath) as! FriendsListViewCell
 
@@ -132,22 +144,6 @@ class FriendsListViewController: UITableViewController {
         cell.addSubview(cell.name)
         
         return cell
-        }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "friend", for: indexPath) as! FriendsListViewCell
-
-            
-          //  cell.backgroundColor = .red
-            cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
-            cell.name.frame = CGRect(x: 100, y: 10, width: cell.frame.width - 100, height: cell.frame.height - 20)
-           // cell.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
-            
-          cell.pic.image = contacts[indexPath.row].picture
-            cell.name.text = contacts[indexPath.row].name()
-            cell.uid = contacts[indexPath.row].uid
-            cell.addSubview(cell.pic)
-            cell.addSubview(cell.name)
-            return cell
-        }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -158,38 +154,23 @@ class FriendsListViewController: UITableViewController {
         }
     }
     
+    //MARK: Menu Actions
     
-    //MARK: DEPRECATED CODE
-    /*  calHandler.doGraph(request: "me/friends", params: "id, first_name, last_name, middle_name, name, email, picture", completion: {(data, error) in
-          
-          guard let friends = data else{
-              guard let code = error?.code else{return}
-              
-              self.errorLabel.text = error?.userInfo["message"] as! String + " Code: " + String(describing: code)
-              self.errorLabel.isHidden = false
-              self.tableView.reloadData()
-              return
-              
-          }
-          if(friends.count > 0){
-          self.errorLabel.isHidden = true
-          //if(data[0] != nil){
-          self.friends = self.populateFriends(data: friends)
-          
-          
-          for person in self.friends{
-              person.downloadImage(url: URL(string: person.link)!, table: self.tableView)
-          }
-          
-          self.tableView.reloadData()
-          //}
-          }else{
-              self.errorLabel.text = "None of your friends have installed Friendal yet"
-              self.errorLabel.isHidden = false
-              self.tableView.reloadData()
-          }
-      })*/
+    func view(){
+        let friendCal = CalendarViewController()
+        friendCal.shouldLoadMyCalendar = false
+        
+        navigationController?.pushViewController(friendCal, animated: true)
+    }
     
-
+    func removeFriend(){
+        
+        let friendshipID = friends[selectedFriend].friendshipID
+        
+        friendHandler.removeFriend(withId: friendshipID) {
+            self.doLoad()
+        }
+    }
+    
 }
 
