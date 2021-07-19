@@ -28,6 +28,7 @@
 		7D4A89F026A5D63C00ABF0FE /* InviteHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89EF26A5D63C00ABF0FE /* InviteHandler.swift */; };
 		7D4A89F226A5D83700ABF0FE /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89F126A5D83700ABF0FE /* Handler.swift */; };
 		7D4A89F426A5F29F00ABF0FE /* FriendHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89F326A5F29D00ABF0FE /* FriendHandler.swift */; };
+		7D4A89F626A5F74000ABF0FE /* StatusHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89F526A5F74000ABF0FE /* StatusHandler.swift */; };
 		7D4AA0A0264042F9002EFAF2 /* SettingsUserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */; };
 		7D4AA0A226404B98002EFAF2 /* UserManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */; };
 		7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */; };
@@ -108,6 +109,7 @@
 		7D4A89EF26A5D63C00ABF0FE /* InviteHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteHandler.swift; sourceTree = "<group>"; };
 		7D4A89F126A5D83700ABF0FE /* Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handler.swift; sourceTree = "<group>"; };
 		7D4A89F326A5F29D00ABF0FE /* FriendHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendHandler.swift; sourceTree = "<group>"; };
+		7D4A89F526A5F74000ABF0FE /* StatusHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusHandler.swift; sourceTree = "<group>"; };
 		7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserProfileCell.swift; sourceTree = "<group>"; };
 		7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagerViewController.swift; sourceTree = "<group>"; };
 		7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventToggleCell.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 				7D4A89EF26A5D63C00ABF0FE /* InviteHandler.swift */,
 				7D4A89F126A5D83700ABF0FE /* Handler.swift */,
 				7D4A89F326A5F29D00ABF0FE /* FriendHandler.swift */,
+				7D4A89F526A5F74000ABF0FE /* StatusHandler.swift */,
 			);
 			path = handlers;
 			sourceTree = "<group>";
@@ -798,6 +801,7 @@
 				7D2A498E1FED498D00CDEEB3 /* Invitee.swift in Sources */,
 				7DBDE528265AFE2200F4D630 /* LogoutButtonCell.swift in Sources */,
 				7D117BAB1FC45DAE009E5932 /* TimeTableViewCell.swift in Sources */,
+				7D4A89F626A5F74000ABF0FE /* StatusHandler.swift in Sources */,
 				7D4A89F426A5F29F00ABF0FE /* FriendHandler.swift in Sources */,
 				7D4A89EE26A5D23300ABF0FE /* UserHandler.swift in Sources */,
 				7D3127C31FF98B65009752F0 /* SettingsToggleCell.swift in Sources */,

@@ -24,6 +24,7 @@ let userHandler = UserHandler()
 let calendarHandler = CalendarHandler()
 let inviteHandler = InviteHandler()
 let friendHandler = FriendHandler()
+let statusHandler = StatusHandler()
 
 
 

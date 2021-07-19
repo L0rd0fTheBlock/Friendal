@@ -40,7 +40,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
     
     func doLoad(){
        
-        calendarHandler.getStatus(forEvent: event!.id, { (statuses) in
+        statusHandler.getStatus(forEvent: event!.id, { (statuses) in
             self.statuses = statuses
             self.collectionViewLayout.collectionView?.reloadData()
         })

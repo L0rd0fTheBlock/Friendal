@@ -190,46 +190,6 @@ class CalendarHandler: Handler{
         }
         
     }
-    
-    //MARK: Get and set User and Person
-    
-    
-    //MARK: Friends
-    
-    
-    //Event Invites
-    //MARK: Invites
-    //MARK: Status
-    func getStatus(forEvent: String, _ completion: @escaping([Status]) -> Void){
-        var statuses = [Status]()
-        //get all invites for the event
-        db.collection("Status").whereField("eventID", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                if(querySnapshot?.isEmpty == true){
-                    completion([])
-                }
-                for document in (querySnapshot?.documents)! {
-                    let status = Status(document: document)
-                    status.getPerson(p: document.data()["userID"] as! String, completion: {() in
-                        statuses.append(status)
-                        completion(statuses)
-                    })
-                }
-            }
-            
-        }
-    }
-    
-    func submitStatus(forEvent: String, fromUser: String, withMessage: String, _ completion: @escaping()->Void){
-        let d = ["eventID": forEvent, "userID": fromUser, "message": withMessage]
-        db.collection("Status").addDocument(data: d){(response) in
-            completion()
-        }
-    }
-
-    
     //MARK: Message
     
     func sendMessage(to: String, type: Int, withRef: String){

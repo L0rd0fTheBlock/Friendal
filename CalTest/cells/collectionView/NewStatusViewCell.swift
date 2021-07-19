@@ -79,7 +79,7 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
             return
         }
         
-        calendarHandler.submitStatus(forEvent: event.id, fromUser: Auth.auth().currentUser!.uid, withMessage: status.text, { () in
+        statusHandler.submitStatus(forEvent: event.id, fromUser: Auth.auth().currentUser!.uid, withMessage: status.text, { () in
             (self.superview as! StatusView).doLoad()
         })
         self.status.text = ""
