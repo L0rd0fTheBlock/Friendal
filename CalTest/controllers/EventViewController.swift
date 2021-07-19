@@ -214,7 +214,7 @@ class EventViewController: UITableViewController {
             cell.showDate = true
             //cell.value.date = event!.getStartDate()
             print(event!.getStartDate())
-            cell.value.setDate(event!.getStartDate(), animated: true)
+            cell.value.date = event!.getStartDate()
             cell.showDate = true
 
             return cell

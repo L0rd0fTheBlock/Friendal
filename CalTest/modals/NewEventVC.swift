@@ -117,48 +117,25 @@ class NewEventVC: UITableViewController {
                 cell.desc.text = "Start"
                 cell.showDate = true
                 if(dayVC != nil){
-                    /*cell.startDate = dayVC?.today?.getDateAsDate()
-                    let formatter = DateFormatter()
-                    formatter.dateStyle = .medium
-                    formatter.timeStyle = .short
-                    cell.value
-             //       cell.value.text = formatter.string(from: cell.startDate!)
-                    formatter.dateStyle = .none
-                    cell.start = formatter.string(from: cell.startDate!)
-                    cell.end = formatter.string(from: cell.startDate!)
-                    formatter.dateStyle = .short
-                    formatter.timeStyle = .none
-                    cell.shortDate = formatter.string(from: cell.startDate!)
-                    cell.showDate = true*/
                     
+                    cell.value.date = dayVC!.today!.getDateAsDate()
                 }else{
-                    let formatter = DateFormatter()
-                    formatter.dateStyle = .medium
-                    formatter.timeStyle = .short
-                  //  cell.value.text = formatter.string(from: Date())
-                    
-                    formatter.dateStyle = .short
-                    cell.shortDate = formatter.string(from: Date())
-                    
-                    formatter.dateStyle = .none
-                    cell.start = formatter.string(from: Date())
-                    cell.end = formatter.string(from: Date())
-                    
+                   
+                    cell.value.date = Date()
                     cell.showDate = true
                 }
                 return cell
             case 2://end
                 let cell:FormDatePickerCell = tableView.dequeueReusableCell(withIdentifier: "date", for: indexPath) as! FormDatePickerCell
                 cell.desc.text = "End"
-                    let formatter = DateFormatter()
-                    formatter.dateStyle = .none
-                    formatter.timeStyle = .short
-            
-                   // cell.value.text = formatter.string(from: Date())
-                    formatter.dateStyle = .none
-                    cell.start = formatter.string(from: Date())
-                    cell.end = formatter.string(from: Date())
-                    cell.showDate = false
+                if(dayVC != nil){
+                    
+                    cell.value.date = dayVC!.today!.getDateAsDate()
+                }else{
+                   
+                    cell.value.date = Date()
+                    cell.showDate = true
+                }
                 return cell
             case 3:
 

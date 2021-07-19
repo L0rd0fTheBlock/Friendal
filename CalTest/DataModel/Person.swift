@@ -18,7 +18,6 @@ class Person{
     var email: String
     var mobile: String
     var picture: UIImage? = nil
-    var friends: [Person] = [Person]()
     
     init(id: String, first: String, last: String, picture: Dictionary<String, Any>) {
         uid = id

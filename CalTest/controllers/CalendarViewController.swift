@@ -195,12 +195,12 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         
         if(shouldLoadMyCalendar){
         
-            let addVC = CalendarNavigationController(rootViewController: NewEventVC())
-            let vc:NewEventVC = addVC.topViewController as! NewEventVC
+            let addVC = CalendarNavigationController(rootViewController: NewEventVC()) //create NewEventVC inside CalendarNavigationCotroller
+            let vc:NewEventVC = addVC.topViewController as! NewEventVC//set a reference to the new event Vc as vc
         
-            vc.calendarVC = self
+            vc.calendarVC = self // set the newEventVC.calendarVC to this class
         
-            self.present(addVC, animated: true, completion: ({() in
+            self.present(addVC, animated: true, completion: ({() in //present the new event VC
                 
             }))
         }else{

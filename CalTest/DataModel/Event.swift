@@ -225,16 +225,18 @@ class Event{
     }
     
     func getStartDate() -> Date{
+        print("START: \(start!)")
         let date = DateFormatter()
-        date.dateFormat = "dd/MM/YYYY HH:mm"
+        date.dateFormat = "dd/MM/yyyy HH:mm"
         let r = date.date(from: start!)
+        print("r: \(r!)")
         return r!
     }
     
     func getEndDate() -> Date{
         
         let date = DateFormatter()
-        date.dateFormat = "dd/MM/YYYY HH:mm"
+        date.dateFormat = "dd/MM/yyyy HH:mm"
         let r = date.date(from: end!)
         return r!
     }

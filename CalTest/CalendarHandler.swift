@@ -353,6 +353,30 @@ class CalendarHandler{
             }
         })
     }
+    
+    //MARK: Friends
+    
+    func getFriendsList(){
+        db.collection("friends").whereField("sender", isEqualTo: Settings.sharedInstance.me.uid).whereField("accepted", isEqualTo: true).getDocuments { shapshot, err in
+            print(shapshot?.count)
+        }
+    }
+    
+    func addFriend(){
+        fatalError("Not Implemented Yet")
+    }
+    
+    func removeFriend(){
+            fatalError("Not Implemented Yet")
+        }
+    func acceptFriendRequest(){
+        fatalError("Not Implemented Yet")
+    }
+    
+    func rejectFriendRequest(){
+        fatalError("Not Implemented Yet")
+    }
+    
     //Event Invites
     //MARK: Invites
     func saveNewRequest(event: String, user: String, day: Int, month: Int, year: Int){
