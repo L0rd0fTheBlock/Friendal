@@ -52,6 +52,7 @@ class Person{
     init(document: DocumentSnapshot){
         uid = document.documentID
         let d = document.data()
+        print(d)
         first_name = d!["forename"] as! String
         last_name = d!["surname"] as! String
         email = d!["email"] as! String

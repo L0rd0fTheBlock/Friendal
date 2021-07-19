@@ -14,8 +14,40 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class FriendHandler: Handler{
-    func getFriendsList(){
-        db.collection("friends").whereField("sender", isEqualTo: Auth.auth().currentUser!.uid).whereField("accepted", isEqualTo: true).getDocuments { shapshot, err in
+    func getFriendsList(_ completion: @escaping ([Person])->Void){
+        
+        var friendList = [Person]()
+        
+        db.collection("friends").whereField("sender", isEqualTo: Auth.auth().currentUser!.uid).whereField("accepted", isEqualTo: true).getDocuments { snap, err in
+            
+            let docs = snap!.documents
+            
+            for document in docs{
+                
+                let data = document.data()
+                let uid = data["target"] as! String //If the User's ID is in the sender Field then the Friend MUST be the target
+                
+                userHandler.getperson(withUID: uid) { p, b in
+                    friendList.append(p)
+                    completion(friendList)
+                }
+                
+                
+            }
+            
+            self.db.collection("friends").whereField("target", isEqualTo: Auth.auth().currentUser!.uid).whereField("accepted", isEqualTo: true).getDocuments { snap, err in
+                let docs = snap!.documents
+                
+                for document in docs{
+                    let data = document.data()
+                    let uid = data["sender"] as! String //If the User's ID is in the target Field then the Friend MUST be the sender
+                    
+                    userHandler.getperson(withUID: uid) { p, b in
+                        friendList.append(p)
+                        completion(friendList)
+                    }
+                }
+            }
         }
     }
     
@@ -32,6 +64,15 @@ class FriendHandler: Handler{
     
     func rejectFriendRequest(){
         fatalError("Not Implemented Yet")
+    }
+    
+    func sortFriendList() -> [Person]{
+        
+        
+        
+        
+        
+        return []
     }
     
 }

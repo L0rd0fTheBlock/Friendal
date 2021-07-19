@@ -24,6 +24,7 @@ class FriendsListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.title = "Friends"
+        
         tableView.delegate = self
         self.tableView.register(FriendsListViewCell.self, forCellReuseIdentifier: "friend")
         tableView.rowHeight = 90
@@ -39,7 +40,7 @@ class FriendsListViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        
+        friends.removeAll()
         if Auth.auth().currentUser != nil {
             // User is logged in, use 'accessToken' here.
             doLoad()
@@ -50,9 +51,7 @@ class FriendsListViewController: UITableViewController {
     }
     
     func doLoad(){
-        
         friends.removeAll()
-        contacts.removeAll()
         tableView.reloadData()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
         errorLabel.textAlignment = .center
@@ -62,39 +61,21 @@ class FriendsListViewController: UITableViewController {
         errorLabel.isHidden = false
         tableView.addSubview(errorLabel)
         
-        
-        friendHandler.getFriendsList()
-        let keys = [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor]
-        let request = CNContactFetchRequest(keysToFetch: keys)
+        friendHandler.getFriendsList { friendList in
             
-            let contactStore = CNContactStore()
-            do {
-                try contactStore.enumerateContacts(with: request) {
-                    (contact, stop) in
-                    // Array containing all unified contacts from everywhere
-                    let phone = contact.phoneNumbers[0].value.stringValue
-                    let number = String(phone.filter { !" \n\t\r".contains($0) })
-                    userHandler.getperson(forPhone: number, completion: {(p: Person, isFriend: Bool) in
-                        if(isFriend == true){
-                            self.friends.append(p)
-                            self.tableView.reloadData()
-                            self.errorLabel.isHidden = true
-                            
-                        }else{
-                            p.first_name = contact.givenName
-                            p.last_name = contact.familyName
-                            self.contacts.append(p)
-                            self.tableView.reloadData()
-                        }
-                    })
-                }
-                if(friends.isEmpty){
-                    errorLabel.text = "None of your contacts have installed Friendal"
-                }
+            self.friends = friendList.sorted(by: { person1, person2 in
+                let personName1 = person1.last_name + person1.first_name
+                let personName2 = person2.last_name + person2.first_name
+                return personName1.localizedCaseInsensitiveCompare(personName2) == .orderedAscending
+            })
+            
+            self.tableView.reloadData()
+            if(self.friends.count>0){
+                self.errorLabel.isHidden = true
+            }else{
+                self.errorLabel.text = "You do not have any Friends on Palendar Yet"
             }
-            catch {
-                print("unable to fetch contacts")
-            }
+        }
 
         
     }
