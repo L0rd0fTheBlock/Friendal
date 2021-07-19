@@ -67,6 +67,8 @@ class Event{
         
         self.isAllDay = (d!["isAllDay"] as? Bool)!
         
+        self.isPrivate = d!["isPrivate"] as! Bool
+        
         self.count = (d!["count"] as? String)!
         
         self.date = d?["day"] as? String
@@ -74,10 +76,8 @@ class Event{
         self.year = d?["year"] as? String
         
         //MARK: re-implement these functions
-        //setPrivacy(Int(privacy)!)
-      //  setAllDay(Int(isad)!)
         
-       // isInvitee()
+        isInvitee()
         
     }
     
@@ -156,7 +156,13 @@ class Event{
     }
     
     func isInvitee(){
-    //    let calHandler = CalendarHandler()
+        let calHandler = CalendarHandler()
+        
+        
+        calHandler.isUserInvited(Auth.auth().currentUser!.uid, toEvent: id) { r in
+            self.isUserInvited = r
+        }
+        
      //   Event.isInvitee(Settings.sharedInstance.uid, forEvent: id, completion: {(invitee) in
             //print(invitee)
           //  self.isUserInvited = true //TODO: re-implement this
