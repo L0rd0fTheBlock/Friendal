@@ -179,12 +179,16 @@ class EventViewController: UITableViewController {
     
    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         //MARK: customize cell sizes for map and address(?)
-        switch indexPath.row{
+    if(!isEdit){
+    switch indexPath.row{
         case 5:
             return CGFloat(200)
         default:
             return tableView.rowHeight
         }
+    }else{
+        return 50
+    }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

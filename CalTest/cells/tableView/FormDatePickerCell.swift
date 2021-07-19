@@ -25,13 +25,29 @@ class FormDatePickerCell: UITableViewCell, UITextFieldDelegate {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        desc.frame = CGRect(x: 10, y: 10, width: self.frame.width/3, height: self.frame.height)
-        
-        //value.delegate = self
-        value.frame = CGRect(x: self.frame.width/3, y: 10, width: (self.frame.width/3)*2, height: self.frame.height)
         contentView.addSubview(value)
-        addSubview(desc)
+        contentView.addSubview(desc)
+        setLayoutConstraints()
+    }
+    
+    func setLayoutConstraints(){
+        
+        //set Desc Layout Constraints
+        desc.translatesAutoresizingMaskIntoConstraints = false
+        desc.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
+        desc.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+        desc.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
+        
+        
+        //set Value Layout Constraints
+        value.translatesAutoresizingMaskIntoConstraints = false
+        value.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        value.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
+        value.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
+        
+        
+        
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
