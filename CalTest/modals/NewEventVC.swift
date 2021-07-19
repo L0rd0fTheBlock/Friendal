@@ -56,9 +56,6 @@ class NewEventVC: UITableViewController {
     }
     
     @objc func didSave(){
-        
-        
-        let handler = CalendarHandler()
         var event = Event()
         
   //      Crashlytics.sharedInstance().setBoolValue(isAllDay, forKey: "isAllDay")
@@ -74,11 +71,11 @@ class NewEventVC: UITableViewController {
             if(event.start == event.end){
                 present(alert, animated: true, completion: nil)
             }else{
-                handler.addEvent(event: event)
+                calendarHandler.addEvent(event: event)
                 dismiss(animated: true, completion: nil)
             }
         }else{
-            handler.addEvent(event: event)
+            calendarHandler.addEvent(event: event)
             dismiss(animated: true, completion: nil)
         }
         
@@ -225,7 +222,7 @@ class NewEventVC: UITableViewController {
         
         let cell1 = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! FormDatePickerCell
         
-        var dat = cell1.value.date
+        let dat = cell1.value.date
         let cal = Calendar.current
         
         event.start = String(describing: cal.component(.day, from: dat)) + "/" + String(describing: cal.component(.month, from: dat)) + "/" + String(describing: cal.component(.year, from: dat)) + " " + String(cal.component(.hour, from: dat)) + ":" + String(cal.component(.minute, from: dat))
@@ -245,7 +242,7 @@ class NewEventVC: UITableViewController {
     
     func getEventWithEndTime() ->Event{
         let event = Event()
-        var formatter = DateFormatter()
+        let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy HH:mm"
         //Get the title Cell
         let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! FormTextCell
@@ -265,7 +262,6 @@ class NewEventVC: UITableViewController {
         dat = cell2.value.date
         
         event.end = formatter.string(from: dat)
-        print("==== event.end when created: \(event.end)")
         
         let cell3 = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! NewEventToggleCell
         

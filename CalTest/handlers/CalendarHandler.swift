@@ -2,8 +2,8 @@
 //  CalendarHandler.swift
 //  CalTest
 //
-//  Created by Jamie McAllister on 19/11/2017.
-//  Copyright © 2017 Jamie McAllister. All rights reserved.
+//  Created by Andrew McAllister on 19/11/2017.
+//  Copyright © 2017 MakeItForTheWeb Ltd. All rights reserved.
 //
 
 import Foundation
@@ -14,22 +14,19 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class CalendarHandler{
+class CalendarHandler: Handler{
+    
     var cal: CalendarViewController? = nil
-    let db: Firestore!
-    let storage: Storage
     var month = [CalendarDay]()
     //MARK: Initialisers
     init(_ calendar:CalendarViewController){
-
+        super.init()
         cal = calendar
-        db = Firestore.firestore()
-        storage = Storage.storage()
     }
-   init(){
-        db = Firestore.firestore()
-        storage = Storage.storage()
-   }
+    
+    override init(){
+        super.init()
+    }
     
     //MARK: Calendar Month Day and Events
     func getMonth(forMonth: Int, ofYear: Int, withUser: String, completion:([CalendarDay]) -> Void){
@@ -136,7 +133,7 @@ class CalendarHandler{
         
         getUserEvents(fromUser, forDay, ofMonth, inYear, {(userEvents) in
             events.append(contentsOf: userEvents)
-            self.getRequestEvents(forUser: fromUser, onDay: forDay, ofMonth: ofMonth, inYear: inYear) { invites in
+            inviteHandler.getRequestEvents(forUser: fromUser, onDay: forDay, ofMonth: ofMonth, inYear: inYear) { invites in
                 events.append(contentsOf: invites)
                 completion(events)
             }
@@ -195,170 +192,12 @@ class CalendarHandler{
     }
     
     //MARK: Get and set User and Person
-    func saveUser(person: Person){
-        db.collection("User").document(person.uid).setData(person.toArray())
-        { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            }else{
-                self.saveProfilePicture(forUser: person.uid, withPicture: person.picture!)
-            }
-        }
-    }
     
-    func createUser(person: Person){
-        print(person.toArray())
-        db.collection("User").document(Auth.auth().currentUser!.uid).setData(person.toArray())
-        { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            }else{
-                self.saveProfilePicture(forUser: Auth.auth().currentUser!.uid, withPicture: person.picture!)
-            }
-        }
-    }
-    
-    func saveProfilePicture(forUser: String, withPicture: UIImage){
-        
-        //create reference
-        let storageRef = storage.reference()
-        
-        //upload Image to cloud storage
-        var picRef = storageRef.child("profiles/\(forUser)/profile.jpg")
-        
-        // Upload the file to the path
-        let data = withPicture.jpegData(compressionQuality: 1)
-        let uploadTask = picRef.putData(data!, metadata: nil) { (metadata, error) in
-          guard let metadata = metadata else {
-            print("something apparently went wrong")
-            return
-          }
-        }
-
-        
-        
-        
-    }
-    
-    @available(swift, obsoleted:4.0, message:"I have no idea what this does, use getPerson() to retrieve user information")
-    func setUser(){
-        
-        db.collection("User")
-            .whereField("user", isEqualTo: String(Auth.auth().currentUser!.uid))
-            .getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        //print(document)
-                       // print("\(document.documentID) => \(document.data())")
-                        let me = Person(document: document)
-                        
-                    }
-                    
-                }
-             //   completion(events)
-            }
-    }
-   
-    func doesUserExist(_ completion: @escaping (Bool)->Void){
-        db.collection("User").document(Auth.auth().currentUser!.uid).getDocument() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-                fatalError("Unable to Retrieve documents to determine if user exists")
-            } else {
-                if(querySnapshot?.data() == nil){
-                    print("User document does not exist, Instructing App to begin creation")
-                    completion(false)
-                }else{
-                    completion(true)
-                }
-            }
-        }
-        
-    }
-    
-    func getperson(forUser: String, completion: @escaping (_ p: Person)->Void){
-        db.collection("User").document(forUser).getDocument() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                if(querySnapshot?.data() != nil){
-                    let person = Person(document: querySnapshot!)
-                    // Create a reference to the file you want to download
-                    let storageRef = self.storage.reference()
-                    let picRef = storageRef.child("profiles/\(person.uid)/profile.jpg")
-
-                    // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-                    picRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-                      if let error = error {
-                        print("No Image Exists for this user")
-                        completion(person)
-                        // Uh-oh, an error occurred!
-                      } else {
-                        let image = UIImage(data: data!)
-                        person.picture = image
-                        completion(person)
-                      }
-                    }
-                }
-            }
-        }
-    }
-    
-    func getperson(forPhone: String, completion: @escaping (Person, Bool)->Void){
-        db.collection("User").whereField("mobile", isEqualTo: forPhone).getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                if(querySnapshot?.isEmpty == true){
-                    let p = Person(id: "", first: "", last: "")
-                    completion(p, false)
-                }
-                for document in (querySnapshot?.documents)! {
-                    let person = Person(document: document)
-                    //Get profile Pic
-                    let storageRef = self.storage.reference()
-                    let picRef = storageRef.child("profiles/\(person.uid)/profile.jpg")
-
-                    // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-                    picRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-                      if let error = error {
-                        print("No Image Exists for this user")
-                        completion(person, true)
-                        // Uh-oh, an error occurred!
-                      } else {
-                        let image = UIImage(data: data!)
-                        person.picture = image
-                        completion(person, true)
-                      }
-                    }
-                }
-            }
-        }
-    }
-    
-    func getperson(withUID: String, completion: @escaping (Person, Bool)->Void){
-        db.collection("User").document(withUID).getDocument(completion: { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                if(querySnapshot?.data() == nil){
-                    let p = Person(id: "", first: "", last: "")
-                    completion(p, false)
-                }else{
-                    let friend = Person(document: querySnapshot!)
-                    completion(friend, true)
-                }
-            }
-        })
-    }
     
     //MARK: Friends
     
     func getFriendsList(){
         db.collection("friends").whereField("sender", isEqualTo: Settings.sharedInstance.me.uid).whereField("accepted", isEqualTo: true).getDocuments { shapshot, err in
-            print(shapshot?.count)
         }
     }
     
@@ -379,173 +218,6 @@ class CalendarHandler{
     
     //Event Invites
     //MARK: Invites
-    func saveNewRequest(event: String, user: String, day: Int, month: Int, year: Int){
-        var ref: DocumentReference?
-        ref = db.collection("Invite").addDocument(data: ["eventId":event, "user":user, "sender": Auth.auth().currentUser!.uid, "response": "no", "day": day, "month": month, "year": year])
-        { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            }else{
-               // self.sendMessage(to: user, type: 1, withRef: ref!)
-                print(ref?.documentID)
-            }
-        }
-    }
-    
-    func isUserInvited(_ user: String, toEvent: String, completion: @escaping(Bool)->Void){
-        
-        print("user: \(user)")
-        print("Event: \(toEvent)")
-        
-        db.collection("Invite").whereField("eventId", isEqualTo: toEvent).whereField("user", isEqualTo: user).getDocuments { snap, err in
-            
-            let docs = snap!.count
-            print("docs \(docs)")
-            if(docs > 0){
-                completion(true)
-            }else{
-                completion(false)
-            }
-            
-            
-            
-        }
-    }
-    
-    func getRequests(forEvent: String, completion: @escaping ([Person], [Person], [Person])->Void){
-        var going = [Person]()
-        var notGoing = [Person]()
-        var invited = [Person]()
-        //get all invites for the event
-        db.collection("Invite").whereField("eventId", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                if(querySnapshot?.isEmpty == true){
-                    completion([], [], [])
-                }
-                for document in (querySnapshot?.documents)! {
-                    let data = document.data()
-                    //get the user data for the invitee
-                    self.getperson(withUID: data["user"] as! String, completion: { (p, e) in
-                       // put the user in the correct array
-                        switch data["response"] as! String{
-                        case "going":
-                            going.append(p)
-                            break
-                        case "not":
-                            notGoing.append(p)
-                            break
-                        default:
-                            invited.append(p)
-                        }
-                        completion(going, notGoing, invited)
-                    })
-                        
-                }
-            }
-        }
-        
-    }
-    
-    func getRequests(forUser: String, completion: @escaping ([Request]) -> Void){
-        
-        var requests = [Request]()
-        
-        db.collection("Invite").whereField("user", isEqualTo: forUser).whereField("response", isEqualTo: "no").getDocuments(completion: {(querySnapshot, err) in
-            if(querySnapshot?.isEmpty == true){
-                completion([])
-            }
-            for document in (querySnapshot?.documents)! {
-                let r = Request()
-                let d = document.data()
-                r.apply(document: document)
-                self.getperson(forUser: d["sender"] as! String, completion: {(p) in
-                    r.person = p
-                    self.getEvent(withId: d["eventId"] as! String, completion: {(e) in
-                        r.event = e
-                        requests.append(r)
-                        completion(requests)
-                    })
-                })
-                
-            }
-            
-        })
-        
-    }
-    
-    func getRequestCount(forEvent: String, completion: @escaping (Int)->Void){
-        var going = 0
-        //get all invites for the event
-        db.collection("Invite").whereField("eventId", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                if(querySnapshot?.isEmpty == true){
-                    completion(0)
-                }
-                for document in (querySnapshot?.documents)! {
-                    let data = document.data()
-                    //get the user data for the invitee
-                    self.getperson(withUID: data["user"] as! String, completion: { (p, e) in
-                       // put the user in the correct array
-                        if(data["response"] as! String == "going"){
-                            going += 1
-                        
-                        }
-                        completion(going)
-                        })
-                }
-            }
-        }
-        
-    }
-    
-    func respondToRequest(_ request: String, with: String, completion: @escaping ()->Void){
-        
-        db.collection("Invite").document(request).updateData(["response" : with]){_ in
-            completion()
-        }
-    }
-    
-    func removeRequest(foruser: String, fromEvent: String){
-        
-        db.collection("Invite").whereField("eventId", isEqualTo: fromEvent).whereField("user", isEqualTo: foruser).getDocuments(completion: {(querySnapshot, err) in
-            
-            for document in (querySnapshot!.documents){
-                let id = document.documentID
-                    self.db.collection("Invite").document(id).delete()
-            }
-            
-        })
-    }
-    
-    func getRequestEvents(forUser: String, onDay: Int, ofMonth: Int, inYear: Int, completion: @escaping ([Event]) -> Void){
-        
-        var events = [Event]()
-        
-        db.collection("Invite").whereField("user", isEqualTo: forUser)
-            .whereField("response", isEqualTo: "going")
-            .whereField("day", isEqualTo: onDay)
-            .whereField("month", isEqualTo: ofMonth)
-            .whereField("year", isEqualTo: inYear)
-            .getDocuments(completion: {(querySnapshot, err) in
-            if(querySnapshot?.isEmpty == true){
-                completion([])
-            }else{
-                for document in (querySnapshot?.documents)! {
-                    let d = document.data()
-                    self.getEvent(withId: d["eventId"] as! String, completion: {(e) in
-                        events.append(e)
-                        completion(events)
-                    })
-                }
-            }
-        })
-        
-    }
-    
     //MARK: Status
     func getStatus(forEvent: String, _ completion: @escaping([Status]) -> Void){
         var statuses = [Status]()
@@ -1205,11 +877,11 @@ class CalendarHandler{
     func getError(from: NSError) ->NSError{
         print("===GETERROR===")
         if(from.domain == "NSCocoaErrorDomain"){
-            return NSError(domain: "biz.appit.friendal", code: 101, userInfo: ["message": "An error occured while accessing the calendar."])
+            return NSError(domain: "com.makeitfortheweb.palendar", code: 101, userInfo: ["message": "An error occured while accessing the calendar."])
         }else if(from.domain == NSURLErrorDomain && from.code == -1009){
-            return NSError(domain: "biz.appit.friendal", code: 100, userInfo: ["message": "The Internet connection appears to be offline."])
+            return NSError(domain: "com.makeitfortheweb.palendar", code: 100, userInfo: ["message": "The Internet connection appears to be offline."])
         }else{
-            return NSError(domain: "biz.appit.friendal", code: 001, userInfo: ["message": "An unknown error has occured while making your request."])
+            return NSError(domain: "com.makeitfortheweb.palendar", code: 001, userInfo: ["message": "An unknown error has occured while making your request."])
         }
     }
 
@@ -1224,7 +896,7 @@ class CalendarHandler{
         repeat {
             shifted = false
             for (index, status) in stats.enumerated(){
-                var stat = status
+                let stat = status
                 if(stat.isAd != nil){
                     print("not nil")
                 }else{

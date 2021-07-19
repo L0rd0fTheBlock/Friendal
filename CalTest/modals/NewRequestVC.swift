@@ -30,7 +30,7 @@ class NewRequestVC: NewEventVC {
 
     
     @objc override func didSave(){
-        let handler = CalendarHandler()
+        let inviteHandler = InviteHandler()
         var event = Event()
         
 //        Crashlytics.sharedInstance().setBoolValue(isAllDay, forKey: "isAllDay")
@@ -47,11 +47,11 @@ class NewRequestVC: NewEventVC {
                 present(alert, animated: true, completion: nil)
             }else{
                 
-                handler.addEvent(event: event, completion: {(eventId) in
+                calendarHandler.addEvent(event: event, completion: {(eventId) in
                     if(eventId == "Error"){
                         print("Error")
                     }else{
-                        handler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!)
+                        inviteHandler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!)
                     }
                 })
 
@@ -59,11 +59,11 @@ class NewRequestVC: NewEventVC {
             }
         }else{
             
-            handler.addEvent(event: event, completion: {(eventId) in
+            calendarHandler.addEvent(event: event, completion: {(eventId) in
                 if(eventId == "Error"){
                     print("Error")
                 }else{
-                    handler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!)
+                    inviteHandler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!)
                 }
             })
            

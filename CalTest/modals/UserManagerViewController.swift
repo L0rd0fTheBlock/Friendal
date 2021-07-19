@@ -36,12 +36,12 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
     @objc func didSave(){
         
         setUserDetails()
-        let cal = CalendarHandler()
+       
         if(shouldCreateUser){
-           cal.createUser(person: user)
+           userHandler.createUser(person: user)
             presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
         }else{
-            cal.saveUser(person: user)
+            userHandler.saveUser(person: user)
             self.dismiss(animated: true, completion: nil)
         }
         

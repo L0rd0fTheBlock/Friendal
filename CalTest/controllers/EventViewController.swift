@@ -26,9 +26,9 @@ class EventViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let cal = CalendarHandler()
+        let inviteHandler = InviteHandler()
         
-        cal.getRequestCount(forEvent: event!.id, completion: { (c) in
+        inviteHandler.getRequestCount(forEvent: event!.id, completion: { (c) in
             
             self.count = c
             self.tableView.reloadData()
@@ -120,7 +120,7 @@ class EventViewController: UITableViewController {
     
     func saveEvent() -> Bool{
         
-        var formatter = DateFormatter()
+        let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/YYYY HH:mm"
         
         let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! FormTextCell
@@ -145,8 +145,8 @@ class EventViewController: UITableViewController {
         event?.isPrivate = hideCell.toggle.isOn
         
         if(event?.getAllDayBool())!{
-            let ch = CalendarHandler()
-            ch.update(event: event!, withId: event!.id)
+            
+            calendarHandler.update(event: event!, withId: event!.id)
             return true
         }else{
             if(event?.getStartTime() == event?.getEndTime()){
@@ -154,8 +154,7 @@ class EventViewController: UITableViewController {
                 })
                 return false
             }else{
-                let ch = CalendarHandler()
-                ch.update(event: event!, withId: event!.id)
+                calendarHandler.update(event: event!, withId: event!.id)
                 return true
             }
         }

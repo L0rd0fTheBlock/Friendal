@@ -34,9 +34,9 @@ class SettingsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let calHandler = CalendarHandler()
         
-        calHandler.getperson(forUser: Auth.auth().currentUser!.uid, completion: {(p) in
+        
+        userHandler.getperson(forUser: Auth.auth().currentUser!.uid, completion: {(p) in
             self.me = p
             self.tableView.reloadData()
         })
@@ -126,10 +126,10 @@ class SettingsViewController: UITableViewController {
                     }))
                 }else{
                     do{
-                      //  try Auth.auth().signOut()
+                        try Auth.auth().signOut()
                         
                     }catch{}
-                   // navigationController?.pushViewController(WelcomeViewController(), animated: true)
+                    navigationController?.pushViewController(WelcomeViewController(), animated: true)
                 }
             }
         case 1:

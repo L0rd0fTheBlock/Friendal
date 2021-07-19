@@ -58,9 +58,9 @@ class InviteesTableViewController: UITableViewController, UIContextMenuInteracti
     
     func getInvited(){
         
-        let calHandler = CalendarHandler()
+        let inviteHandler = InviteHandler()
         
-        calHandler.getRequests(forEvent: event!.id, completion: {(g, ng, inv) in
+        inviteHandler.getRequests(forEvent: event!.id, completion: {(g, ng, inv) in
             
             self.going = g
             self.notGoing = ng
@@ -77,7 +77,7 @@ class InviteesTableViewController: UITableViewController, UIContextMenuInteracti
     }
     
     func removeInvite(atIndexPath: IndexPath){
-        let cal = CalendarHandler()
+        let inviteHandler = InviteHandler()
         let sec = atIndexPath.section
         let index = atIndexPath.row
         
@@ -85,17 +85,17 @@ class InviteesTableViewController: UITableViewController, UIContextMenuInteracti
         switch sec{
         
         case 0:
-            cal.removeRequest(foruser: going[index].uid, fromEvent: event!.id)
+            inviteHandler.removeRequest(foruser: going[index].uid, fromEvent: event!.id)
             going.remove(at: index)
             tableView.reloadData()
             break
         case 1:
-            cal.removeRequest(foruser: notGoing[index].uid, fromEvent: event!.id)
+            inviteHandler.removeRequest(foruser: notGoing[index].uid, fromEvent: event!.id)
             notGoing.remove(at: index)
             tableView.reloadData()
             break
         default:
-            cal.removeRequest(foruser: invited[index].uid, fromEvent: event!.id)
+            inviteHandler.removeRequest(foruser: invited[index].uid, fromEvent: event!.id)
             invited.remove(at: index)
             tableView.reloadData()
         }
@@ -159,7 +159,7 @@ class InviteesTableViewController: UITableViewController, UIContextMenuInteracti
     
     func populateGoing(_ index: IndexPath) -> UITableViewCell{
         
-        let interaction = UIContextMenuInteraction(delegate: self)
+        let _ = UIContextMenuInteraction(delegate: self)
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Friend", for: index) as! FriendsListViewCell
         

@@ -82,8 +82,8 @@ class LoginViewCell: UICollectionViewCell, FUIAuthDelegate {
         if( error != nil){
             print("Error Logging In \(String(describing: error))")
         }else{
-            let cal = CalendarHandler()
-            cal.doesUserExist({(exists: Bool) in
+            
+            userHandler.doesUserExist({(exists: Bool) in
                 if(exists){
                     self.parent?.dismiss(animated: true, completion: nil)
                 }else{

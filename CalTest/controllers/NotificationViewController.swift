@@ -48,8 +48,8 @@ class NotificationViewController: UITableViewController {
         tableView.addSubview(errorLabel)
         errorLabel.isHidden = false
         
-        let cal = CalendarHandler()
-        cal.getRequests(forUser: Auth.auth().currentUser!.uid, completion: {(requests) in
+        let inviteHandler = InviteHandler()
+        inviteHandler.getRequests(forUser: Auth.auth().currentUser!.uid, completion: {(requests) in
             self.requests = requests
             self.tabBarItem.badgeValue = String(self.requests.count)
             self.tableView.reloadData()

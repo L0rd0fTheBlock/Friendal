@@ -146,27 +146,18 @@ class Event{
         return String(describing: yearTime[0])
     }
     func getEndTime() -> String{
-        print("======= EndTime debug information start ========")
-        print("end: \(end)")
-        
-        
         let split = end?.split(separator: "/")
         let yearTime = split![2].split(separator: " ") // without this split[2] will look like "YYYY HH:mm"
         return String(describing: yearTime[1])
     }
     
     func isInvitee(){
-        let calHandler = CalendarHandler()
+        let inviteHandler = InviteHandler()
         
         
-        calHandler.isUserInvited(Auth.auth().currentUser!.uid, toEvent: id) { r in
+        inviteHandler.isUserInvited(Auth.auth().currentUser!.uid, toEvent: id) { r in
             self.isUserInvited = r
         }
-        
-     //   Event.isInvitee(Settings.sharedInstance.uid, forEvent: id, completion: {(invitee) in
-            //print(invitee)
-          //  self.isUserInvited = true //TODO: re-implement this
-       // })
     }
     
     func isVisible() -> Bool{

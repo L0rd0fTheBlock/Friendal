@@ -74,13 +74,12 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
     }
     
     @objc func didPost(){
-        let calHandler = CalendarHandler()
         guard let event = self.event else{
             print("No event found")
             return
         }
         
-        calHandler.submitStatus(forEvent: event.id, fromUser: Auth.auth().currentUser!.uid, withMessage: status.text, { () in
+        calendarHandler.submitStatus(forEvent: event.id, fromUser: Auth.auth().currentUser!.uid, withMessage: status.text, { () in
             (self.superview as! StatusView).doLoad()
         })
         self.status.text = ""

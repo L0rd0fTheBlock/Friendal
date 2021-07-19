@@ -46,8 +46,8 @@ class Status{
     }
     
     func getPerson(p: String, completion: @escaping ()->Void){
-        let cal = CalendarHandler()
-        cal.getperson(forUser: p, completion: {(person) in
+        
+        userHandler.getperson(forUser: p, completion: {(person) in
             
             self.poster = person
             completion()

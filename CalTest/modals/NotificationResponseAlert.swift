@@ -48,8 +48,8 @@ class NotificationResponseAlert{
     }
     
     func accept(action: UIAlertAction){
-        let cal = CalendarHandler()
-        cal.respondToRequest(requestID, with: "going"){() in
+        let inviteHandler = InviteHandler()
+        inviteHandler.respondToRequest(requestID, with: "going"){() in
             if(self.eVc == nil){
                 //do notificaiton controller actions
                 self.nVc?.loadData()
@@ -62,8 +62,8 @@ class NotificationResponseAlert{
     }
     
     func decline(action: UIAlertAction){
-        let cal = CalendarHandler()
-        cal.respondToRequest(requestID, with: "not"){() in
+        let inviteHandler = InviteHandler()
+        inviteHandler.respondToRequest(requestID, with: "not"){() in
             if(self.eVc == nil){
                 //do notificaiton controller actions
                 self.nVc?.loadData()

@@ -62,8 +62,8 @@ class FriendsListViewController: UITableViewController {
         errorLabel.isHidden = false
         tableView.addSubview(errorLabel)
         
-        let calHandler = CalendarHandler()
-        calHandler.getFriendsList()
+        
+        calendarHandler.getFriendsList()
         let keys = [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
             
@@ -74,7 +74,7 @@ class FriendsListViewController: UITableViewController {
                     // Array containing all unified contacts from everywhere
                     let phone = contact.phoneNumbers[0].value.stringValue
                     let number = String(phone.filter { !" \n\t\r".contains($0) })
-                    calHandler.getperson(forPhone: number, completion: {(p: Person, isFriend: Bool) in
+                    userHandler.getperson(forPhone: number, completion: {(p: Person, isFriend: Bool) in
                         if(isFriend == true){
                             self.friends.append(p)
                             self.tableView.reloadData()
@@ -98,29 +98,6 @@ class FriendsListViewController: UITableViewController {
 
         
     }
-    
-    //MARK: Deprecated
-    
-    /*func populateFriends(data: Dictionary<String, Any>) -> Array<Person>{
-        var people: Array<Person> = []
-        let d = data["data"] as! Array<Dictionary<String, Any>>
-        for person in d{
-            
-            let picture = person["picture"]!
-            var pict = picture as! Dictionary<String, Any>
-            let pic = pict["data"] as! Dictionary<String, Any>
- 
-            
-            let friend = Person(id: person["id"] as! String, first: person["first_name"] as! String, last: person["last_name"] as! String, picture: pic)
-            
-            people.append(friend)
-            
-        }
-        
-       
-        return people
-
-    }*/
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

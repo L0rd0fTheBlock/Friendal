@@ -18,6 +18,14 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseUI
 
+
+//MARK: Handler Declarations
+let userHandler = UserHandler()
+let calendarHandler = CalendarHandler()
+let inviteHandler = InviteHandler()
+
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate /*MessagingDelegate*/ {
 
@@ -29,8 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
        // FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         FirebaseApp.configure()
-        let db = Firestore.firestore()
-        let storage = Storage.storage()
         
         
         Auth.auth().addStateDidChangeListener { (auth, user) in }
