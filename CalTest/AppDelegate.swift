@@ -23,6 +23,7 @@ import FirebaseUI
 let userHandler = UserHandler()
 let calendarHandler = CalendarHandler()
 let inviteHandler = InviteHandler()
+let friendHandler = FriendHandler()
 
 
 

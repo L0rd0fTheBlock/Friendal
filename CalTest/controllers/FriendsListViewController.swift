@@ -63,7 +63,7 @@ class FriendsListViewController: UITableViewController {
         tableView.addSubview(errorLabel)
         
         
-        calendarHandler.getFriendsList()
+        friendHandler.getFriendsList()
         let keys = [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
             
