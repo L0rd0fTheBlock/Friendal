@@ -119,26 +119,30 @@ class EventViewController: UITableViewController {
     }
     
     func saveEvent() -> Bool{
+        
+        var formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/YYYY HH:mm"
+        
         let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! FormTextCell
         event?.title = cell.value.text
         
-        let cell1 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormDatePickerCell
-        let dat = cell1.shortDate
-        let date = dat?.split(separator: "/") as Array<Substring>?
-        event?.date = String(describing: date![0])
-        let month = Int(date![1])
-        event?.month = String(describing: month! + 1)
-        let year = date![2].split(separator: ",")
-        event?.year = String(describing: year[0])
+        let startCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormDatePickerCell
         
-        event?.start = cell1.start
+        var dat = startCell.value.date
+        let cal = Calendar.current
+        event?.date = String(describing: cal.component(.day, from: dat))
+        event?.month = String(describing: cal.component(.month, from: dat))
+        event?.year = String(describing: cal.component(.year, from: dat))
         
-        let cell2 = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! FormDatePickerCell
+        event?.start = formatter.string(from: dat)
         
-        event?.end = cell2.end
+        let endCell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! FormDatePickerCell
         
-        let cell3 = tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as! NewEventToggleCell
-        event?.isPrivate = cell3.toggle.isOn
+        dat = endCell.value.date
+        event?.end = formatter.string(from: dat)
+        
+        let hideCell = tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as! NewEventToggleCell
+        event?.isPrivate = hideCell.toggle.isOn
         
         if(event?.getAllDayBool())!{
             let ch = CalendarHandler()

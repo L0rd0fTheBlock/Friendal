@@ -246,7 +246,7 @@ class NewEventVC: UITableViewController {
     func getEventWithEndTime() ->Event{
         let event = Event()
         var formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/YYYY HH:mm"
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
         //Get the title Cell
         let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! FormTextCell
         event.title = cell.value.text //title
