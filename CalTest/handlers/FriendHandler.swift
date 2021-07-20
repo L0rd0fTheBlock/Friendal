@@ -54,8 +54,33 @@ class FriendHandler: Handler{
         }
     }
     
-    func addFriend(){
-        fatalError("Not Implemented Yet")
+    func getFriendRequests(_ completion: @escaping ([Friend])->Void){
+        var requestList = [Friend]()
+        db.collection("friends").whereField("target", isEqualTo: me.uid).whereField("accepted", isEqualTo: "false").getDocuments { result, err in
+            let docs = result!.documents
+            
+            for request in docs{
+                let data = request.data()
+                let uid = data["sender"] as! String
+                
+                userHandler.getPersonAsFriend(withUID: uid) { document in
+                    if(document != nil){
+                        let request = Friend(document: document!, withFriendId: request.documentID)
+                        requestList.append(request)
+                    }
+                }
+            }
+        }
+    }
+    
+    func addFriend(withID: String, completion: @escaping ()->Void){
+        self.db.collection("friends").addDocument(data: [
+            "target": withID,
+            "sender": me.uid,
+            "accepted": false
+        ]){_ in 
+            completion()
+        }
     }
     
     func removeFriend(withId: String, then: @escaping ()->Void){

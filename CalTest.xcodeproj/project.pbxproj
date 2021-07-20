@@ -30,6 +30,7 @@
 		7D4A89F426A5F29F00ABF0FE /* FriendHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89F326A5F29D00ABF0FE /* FriendHandler.swift */; };
 		7D4A89F626A5F74000ABF0FE /* StatusHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89F526A5F74000ABF0FE /* StatusHandler.swift */; };
 		7D4A89FA26A60F8900ABF0FE /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89F926A60F8900ABF0FE /* Friend.swift */; };
+		7D4A89FC26A6FD2C00ABF0FE /* FriendFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4A89FB26A6FD2B00ABF0FE /* FriendFinder.swift */; };
 		7D4AA0A0264042F9002EFAF2 /* SettingsUserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */; };
 		7D4AA0A226404B98002EFAF2 /* UserManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */; };
 		7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */; };
@@ -112,6 +113,7 @@
 		7D4A89F326A5F29D00ABF0FE /* FriendHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendHandler.swift; sourceTree = "<group>"; };
 		7D4A89F526A5F74000ABF0FE /* StatusHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusHandler.swift; sourceTree = "<group>"; };
 		7D4A89F926A60F8900ABF0FE /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		7D4A89FB26A6FD2B00ABF0FE /* FriendFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendFinder.swift; sourceTree = "<group>"; };
 		7D4AA09F264042F9002EFAF2 /* SettingsUserProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUserProfileCell.swift; sourceTree = "<group>"; };
 		7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagerViewController.swift; sourceTree = "<group>"; };
 		7D4E7BAF1FFAC79F0085DA33 /* NewEventToggleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventToggleCell.swift; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 				7D2A498F1FF0335900CDEEB3 /* InviteFriendViewController.swift */,
 				7D4AA0A126404B98002EFAF2 /* UserManagerViewController.swift */,
 				7DB08E0626430338002C4B25 /* NotificationResponseAlert.swift */,
+				7D4A89FB26A6FD2B00ABF0FE /* FriendFinder.swift */,
 			);
 			path = modals;
 			sourceTree = "<group>";
@@ -791,6 +794,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7DB08E0726430339002C4B25 /* NotificationResponseAlert.swift in Sources */,
+				7D4A89FC26A6FD2C00ABF0FE /* FriendFinder.swift in Sources */,
 				7D3127C51FF9A32C009752F0 /* Settings.swift in Sources */,
 				7D4E7BB01FFAC79F0085DA33 /* NewEventToggleCell.swift in Sources */,
 				7D4AA0A226404B98002EFAF2 /* UserManagerViewController.swift in Sources */,

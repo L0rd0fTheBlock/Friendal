@@ -18,6 +18,7 @@ class Person{
     var email: String
     var mobile: String
     var picture: UIImage? = nil
+    var friendCode: String
     
     init(id: String, first: String, last: String, picture: Dictionary<String, Any>) {
         uid = id
@@ -25,6 +26,7 @@ class Person{
         last_name = last
         email = ""
         mobile = ""
+        friendCode = ""
         self.picture = UIImage(named: "default_profile")
         
         
@@ -36,6 +38,7 @@ class Person{
         last_name = last
         email = ""
         mobile = ""
+        friendCode = ""
         picture = UIImage(named: "default_profile")
         
     }
@@ -45,6 +48,7 @@ class Person{
         last_name = last
         self.email = email
         self.mobile = mobile
+        friendCode = ""
         picture = UIImage(named: "default_profile")
         
     }
@@ -57,7 +61,7 @@ class Person{
         email = d!["email"] as! String
         mobile = d!["mobile"] as! String
         picture = UIImage(named: "default_profile")
-        
+        friendCode = d!["code"] as! String
         
         
     }
@@ -69,7 +73,7 @@ class Person{
         email = ""
         mobile = ""
         picture = UIImage(named: "default_profile")
-        
+        friendCode = ""
     }
     
     func name() -> String {
@@ -117,5 +121,21 @@ class Person{
         
         return UIImage()
     }
+    
+    func generateQRCode() -> UIImage? {
+        let data = friendCode.data(using: String.Encoding.ascii)
+
+        if let filter = CIFilter(name: "CIQRCodeGenerator") {
+            filter.setValue(data, forKey: "inputMessage")
+            let transform = CGAffineTransform(scaleX: 3, y: 3)
+
+            if let output = filter.outputImage?.transformed(by: transform) {
+                return UIImage(ciImage: output)
+            }
+        }
+
+        return nil
+    }
+
 }
 

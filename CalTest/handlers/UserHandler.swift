@@ -27,7 +27,9 @@ class UserHandler: Handler{
     }
     
     func createUser(person: Person){
-       
+        count { c in
+            person.friendCode = String(format: "%06d", c)
+        }
         db.collection("User").document(Auth.auth().currentUser!.uid).setData(person.toArray())
         { err in
             if let err = err {
@@ -154,6 +156,22 @@ class UserHandler: Handler{
         })
     }
     
+    func getperson(withCode: String, completion: @escaping (Person, Bool)->Void){
+        db.collection("User").whereField("code", isEqualTo: withCode).getDocuments(completion: { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                if(querySnapshot?.documents[0].data() == nil){
+                    let p = Person(id: "", first: "", last: "")
+                    completion(p, false)
+                }else{
+                    let friend = Person(document: querySnapshot!.documents[0])
+                    completion(friend, true)
+                }
+            }
+        })
+    }
+    
     func getPersonAsFriend(withUID: String, completion: @escaping (DocumentSnapshot?)->Void){
         db.collection("User").document(withUID).getDocument(completion: { (querySnapshot, err) in
             if let err = err {
@@ -168,4 +186,10 @@ class UserHandler: Handler{
         })
     }
     
+    
+    func count(_ completion: @escaping(Int)->Void){
+        db.collection("User").getDocuments { snap, err in
+            completion(snap!.count)
+        }
+    }
 }

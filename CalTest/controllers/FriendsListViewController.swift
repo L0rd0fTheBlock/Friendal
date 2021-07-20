@@ -18,6 +18,7 @@ import Contacts
 class FriendsListViewController: UITableViewController {
 
     var friends: [Friend] = [Friend]()
+    var requests: [Friend] = [Friend]()
     var selectedFriend = -1
     let errorLabel = UILabel()
     
@@ -29,6 +30,7 @@ class FriendsListViewController: UITableViewController {
         
         tableView.delegate = self
         self.tableView.register(FriendsListViewCell.self, forCellReuseIdentifier: "friend")
+        
         tableView.rowHeight = 90
 
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
@@ -49,6 +51,9 @@ class FriendsListViewController: UITableViewController {
         menu.addAction(viewAction)
         menu.addAction(removeAction)
        
+        let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAddFriend))
+        
+        navigationItem.setRightBarButton(button, animated: true)
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -66,6 +71,11 @@ class FriendsListViewController: UITableViewController {
             //Access Token does not exist
             #warning("Implement User checks here")
         }
+    }
+    
+    @objc func didTapAddFriend(){
+        let finder = FriendFinder()
+        finder.present(sender: self)
     }
     
     func doLoad(){
@@ -90,6 +100,14 @@ class FriendsListViewController: UITableViewController {
                 self.errorLabel.text = "You do not have any Friends on Palendar Yet"
             }
         }
+        
+        friendHandler.getFriendRequests { requests in
+            self.requests = requests.sorted(by: { person1, person2 in
+                let personName1 = person1.last_name + person1.first_name
+                let personName2 = person2.last_name + person2.first_name
+                return personName1.localizedCaseInsensitiveCompare(personName2) == .orderedAscending
+            })
+        }
 
         
     }
@@ -103,7 +121,7 @@ class FriendsListViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -129,28 +147,56 @@ class FriendsListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "friend", for: indexPath) as! FriendsListViewCell
+        if(indexPath.section == 0){
+           // let cell = UITableViewCell()
+           // var text =
+            return UITableViewCell()
+        }
+        if(indexPath.section == 1){
+            let cell = tableView.dequeueReusableCell(withIdentifier: "friend", for: indexPath) as! FriendsListViewCell
 
-        
-      //  cell.backgroundColor = .red
-        cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
-        cell.name.frame = CGRect(x: 100, y: 10, width: cell.frame.width - 100, height: cell.frame.height - 20)
-       // cell.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
-        
-      cell.pic.image = friends[indexPath.row].picture
-        cell.name.text = friends[indexPath.row].name()
-        cell.uid = friends[indexPath.row].uid
-        cell.addSubview(cell.pic)
-        cell.addSubview(cell.name)
-        
-        return cell
+            
+          //  cell.backgroundColor = .red
+            cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
+            cell.name.frame = CGRect(x: 100, y: 10, width: cell.frame.width - 100, height: cell.frame.height - 20)
+           // cell.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
+            
+          cell.pic.image = friends[indexPath.row].picture
+            cell.name.text = friends[indexPath.row].name()
+            cell.uid = friends[indexPath.row].uid
+            cell.addSubview(cell.pic)
+            cell.addSubview(cell.name)
+            
+            return cell
+        }else{
+            
+                let cell = tableView.dequeueReusableCell(withIdentifier: "friend", for: indexPath) as! FriendsListViewCell
+
+                
+              //  cell.backgroundColor = .red
+                cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
+                cell.name.frame = CGRect(x: 100, y: 10, width: cell.frame.width - 100, height: cell.frame.height - 20)
+               // cell.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
+                
+              cell.pic.image = requests[indexPath.row].picture
+                cell.name.text = requests[indexPath.row].name()
+                cell.uid = requests[indexPath.row].uid
+                cell.addSubview(cell.pic)
+                cell.addSubview(cell.name)
+                
+                return cell
+        }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if(section == 0){
+        
+        switch section{
+        case 0:
+            return "Your Friend Code is: \(me.friendCode)"
+        case 1:
             return "Friends"
-        }else{
-            return "These contacts are not on Palendar"
+        default:
+            return "Friend Requests"
         }
     }
     

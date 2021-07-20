@@ -25,6 +25,7 @@ let calendarHandler = CalendarHandler()
 let inviteHandler = InviteHandler()
 let friendHandler = FriendHandler()
 let statusHandler = StatusHandler()
+let me = Person()
 
 
 
@@ -37,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
        // FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         
         FirebaseApp.configure()
         
