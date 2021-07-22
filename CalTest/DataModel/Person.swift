@@ -16,7 +16,6 @@ class Person{
     var first_name: String
     var last_name: String
     var email: String
-    var mobile: String
     var picture: UIImage? = nil
     var friendCode: String
     
@@ -25,7 +24,6 @@ class Person{
         first_name = first
         last_name = last
         email = ""
-        mobile = ""
         friendCode = ""
         self.picture = UIImage(named: "default_profile")
         
@@ -37,17 +35,15 @@ class Person{
         first_name = first
         last_name = last
         email = ""
-        mobile = ""
         friendCode = ""
         picture = UIImage(named: "default_profile")
         
     }
-    init(id: String, first: String, last: String, email:String, mobile:String) {
+    init(id: String, first: String, last: String, email:String) {
         uid = id
         first_name = first
         last_name = last
         self.email = email
-        self.mobile = mobile
         friendCode = ""
         picture = UIImage(named: "default_profile")
         
@@ -59,7 +55,6 @@ class Person{
         first_name = d!["forename"] as! String
         last_name = d!["surname"] as! String
         email = d!["email"] as! String
-        mobile = d!["mobile"] as! String
         picture = UIImage(named: "default_profile")
         friendCode = d!["code"] as! String
         
@@ -71,7 +66,6 @@ class Person{
         first_name = ""
         last_name = ""
         email = ""
-        mobile = ""
         picture = UIImage(named: "default_profile")
         friendCode = ""
     }
@@ -87,7 +81,6 @@ class Person{
         person["forename"] = first_name
         person["surname"] = last_name
         person["email"] = email
-        person["mobile"] = mobile
         
         return person
     }
@@ -96,30 +89,6 @@ class Person{
         URLSession.shared.dataTask(with: url) { data, response, error in
             completion(data, response, error)
             }.resume()
-    }
-    
-    func getContactImage() -> UIImage{
-        
-       let predicate = CNContact.predicateForContacts(matching: CNPhoneNumber(stringValue: mobile))
-        let keys = [CNContactImageDataKey as CNKeyDescriptor, CNContactImageDataAvailableKey as CNKeyDescriptor]
-        
-        let store = CNContactStore()
-        do {
-            let contacts = try store.unifiedContacts(matching: predicate, keysToFetch: keys)            
-            let contact = contacts[0]
-            if(contact.imageDataAvailable == true){
-                picture = UIImage(data: contact.imageData!)!
-                return picture!
-            }else{
-                picture = UIImage(named: "default_profile")
-                return picture!
-            }
-        } catch {
-            print("Failed to fetch contact, error: \(error)")
-            // Handle the error
-        }
-        
-        return UIImage()
     }
     
     func generateQRCode() -> UIImage? {

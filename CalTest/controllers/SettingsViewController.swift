@@ -11,7 +11,6 @@ import FirebaseAuth
 //import FacebookLogin
 
 class SettingsViewController: UITableViewController {
-    var me:Person?
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,26 +33,24 @@ class SettingsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
-        
-        userHandler.getperson(forUser: Auth.auth().currentUser!.uid, completion: {(p) in
-            self.me = p
-            self.tableView.reloadData()
-        })
-        
-      //  calHandler.doGraph(request: "me", params: "id, first_name, last_name", completion: {(person, error) in
+        me.load { shouldLoad in
             
-         /*   guard let person = person else{
-                return
+            if(shouldLoad){
+                self.tableView.reloadData()
+            }else{
+                self.showLoginScreen()
             }
-            
-            self.me = Person(id: person["id"]as! String, first: person["first_name"] as! String, last: person["last_name"] as! String)
-            
-            self.tableView.reloadData()
-        })*/
+        }
+        
         
     }
 
+    func showLoginScreen(){
+        let welcomeVC = WelcomeViewController()
+        welcomeVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(welcomeVC, animated: true, completion: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -117,21 +114,13 @@ class SettingsViewController: UITableViewController {
         case 0:
             if(indexPath.row == 0){
                 let manager = UserManagerViewController()
-                if(me != nil){
-                    manager.user = me!
                     let managerVC = CalendarNavigationController(rootViewController: manager)
                     
                     self.present(managerVC, animated: true, completion: ({() in
                         
                     }))
-                }else{
-                    do{
-                        try Auth.auth().signOut()
-                        
-                    }catch{}
-                    navigationController?.pushViewController(WelcomeViewController(), animated: true)
-                }
             }
+            
         case 1:
             switch indexPath.row {
             case 0:
@@ -162,9 +151,9 @@ class SettingsViewController: UITableViewController {
         switch indexPath.row{
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as! SettingsUserProfileCell
-            let profilePic = me?.picture
+            let profilePic = me.picture
             cell.pic.image = profilePic
-            cell.name.text = me?.name()
+            cell.name.text = me.name()
             
             return cell
         case 1:

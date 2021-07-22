@@ -38,5 +38,23 @@ class User: Person{
          }
     }
     
+    func load(_ completion: @escaping (Bool)->Void){
+        if(Auth.auth().currentUser != nil){
+            if(uid == ""){
+                userHandler.getperson(forUser: Auth.auth().currentUser!.uid) { p in
+                    self.first_name = p.first_name
+                    self.last_name = p.last_name
+                    self.picture = p.picture
+                    self.email = p.email
+                    self.friendCode = p.friendCode
+                    self.uid = p.uid
+                    self.validateToken()
+                    completion(true)//should doLoad()
+                }
+            }
+        }else{
+            completion(false)//should NOT doLoad()
+        }
+    }
     
 }

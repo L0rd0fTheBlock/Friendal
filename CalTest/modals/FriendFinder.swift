@@ -101,7 +101,7 @@ class FriendFinder{
             if(r){//code returned a user
                 self.person = p
                 self.nameLabel.text = self.person.name()
-                self.profilePic.image = self.person.getContactImage()
+                self.profilePic.image = self.person.picture
                 self.sender?.present(self.friendView, animated: true, completion: {
                     
                 })

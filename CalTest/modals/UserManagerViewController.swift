@@ -64,10 +64,6 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
         //get email
         cell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! FormTextCell
         user.email = cell.value.text!
-        
-        //get mobile
-        cell = tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as! FormTextCell
-        user.mobile = cell.value.text!
     }
     
     
@@ -140,12 +136,6 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
             cell.value.text = user.email
             
             
-            return cell
-        case 4:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! FormTextCell
-            
-            cell.desc.text = "Mobile: "
-            cell.value.text = user.mobile
             return cell
         case 10:
             let cell = tableView.dequeueReusableCell(withIdentifier: "logout", for: indexPath) as! LogoutButtonCell

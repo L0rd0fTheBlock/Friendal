@@ -165,7 +165,7 @@ class InviteesTableViewController: UITableViewController, UIContextMenuInteracti
         
         let person = going[index.row]
         cell.name.text = person.name()
-        cell.pic.image = person.getContactImage()
+        cell.pic.image = person.picture!
         cell.uid = person.uid
         
         cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
@@ -189,7 +189,7 @@ class InviteesTableViewController: UITableViewController, UIContextMenuInteracti
         
         let person = notGoing[index.row]
         cell.name.text = person.name()
-        cell.pic.image = person.getContactImage()
+        cell.pic.image = person.picture!
         cell.uid = person.uid
         
         cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
@@ -210,7 +210,7 @@ class InviteesTableViewController: UITableViewController, UIContextMenuInteracti
         
         let person = invited[index.row]
         cell.name.text = person.name()
-        cell.pic.image = person.getContactImage()
+        cell.pic.image = person.picture!
         cell.uid = person.uid
         cell.pic.frame = CGRect(x: 20, y: 10, width: 70, height: 70)
         cell.name.frame = CGRect(x: 100, y: 10, width: cell.frame.width - 100, height: cell.frame.height - 20)

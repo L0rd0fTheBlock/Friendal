@@ -64,29 +64,22 @@ class FriendsListViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         friends.removeAll()
-        if Auth.auth().currentUser != nil {
-            //User is Logged in
-            if(me.uid == ""){//if me has not been set
-                userHandler.getperson(withUID: Auth.auth().currentUser!.uid) { p, bool in //get me from database
-                    me.first_name = p.first_name
-                    me.last_name = p.last_name
-                    me.email = p.email
-                    me.friendCode = p.friendCode
-                    me.mobile = p.mobile
-                    me.uid = p.uid
-                    me.validateToken()
-                    self.doLoad()
-                }
-            }else{
-                doLoad()
-            }
-        
+        me.load { shouldLoad in
             
-        }else{
-            //Access Token does not exist
-            #warning("Implement User checks here")
+            if(shouldLoad){
+                self.doLoad()
+            }else{
+                self.showLoginScreen()
+            }
         }
     }
+    
+    func showLoginScreen(){
+        let welcomeVC = WelcomeViewController()
+        welcomeVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(welcomeVC, animated: true, completion: nil)
+    }
+    
     
     @objc func didTapAddFriend(){
         let finder = FriendFinder()

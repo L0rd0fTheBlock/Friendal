@@ -62,16 +62,18 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        me.load { shouldLoad in
+            
+            if(shouldLoad){
+                self.doLoad()
+            }else{
+                self.showLoginScreen()
+            }
+        }
         
         //MARK: Uncomment this line to debug login features
         //do{ try Auth.auth().signOut() }catch{}
         super.viewDidLoad()
-        if(!isLoggedIn()){
-            showLoginScreen()
-        }else{
-            doLoad()
-        }
     }
     
     func isLoggedIn() ->Bool {
@@ -91,7 +93,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func showLoginScreen(){
         let welcomeVC = WelcomeViewController()
-        welcomeVC.calendarVC = self
         welcomeVC.modalPresentationStyle = .fullScreen
         navigationController?.present(welcomeVC, animated: true, completion: nil)
     }

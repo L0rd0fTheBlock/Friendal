@@ -86,54 +86,8 @@ class UserHandler: Handler{
                 print("Error getting documents: \(err)")
             } else {
                 if(querySnapshot?.data() != nil){
-                    let person = Person(document: querySnapshot!)
-                    // Create a reference to the file you want to download
-                    let storageRef = self.storage.reference()
-                    let picRef = storageRef.child("profiles/\(person.uid)/profile.jpg")
-
-                    // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-                    picRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-                      if error != nil {
-                        print("No Image Exists for this user")
-                        completion(person)
-                        // Uh-oh, an error occurred!
-                      } else {
-                        let image = UIImage(data: data!)
-                        person.picture = image
-                        completion(person)
-                      }
-                    }
-                }
-            }
-        }
-    }
-    
-    func getperson(forPhone: String, completion: @escaping (Person, Bool)->Void){
-        db.collection("User").whereField("mobile", isEqualTo: forPhone).getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                if(querySnapshot?.isEmpty == true){
-                    let p = Person(id: "", first: "", last: "")
-                    completion(p, false)
-                }
-                for document in (querySnapshot?.documents)! {
-                    let person = Person(document: document)
-                    //Get profile Pic
-                    let storageRef = self.storage.reference()
-                    let picRef = storageRef.child("profiles/\(person.uid)/profile.jpg")
-
-                    // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-                    picRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-                      if error != nil {
-                        print("No Image Exists for this user")
-                        completion(person, true)
-                        // Uh-oh, an error occurred!
-                      } else {
-                        let image = UIImage(data: data!)
-                        person.picture = image
-                        completion(person, true)
-                      }
+                    self.personWithPicture(from: querySnapshot!) { p in
+                        completion(p)
                     }
                 }
             }
@@ -166,8 +120,9 @@ class UserHandler: Handler{
                     let p = Person(id: "", first: "", last: "")
                     completion(p, false)
                 }else{
-                    let friend = Person(document: querySnapshot!.documents[0])
-                    completion(friend, true)
+                    self.personWithPicture(from: querySnapshot!.documents[0]) { p in
+                        completion(p, true)
+                    }
                 }
             }
         })
@@ -219,6 +174,26 @@ class UserHandler: Handler{
         ])
         
         
+    }
+    
+    func personWithPicture(from: DocumentSnapshot, completion: @escaping (Person)->Void){
+        let person = Person(document: from)
+        // Create a reference to the file you want to download
+        let storageRef = self.storage.reference()
+        let picRef = storageRef.child("profiles/\(person.uid)/profile.jpg")
+
+        // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+        picRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+          if error != nil {
+            print("No Image Exists for this user")
+            completion(person)
+            // Uh-oh, an error occurred!
+          } else {
+            let image = UIImage(data: data!)
+            person.picture = image
+            completion(person)
+          }
+        }
     }
     
     func count(_ completion: @escaping(Int)->Void){

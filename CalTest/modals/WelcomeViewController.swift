@@ -18,8 +18,6 @@ class WelcomeViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     var vc: String? = nil
     
-    var calendarVC: UIViewController? = nil
-    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
