@@ -56,9 +56,9 @@ class FriendHandler: Handler{
     
     func getFriendRequests(_ completion: @escaping ([Friend])->Void){
         var requestList = [Friend]()
-        db.collection("friends").whereField("target", isEqualTo: me.uid).whereField("accepted", isEqualTo: "false").getDocuments { result, err in
+        db.collection("friends").whereField("target", isEqualTo: me.uid).whereField("accepted", isEqualTo: false).getDocuments { result, err in
             let docs = result!.documents
-            
+            print(docs.count)
             for request in docs{
                 let data = request.data()
                 let uid = data["sender"] as! String
@@ -67,6 +67,9 @@ class FriendHandler: Handler{
                     if(document != nil){
                         let request = Friend(document: document!, withFriendId: request.documentID)
                         requestList.append(request)
+                        completion(requestList)
+                    }else{
+                        print("Nil Document in getPersonAsFriend completion Handler")
                     }
                 }
             }

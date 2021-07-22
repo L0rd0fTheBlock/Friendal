@@ -70,16 +70,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         if(!isLoggedIn()){
             showLoginScreen()
         }else{
-            if(me.uid == ""){
-                userHandler.getperson(withUID: Auth.auth().currentUser!.uid) { p, bool in
-                    me.first_name = p.first_name
-                    me.last_name = p.last_name
-                    me.email = p.email
-                    me.friendCode = p.friendCode
-                    me.mobile = p.mobile
-                    me.uid = p.uid
-                }
-            }
             doLoad()
         }
     }

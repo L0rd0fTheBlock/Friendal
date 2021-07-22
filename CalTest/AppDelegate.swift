@@ -25,12 +25,12 @@ let calendarHandler = CalendarHandler()
 let inviteHandler = InviteHandler()
 let friendHandler = FriendHandler()
 let statusHandler = StatusHandler()
-let me = Person()
+let me = User()
 
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate /*MessagingDelegate*/ {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate{
 
     var window: UIWindow?
 
@@ -38,46 +38,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
        // FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        var launchView = TabBarController()
+        
         
         
         FirebaseApp.configure()
+        Messaging.messaging().delegate = self
         
         
         Auth.auth().addStateDidChangeListener { (auth, user) in }
        
         
-        if #available(iOS 10.0, *) {
-            // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
             
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions,
-                completionHandler: {_, _ in })
-        } else {
-            let settings: UIUserNotificationSettings =
-                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            application.registerUserNotificationSettings(settings)
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { grant, err in
+            print("Permission granted: \(grant)")
+                guard grant else { return }
+                self.getNotificationSettings()
         }
         
         application.registerForRemoteNotifications()
-     /*
-        do {
-            try  Auth.auth().signOut()
-        } catch {
-            
-        }
-       */
         
+        let notificationOption = launchOptions?[.remoteNotification]
+
+        // 1
+        if
+            let notification = notificationOption as? [String: AnyObject],
+            let aps = notification["aps"] as? [String: AnyObject],
+            let alert = aps["alert"] as? [String: String]{
+            if(alert["title"] == "You have a new Friend Request"){
+                launchView.selectedIndex = 1
+            }
+        }
       //  AppEventsLogger.activate(application)
         //GADMobileAds.configure(withApplicationID: "ca-app-pub-8694139400395039~1830749784")
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = TabBarController()//TODO: set this back to tab bar controller after testing
+        window?.rootViewController = launchView//TODO: set this back to tab bar controller after testing
     return true
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+   /* func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
         // TODO: Handle data of notification
@@ -92,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Print full message.
         print(userInfo)
-    }
+    */
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // If you are receiving a notification message while your app is in the background,
@@ -113,6 +115,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         completionHandler(UIBackgroundFetchResult.newData)
     }
     
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+      let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
+      let token = tokenParts.joined()
+      print("Device Token: \(token)")
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+      print("Failed to register: \(error)")
+    }
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -138,27 +149,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     
+    func getNotificationSettings() {
+      UNUserNotificationCenter.current().getNotificationSettings { settings in
+        print("Notification settings: \(settings)")
+        guard settings.authorizationStatus == .authorized else { return }
+        DispatchQueue.main.async {
+          UIApplication.shared.registerForRemoteNotifications()
+        }
+      }
+    }
+    
     
     //MARK: FIREBASE NOTIFICATION DELEGATE
-    
-   /* func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        
-        
-        // TODO: If necessary send token to application server.
-        // Note: This callback is fired at each app startup and whenever a new token is generated.
-    }
 
-    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String){
-        print("Firebase registration token refreshed: \(fcmToken)")
-        
-        if(AccessToken.current != nil){
-            let calHandler = CalendarHandler()
-            calHandler.registerDviceToken()
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+      print("Firebase registration token: \(String(describing: fcmToken))")
+/*
+        userHandler.hasNotificationToken(matching: fcmToken!) { res in
+            if(!res){
+                print("Token does not exist, Registering")
+                userHandler.registerNotificationToken(token: fcmToken!)
+            }else{
+                print("Token Exists")
+            }
         }
-    }
 */
-    
-    
-
+       
+        
+      let dataDict: [String: String] = ["token": fcmToken ?? ""]
+      NotificationCenter.default.post(
+        name: Notification.Name("FCMToken"),
+        object: nil,
+        userInfo: dataDict
+      )
+      // TODO: If necessary send token to application server.
+      // Note: This callback is fired at each app startup and whenever a new token is generated.
+    }
 }
 

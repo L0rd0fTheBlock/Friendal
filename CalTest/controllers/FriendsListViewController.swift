@@ -66,7 +66,22 @@ class FriendsListViewController: UITableViewController {
         friends.removeAll()
         if Auth.auth().currentUser != nil {
             //User is Logged in
-            doLoad()
+            if(me.uid == ""){//if me has not been set
+                userHandler.getperson(withUID: Auth.auth().currentUser!.uid) { p, bool in //get me from database
+                    me.first_name = p.first_name
+                    me.last_name = p.last_name
+                    me.email = p.email
+                    me.friendCode = p.friendCode
+                    me.mobile = p.mobile
+                    me.uid = p.uid
+                    me.validateToken()
+                    self.doLoad()
+                }
+            }else{
+                doLoad()
+            }
+        
+            
         }else{
             //Access Token does not exist
             #warning("Implement User checks here")
@@ -98,15 +113,19 @@ class FriendsListViewController: UITableViewController {
                 self.errorLabel.isHidden = true
             }else{
                 self.errorLabel.text = "You do not have any Friends on Palendar Yet"
+                self.errorLabel.isHidden = false
             }
         }
         
         friendHandler.getFriendRequests { requests in
+            print(requests.count)
             self.requests = requests.sorted(by: { person1, person2 in
                 let personName1 = person1.last_name + person1.first_name
                 let personName2 = person2.last_name + person2.first_name
                 return personName1.localizedCaseInsensitiveCompare(personName2) == .orderedAscending
             })
+            print(self.requests.count)
+            self.tableView.reloadData()
         }
 
         
@@ -126,21 +145,29 @@ class FriendsListViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return friends.count
+        switch section{
+        case 1:
+            return friends.count
+        case 2:
+            return requests.count
+        default:
+            return 0
+        }
         
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        selectedFriend = indexPath.row
-        present(menu, animated: true) {
-            
+        if(indexPath.section == 1){
+            selectedFriend = indexPath.row
+            present(menu, animated: true) {
+                
+            }
+            Settings.sharedInstance.selectedFriendId = friends[indexPath.row].uid
+        }else{
+            if(indexPath.section == 2){
+                
+            }
         }
-        
-        
-        
-        Settings.sharedInstance.selectedFriendId = friends[indexPath.row].uid
-        
         
         
     }
@@ -169,7 +196,7 @@ class FriendsListViewController: UITableViewController {
             
             return cell
         }else{
-            
+            print("Creating cell for request")
                 let cell = tableView.dequeueReusableCell(withIdentifier: "friend", for: indexPath) as! FriendsListViewCell
 
                 

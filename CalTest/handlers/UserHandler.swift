@@ -154,6 +154,7 @@ class UserHandler: Handler{
                 }
             }
         })
+        
     }
     
     func getperson(withCode: String, completion: @escaping (Person, Bool)->Void){
@@ -186,6 +187,39 @@ class UserHandler: Handler{
         })
     }
     
+    func hasNotificationToken(matching token:String, completion: @escaping (Bool)->Void){
+       // print("has notificaiton? for \(me.uid)")
+        db.collection("User").document(me.uid).collection("tokens").whereField("token", isEqualTo: token).getDocuments { tokenDocumentSnap, err in
+            //print("Got to hasNotification result")
+            if(tokenDocumentSnap!.count > 0){
+                completion(true)
+            }else{
+                completion(false)
+            }
+            
+            
+        }
+    }
+    
+    func registerNotificationToken(token: String){
+       // print("register Notification")
+        //euXwTo6o00eVo9NKd1zvIx:APA91bGiCOLme4Z28QtWEc-ck2saoiS_1MJ6E2kAdkWjNuZYNRZPOq1BcEmNVwq_WyQeW4buiW-Pc2FvXHofEm33lR5YCzhAwzaZhgFTn46hkHPDB5k0-6KXsVd3zNiUmMaMexpvwaux//
+        let today = Date()
+        var components = DateComponents()
+        components.month = 1
+        
+        let expires = Calendar.current.date(byAdding: components, to: today)
+        
+        let timestamp = Timestamp(date: expires!)
+        
+        
+        db.collection("User").document(me.uid).collection("tokens").addDocument(data: [
+            "token": token,
+            "expires": timestamp
+        ])
+        
+        
+    }
     
     func count(_ completion: @escaping(Int)->Void){
         db.collection("User").getDocuments { snap, err in
