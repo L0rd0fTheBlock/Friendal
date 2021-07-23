@@ -23,6 +23,7 @@ class FriendsListViewController: UITableViewController {
     let errorLabel = UILabel()
     
     let menu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    let requestMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +41,8 @@ class FriendsListViewController: UITableViewController {
         
         tableView.addSubview(errorLabel)
         
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
         let viewAction = UIAlertAction(title: "View", style: .default) { action in
             self.view()
         }
@@ -50,6 +53,24 @@ class FriendsListViewController: UITableViewController {
         
         menu.addAction(viewAction)
         menu.addAction(removeAction)
+        menu.addAction(cancelAction)
+        
+        let acceptAction = UIAlertAction(title: "Accept", style: .default) { action in
+            friendHandler.acceptFriendRequest(withID: self.requests[self.selectedFriend].uid) {
+                self.doLoad()
+            }
+        }
+        
+        let declineAction = UIAlertAction(title: "Decline", style: .destructive) { action in
+            friendHandler.rejectFriendRequest(withID: self.requests[self.selectedFriend].uid) {
+                self.doLoad()
+            }
+        }
+        
+        requestMenu.addAction(acceptAction)
+        requestMenu.addAction(declineAction)
+        requestMenu.addAction(cancelAction)
+        
        
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAddFriend))
         
@@ -72,6 +93,7 @@ class FriendsListViewController: UITableViewController {
                 self.showLoginScreen()
             }
         }
+        doLoad()
     }
     
     func showLoginScreen(){
@@ -94,7 +116,6 @@ class FriendsListViewController: UITableViewController {
         errorLabel.isHidden = false
         
         friendHandler.getFriendsList { friendList in
-            
             self.friends = friendList.sorted(by: { person1, person2 in
                 let personName1 = person1.last_name + person1.first_name
                 let personName2 = person2.last_name + person2.first_name
@@ -150,18 +171,24 @@ class FriendsListViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(indexPath.section == 1){
+        
+        switch indexPath.section {
+        case 1:
             selectedFriend = indexPath.row
             present(menu, animated: true) {
                 
             }
             Settings.sharedInstance.selectedFriendId = friends[indexPath.row].uid
-        }else{
-            if(indexPath.section == 2){
+            break
+        case 2:
+            selectedFriend = indexPath.row
+            present(requestMenu, animated: true) {
                 
             }
+            break
+        default:
+            break
         }
-        
         
     }
     

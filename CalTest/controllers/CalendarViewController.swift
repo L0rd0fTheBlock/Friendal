@@ -70,7 +70,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.showLoginScreen()
             }
         }
-        
+        doLoad()
         //MARK: Uncomment this line to debug login features
         //do{ try Auth.auth().signOut() }catch{}
         super.viewDidLoad()
@@ -205,6 +205,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
                 
             }))
         }else{
+            
             let addVC = CalendarNavigationController(rootViewController: NewRequestVC())
             
             let vc:NewRequestVC = addVC.topViewController as! NewRequestVC

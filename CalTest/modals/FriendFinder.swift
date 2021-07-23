@@ -23,6 +23,7 @@ class FriendFinder{
     let searchView = UIAlertController(title: "Find a Friend", message: "Enter a Friend Code", preferredStyle: .alert)
     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
     private var searchAction = UIAlertAction()
+    private var add = UIAlertAction()
     init(){
         
         searchView.addTextField { text in
@@ -79,11 +80,13 @@ class FriendFinder{
         friendView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
             
         }))
-        friendView.addAction(UIAlertAction(title: "Add Friend", style: .default){ action in
+         add = UIAlertAction(title: "Add Friend", style: .default){ action in
             friendHandler.addFriend(withID: self.person.uid){
                 self.sender?.doLoad()
             }
-        })
+        }
+        
+        friendView.addAction(add)
         
     }
     
@@ -102,6 +105,9 @@ class FriendFinder{
                 self.person = p
                 self.nameLabel.text = self.person.name()
                 self.profilePic.image = self.person.picture
+                if(p.uid == me.uid){
+                    self.add.isEnabled = false
+                }
                 self.sender?.present(self.friendView, animated: true, completion: {
                     
                 })

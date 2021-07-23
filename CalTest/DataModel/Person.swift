@@ -49,6 +49,17 @@ class Person{
         
     }
     
+    init(id: String, first: String, last: String, email:String, picture: UIImage, code: String) {
+        uid = id
+        first_name = first
+        last_name = last
+        self.email = email
+        friendCode = code
+        self.picture = picture
+        
+    }
+    
+    
     init(document: DocumentSnapshot){
         uid = document.documentID
         let d = document.data()
@@ -71,7 +82,12 @@ class Person{
     }
     
     func name() -> String {
-        return first_name + " " + last_name
+        
+        if(uid == me.uid){
+            return "\(first_name) \(last_name) (You)"
+        }else{
+            return first_name + " " + last_name
+        }
     }
     
     func toArray() -> [String:String]{

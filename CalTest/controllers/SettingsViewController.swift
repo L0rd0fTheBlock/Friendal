@@ -153,7 +153,7 @@ class SettingsViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "user", for: indexPath) as! SettingsUserProfileCell
             let profilePic = me.picture
             cell.pic.image = profilePic
-            cell.name.text = me.name()
+            cell.name.text = "\(me.first_name) \(me.last_name)"
             
             return cell
         case 1:

@@ -52,7 +52,7 @@ class NotificationResponseAlert{
         inviteHandler.respondToRequest(requestID, with: "going"){() in
             if(self.eVc == nil){
                 //do notificaiton controller actions
-                self.nVc?.loadData()
+                self.nVc?.doLoad()
             }else{
                 //do event controller actions
                 self.eVc?.navigationController?.popViewController(animated: true)
@@ -66,7 +66,7 @@ class NotificationResponseAlert{
         inviteHandler.respondToRequest(requestID, with: "not"){() in
             if(self.eVc == nil){
                 //do notificaiton controller actions
-                self.nVc?.loadData()
+                self.nVc?.doLoad()
             }else{
                 //do event controller actions
                 self.eVc?.navigationController?.popViewController(animated: true)

@@ -37,7 +37,7 @@ class NotificationViewController: UITableViewController {
         navigationController?.pushViewController(eventView, animated: true)
     }
     
-    func loadData(){
+    func doLoad(){
         requests.removeAll()
         tableView.reloadData()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
@@ -62,7 +62,7 @@ class NotificationViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        loadData()
+        doLoad()
     }
     
     override func didReceiveMemoryWarning() {

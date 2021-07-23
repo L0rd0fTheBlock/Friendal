@@ -51,7 +51,13 @@ class NewRequestVC: NewEventVC {
                     if(eventId == "Error"){
                         print("Error")
                     }else{
-                        inviteHandler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!)
+                        inviteHandler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!){
+                            if(self.calendarVC != nil){
+                                self.calendarVC!.doLoad()
+                            }else{
+                                self.dayVC?.doLoad()
+                            }
+                        }
                     }
                 })
 
@@ -63,7 +69,9 @@ class NewRequestVC: NewEventVC {
                 if(eventId == "Error"){
                     print("Error")
                 }else{
-                    inviteHandler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!)
+                    inviteHandler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!){
+                        self.calendarVC?.doLoad()
+                    }
                 }
             })
            

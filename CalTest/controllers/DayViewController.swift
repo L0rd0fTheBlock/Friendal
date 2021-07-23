@@ -26,6 +26,7 @@ class DayViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        buildView()
         setupView()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
@@ -45,15 +46,19 @@ class DayViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
+        doLoad()
+        
+    }
+    
+    func doLoad(){
         today?.update(){ (error) in
             self.setupView()
             self.tableView.reloadData()
         }
-        
     }
 
     
-    func setupView(){
+    func buildView(){
         view.backgroundColor = .white
         allDayLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(allDayLabel)
@@ -73,6 +78,9 @@ class DayViewController: UITableViewController {
         label.text = "All-Day"
       //  label.adjustsFontSizeToFitWidth = true
         label.textColor = .white
+    }
+    
+    func setupView(){
         
         for event in events{
             event.removeFromSuperview()

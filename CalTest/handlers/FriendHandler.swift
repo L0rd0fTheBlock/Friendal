@@ -28,9 +28,10 @@ class FriendHandler: Handler{
                 
                 userHandler.getPersonAsFriend(withUID: uid) { document in
                     if(document != nil){
-                        let friend = Friend(document: document!, withFriendId: friendship.documentID)
-                        friendList.append(friend)
-                        completion(friendList)
+                        self.generateFriend(from: document!, with: friendship.documentID) { friend in
+                            friendList.append(friend)
+                            completion(friendList)
+                        }
                     }
                 }
             }
@@ -44,9 +45,12 @@ class FriendHandler: Handler{
                     
                     userHandler.getPersonAsFriend(withUID: uid) { document in
                         if(document != nil){
-                            let friend = Friend(document: document!, withFriendId: friendship.documentID)
-                            friendList.append(friend)
-                            completion(friendList)
+                            self.generateFriend(from: document!, with: friendship.documentID) { friend in
+                                friendList.append(friend)
+                                completion(friendList)
+                            }
+                            
+                            
                         }
                     }
                 }
@@ -62,12 +66,15 @@ class FriendHandler: Handler{
             for request in docs{
                 let data = request.data()
                 let uid = data["sender"] as! String
-                
+
                 userHandler.getPersonAsFriend(withUID: uid) { document in
                     if(document != nil){
-                        let request = Friend(document: document!, withFriendId: request.documentID)
-                        requestList.append(request)
-                        completion(requestList)
+                        
+                        self.generateFriend(from: document!, with: request.documentID) { f in
+                            requestList.append(f)
+                            completion(requestList)
+                        }
+                        
                     }else{
                         print("Nil Document in getPersonAsFriend completion Handler")
                     }
@@ -91,12 +98,23 @@ class FriendHandler: Handler{
             then()
         }
         }
-    func acceptFriendRequest(){
-        fatalError("Not Implemented Yet")
+    func acceptFriendRequest(withID: String, completion: @escaping ()->Void){
+        db.collection("friends").document(withID).setData(["accepted": true]) { err in
+            completion()
+        }
     }
     
-    func rejectFriendRequest(){
-        fatalError("Not Implemented Yet")
+    func rejectFriendRequest(withID: String, completion: @escaping ()->Void){
+        db.collection("friends").document(withID).delete(){_ in
+            completion()
+        }
     }
     
+    func generateFriend(from document: DocumentSnapshot, with id: String, completion: @escaping (Friend)->Void){
+        userHandler.personWithPicture(from: document) { p in
+            let friend = Friend(p, withFriendId: id)
+            friend.friendshipID = id
+            completion(friend)
+        }
+    }
 }

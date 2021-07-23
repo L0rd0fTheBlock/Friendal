@@ -17,12 +17,13 @@ class InviteHandler: Handler{
     
    
     
-    func saveNewRequest(event: String, user: String, day: Int, month: Int, year: Int){
+    func saveNewRequest(event: String, user: String, day: Int, month: Int, year: Int, completion: @escaping ()->Void){
         db.collection("Invite").addDocument(data: ["eventId":event, "user":user, "sender": Auth.auth().currentUser!.uid, "response": "no", "day": day, "month": month, "year": year])
         { err in
             if let err = err {
                 print("Error adding document: \(err)")
             }else{
+                completion()
                // self.sendMessage(to: user, type: 1, withRef: ref!)
             }
         }

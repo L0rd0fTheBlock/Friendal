@@ -37,7 +37,7 @@ class InviteesTableViewController: UITableViewController, UIContextMenuInteracti
         invited = []
         
         //get all invitees for an event
-        getInvited()
+        doLoad()
         if(!(event?.canInvite)!){
             //if the event does not allow invites
             if(event?.creator == Auth.auth().currentUser?.uid){
@@ -56,7 +56,7 @@ class InviteesTableViewController: UITableViewController, UIContextMenuInteracti
         
     }
     
-    func getInvited(){
+    func doLoad(){
         
         let inviteHandler = InviteHandler()
         

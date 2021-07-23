@@ -13,7 +13,7 @@ import FirebaseFirestoreSwift
 
 class Friend: Person{
     
-    let friendshipID: String
+    var friendshipID: String = ""
     
     override init(){
         friendshipID = ""
@@ -24,5 +24,11 @@ class Friend: Person{
         friendshipID = withFriendId
         super.init(document: document)
     }
+    
+    init(_ p: Person, withFriendId: String){
+        super.init(id: p.uid, first: p.first_name, last: p.last_name, email: p.email, picture: p.picture!, code: p.friendCode)
+        friendshipID = withFriendId
+    }
+    
     
 }
