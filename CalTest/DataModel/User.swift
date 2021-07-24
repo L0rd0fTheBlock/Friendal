@@ -57,4 +57,14 @@ class User: Person{
         }
     }
     
+    func checkPolicies(){
+        let localSetting = UserDefaults.standard.string(forKey: "privacy_accepted_date")!
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-YYYY"
+        let date = dateFormatter.date(from:localSetting)!
+        
+       // let serverDate = 
+        
+    }
+    
 }

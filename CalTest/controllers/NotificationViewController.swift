@@ -25,7 +25,25 @@ class NotificationViewController: UITableViewController {
         tableView.rowHeight = 150
         tableView.allowsSelection = true
         
+        if(me.uid == ""){
+            me.load { shouldLoad in
+                
+                if(shouldLoad){
+                    self.doLoad()
+                }else{
+                    self.showLoginScreen()
+                }
+            }
+        }
+        
     }
+    
+    func showLoginScreen(){
+        let welcomeVC = WelcomeViewController()
+        welcomeVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(welcomeVC, animated: true, completion: nil)
+    }
+    
     @objc
     func willViewEvent(action: UIAlertAction){
         let r = requests[tableView.indexPathForSelectedRow!.row]

@@ -56,13 +56,13 @@ class FriendsListViewController: UITableViewController {
         menu.addAction(cancelAction)
         
         let acceptAction = UIAlertAction(title: "Accept", style: .default) { action in
-            friendHandler.acceptFriendRequest(withID: self.requests[self.selectedFriend].uid) {
+            friendHandler.acceptFriendRequest(withID: self.requests[self.selectedFriend].friendshipID) {
                 self.doLoad()
             }
         }
         
         let declineAction = UIAlertAction(title: "Decline", style: .destructive) { action in
-            friendHandler.rejectFriendRequest(withID: self.requests[self.selectedFriend].uid) {
+            friendHandler.rejectFriendRequest(withID: self.requests[self.selectedFriend].friendshipID) {
                 self.doLoad()
             }
         }
@@ -110,6 +110,7 @@ class FriendsListViewController: UITableViewController {
     
     func doLoad(){
         friends.removeAll()
+        requests.removeAll()
         tableView.reloadData()
         
         errorLabel.text = "Your Friends List is loading."

@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
        // FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        var launchView = TabBarController()
+        let launchView = TabBarController()
         
         
         
@@ -47,7 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         
         Auth.auth().addStateDidChangeListener { (auth, user) in }
-       
         
             UNUserNotificationCenter.current().delegate = self
             
@@ -67,9 +66,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             let notification = notificationOption as? [String: AnyObject],
             let aps = notification["aps"] as? [String: AnyObject],
             let alert = aps["alert"] as? [String: String]{
-            if(alert["title"] == "You have a new Friend Request"){
-                launchView.selectedIndex = 1
-            }
+            launchView.selectedIndex = setTab(alert["title"]!)
+        }else{
+            launchView.selectedIndex = 0
         }
       //  AppEventsLogger.activate(application)
         //GADMobileAds.configure(withApplicationID: "ca-app-pub-8694139400395039~1830749784")
@@ -77,6 +76,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         window?.makeKeyAndVisible()
         window?.rootViewController = launchView//TODO: set this back to tab bar controller after testing
     return true
+    }
+    
+    func setTab(_ message: String) -> Int{
+        switch message{
+        case "You have a new Friend Request":
+            return 1
+        case "You are Invited!":
+            return 2
+        default:
+            return 2
+        }
     }
     
    /* func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
@@ -109,10 +119,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print("Message ID: \(messageID)")
         }
         
+        
+        
         // Print full message.
         print(userInfo)
         
         completionHandler(UIBackgroundFetchResult.newData)
+    }
+    
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
+        completionHandler([.banner, .badge, .sound, .list])
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

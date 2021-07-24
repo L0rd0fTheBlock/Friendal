@@ -10,7 +10,6 @@ import UIKit
 import FirebaseAuth
 
 class UserManagerViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    var user = Person()
     var shouldCreateUser = false
     
     override func viewDidLoad() {
@@ -27,8 +26,8 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
         let buttonRight = UIBarButtonItem(barButtonSystemItem: .done , target: self, action: #selector(didSave))
         
         navigationItem.setRightBarButton(buttonRight, animated: true)
-        if(user.email == ""){
-            user.email = (Auth.auth().currentUser?.email)!
+        if(me.email == ""){
+            me.email = (Auth.auth().currentUser?.email)!
         }
     }
     
@@ -38,10 +37,10 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
         setUserDetails()
        
         if(shouldCreateUser){
-           userHandler.createUser(person: user)
+           userHandler.createUser(person: me)
             presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
         }else{
-            userHandler.saveUser(person: user)
+            userHandler.saveUser(person: me)
             self.dismiss(animated: true, completion: nil)
         }
         
@@ -55,15 +54,15 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
     func setUserDetails(){
         //get Forename
         var cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! FormTextCell
-        user.first_name = cell.value.text!
+        me.first_name = cell.value.text!
         
         //get Surname
         cell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormTextCell
-        user.last_name = cell.value.text!
+        me.last_name = cell.value.text!
         
         //get email
         cell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! FormTextCell
-        user.email = cell.value.text!
+        me.email = cell.value.text!
     }
     
     
@@ -112,28 +111,28 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
             pic.widthAnchor.constraint(equalToConstant: 200).isActive = true
             pic.heightAnchor.constraint(equalToConstant: 200).isActive = true
             
-            pic.image = user.picture
+            pic.image = me.picture
             
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! FormTextCell
             
             cell.desc.text = "Forename: "
-            cell.value.text = user.first_name
+            cell.value.text = me.first_name
             
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! FormTextCell
             
             cell.desc.text = "Surname: "
-            cell.value.text = user.last_name
+            cell.value.text = me.last_name
             
             return cell
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: "text", for: indexPath) as! FormTextCell
             
             cell.desc.text = "Email: "
-            cell.value.text = user.email
+            cell.value.text = me.email
             
             
             return cell
@@ -179,7 +178,7 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
         if(image == nil){
             print("Error Retrieving Image")
         }else{
-            user.picture = image
+            me.picture = image
             tableView.reloadData()
         }
         

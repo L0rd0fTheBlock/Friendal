@@ -67,6 +67,9 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
             setupTutorial()
         }
         
+        layer.borderWidth = 1.0
+        layer.borderColor = UIColor.lightGray.cgColor
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -104,9 +107,12 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
             status.textColor = .lightGray
         }
     }
+    
+    
+    
     func setupTutorial(){
         
-       /* tutorialView.translatesAutoresizingMaskIntoConstraints = false
+        tutorialView.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(tutorialView)
         
@@ -130,7 +136,7 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
         tutorialView.addSubview(close)
         
         
-        information.text = "You can swipe from left to right to view Statuses"
+        information.text = "You can swipe from Right to Left to view Statuses"
         information.numberOfLines = 0
         information.font = UIFont.systemFont(ofSize: 18)
         information.textColor = .white
@@ -154,13 +160,13 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
         let tapHandler = UITapGestureRecognizer(target: self, action: #selector(didTapToClose))
         
         tutorialView.addGestureRecognizer(tapHandler)
-        */
+        
     }
     
-  //  @objc func didTapToClose(){
-        /*
+    @objc func didTapToClose(){
+        
         print("tap")
         tutorialView.removeFromSuperview()
-        UserDefaults.standard.set(true, forKey: "didCloseStatusTutorial")*/
-   // }
+        UserDefaults.standard.set(true, forKey: "didCloseStatusTutorial")
+   }
 }

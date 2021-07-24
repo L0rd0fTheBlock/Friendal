@@ -18,7 +18,7 @@ class InviteHandler: Handler{
    
     
     func saveNewRequest(event: String, user: String, day: Int, month: Int, year: Int, completion: @escaping ()->Void){
-        db.collection("Invite").addDocument(data: ["eventId":event, "user":user, "sender": Auth.auth().currentUser!.uid, "response": "no", "day": day, "month": month, "year": year])
+        db.collection("Invite").addDocument(data: ["eventId":event, "target":user, "sender": Auth.auth().currentUser!.uid, "response": "no", "day": day, "month": month, "year": year])
         { err in
             if let err = err {
                 print("Error adding document: \(err)")
@@ -31,7 +31,7 @@ class InviteHandler: Handler{
     
     func isUserInvited(_ user: String, toEvent: String, completion: @escaping(Bool)->Void){
         
-        db.collection("Invite").whereField("eventId", isEqualTo: toEvent).whereField("user", isEqualTo: user).getDocuments { snap, err in
+        db.collection("Invite").whereField("eventId", isEqualTo: toEvent).whereField("target", isEqualTo: user).getDocuments { snap, err in
             
             let docs = snap!.count
             if(docs > 0){
@@ -60,7 +60,7 @@ class InviteHandler: Handler{
                 for document in (querySnapshot?.documents)! {
                     let data = document.data()
                     //get the user data for the invitee
-                    userHandler.getperson(withUID: data["user"] as! String, completion: { (p, e) in
+                    userHandler.getperson(withUID: data["target"] as! String, completion: { (p, e) in
                        // put the user in the correct array
                         switch data["response"] as! String{
                         case "going":
@@ -85,7 +85,7 @@ class InviteHandler: Handler{
         
         var requests = [Request]()
         
-        db.collection("Invite").whereField("user", isEqualTo: forUser).whereField("response", isEqualTo: "no").getDocuments(completion: {(querySnapshot, err) in
+        db.collection("Invite").whereField("target", isEqualTo: forUser).whereField("response", isEqualTo: "no").getDocuments(completion: {(querySnapshot, err) in
             if(querySnapshot?.isEmpty == true){
                 completion([])
             }
@@ -121,7 +121,7 @@ class InviteHandler: Handler{
                 for document in (querySnapshot?.documents)! {
                     let data = document.data()
                     //get the user data for the invitee
-                    userHandler.getperson(withUID: data["user"] as! String, completion: { (p, e) in
+                    userHandler.getperson(withUID: data["target"] as! String, completion: { (p, e) in
                        // put the user in the correct array
                         if(data["response"] as! String == "going"){
                             going += 1
@@ -144,7 +144,7 @@ class InviteHandler: Handler{
     
     func removeRequest(foruser: String, fromEvent: String){
         
-        db.collection("Invite").whereField("eventId", isEqualTo: fromEvent).whereField("user", isEqualTo: foruser).getDocuments(completion: {(querySnapshot, err) in
+        db.collection("Invite").whereField("eventId", isEqualTo: fromEvent).whereField("target", isEqualTo: foruser).getDocuments(completion: {(querySnapshot, err) in
             
             for document in (querySnapshot!.documents){
                 let id = document.documentID
@@ -158,7 +158,7 @@ class InviteHandler: Handler{
         
         var events = [Event]()
         
-        db.collection("Invite").whereField("user", isEqualTo: forUser)
+        db.collection("Invite").whereField("target", isEqualTo: forUser)
             .whereField("response", isEqualTo: "going")
             .whereField("day", isEqualTo: onDay)
             .whereField("month", isEqualTo: ofMonth)

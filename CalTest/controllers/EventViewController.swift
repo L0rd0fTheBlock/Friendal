@@ -25,9 +25,6 @@ class EventViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let inviteHandler = InviteHandler()
-        
         inviteHandler.getRequestCount(forEvent: event!.id, completion: { (c) in
             
             self.count = c
@@ -287,7 +284,7 @@ class EventViewController: UITableViewController {
             case 4:
                 let cell = UITableViewCell(style: .value1, reuseIdentifier: "selectcell")
                 cell.textLabel?.text = "Invitees "
-                cell.detailTextLabel?.text = String(count)
+                cell.detailTextLabel?.text = "\(count) Going"
                 cell.accessoryType = .disclosureIndicator
                 return cell
             case 5:

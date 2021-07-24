@@ -93,10 +93,10 @@ class Person{
     func toArray() -> [String:String]{
         var person = [String:String]()
         
-       // person["uid"] = uid
         person["forename"] = first_name
         person["surname"] = last_name
         person["email"] = email
+        person["code"] = friendCode
         
         return person
     }

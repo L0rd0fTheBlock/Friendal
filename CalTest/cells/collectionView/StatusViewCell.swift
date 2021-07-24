@@ -51,6 +51,9 @@ class StatusViewCell: UICollectionViewCell {
         message.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
         message.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
         
+        layer.borderWidth = 1.0
+        layer.borderColor = UIColor.lightGray.cgColor
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

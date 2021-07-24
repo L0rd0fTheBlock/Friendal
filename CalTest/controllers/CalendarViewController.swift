@@ -38,7 +38,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     
     override func viewDidLoad() {
-        
+        print("View Loaded")
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapNewEventButton))
         
         navigationItem.setRightBarButton(button, animated: true)
@@ -59,12 +59,21 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         
         view.backgroundColor = .white
         
+        let date = Date()
+        let calendar = Calendar.current
+        month = calendar.component(.month, from: date)
+        year = calendar.component(.year, from: date)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        print("View will appear")
+        
         me.load { shouldLoad in
             
             if(shouldLoad){
+                print("should Load")
                 self.doLoad()
             }else{
                 self.showLoginScreen()
@@ -124,6 +133,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func doLoad(){
+        print("do Load")
         dates.removeAll()
         collectionView.reloadData()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
@@ -138,11 +148,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         
         let cal = CalendarHandler(self)
 
-        
-        let date = Date()
-        let calendar = Calendar.current
-        month = calendar.component(.month, from: date)
-        year = calendar.component(.year, from: date)
       //  var user: String = (AccessToken.current?.userId)!
         if(!shouldLoadMyCalendar){
            // user = Settings.sharedInstance.selectedFriendId!

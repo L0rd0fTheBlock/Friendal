@@ -99,7 +99,7 @@ class FriendHandler: Handler{
         }
         }
     func acceptFriendRequest(withID: String, completion: @escaping ()->Void){
-        db.collection("friends").document(withID).setData(["accepted": true]) { err in
+        db.collection("friends").document(withID).updateData(["accepted": true]) { err in
             completion()
         }
     }

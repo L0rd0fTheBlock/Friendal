@@ -71,11 +71,18 @@ class NewEventVC: UITableViewController {
             if(event.start == event.end){
                 present(alert, animated: true, completion: nil)
             }else{
-                calendarHandler.addEvent(event: event)
+                calendarHandler.addEvent(event: event){_ in
+                    print("event Added")
+                    self.dayVC?.doLoad()
+                    self.calendarVC?.doLoad()
+                }
                 dismiss(animated: true, completion: nil)
             }
         }else{
-            calendarHandler.addEvent(event: event)
+            calendarHandler.addEvent(event: event){_ in
+                self.dayVC?.doLoad()
+                self.calendarVC?.doLoad()
+            }
             dismiss(animated: true, completion: nil)
         }
         

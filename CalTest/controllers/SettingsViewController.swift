@@ -23,6 +23,8 @@ class SettingsViewController: UITableViewController {
 
         tableView.isScrollEnabled = false
         tableView.allowsSelection = true
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 

@@ -51,6 +51,7 @@ class DayViewController: UITableViewController {
     }
     
     func doLoad(){
+        print("do Load")
         today?.update(){ (error) in
             self.setupView()
             self.tableView.reloadData()

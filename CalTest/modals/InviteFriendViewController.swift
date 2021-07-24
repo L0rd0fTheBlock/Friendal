@@ -73,8 +73,9 @@ class InviteFriendViewController: FriendsListViewController {
         
         for invitee in invited{
             if(invitee.uid == cell.uid){
-                cell.isUserInteractionEnabled = false
-                cell.name.isEnabled = false
+               // cell.isUserInteractionEnabled = false
+                //cell.name.isEnabled = false
+                #warning("These checks were disabled for debugging. Re-enable them")
             }
         }
         
