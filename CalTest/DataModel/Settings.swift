@@ -49,12 +49,11 @@ class Settings{
     
     func getPrivacy() ->Bool{
         
-       /* if(privacy == 0){
+        if(privacy == 0){
             return false
         }else{
             return true
-        }*/
-        return true
+        }
     }
     
     func setPrivacy(_ p: Bool){

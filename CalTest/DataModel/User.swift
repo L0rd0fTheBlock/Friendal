@@ -12,6 +12,8 @@ import FirebaseMessaging
 
 class User: Person{
     
+    let settings = UserSettings()
+    
     override init() {
         super.init()
     }
@@ -20,6 +22,8 @@ class User: Person{
         super.init(document: document)
         validateToken()
     }
+    
+    
     
     func validateToken(){
         
@@ -35,8 +39,9 @@ class User: Person{
             }
            //  self.fcmRegTokenMessage.text  = "Remote FCM registration token: \(token)"
            }
-         }
+        }
     }
+    
     
     func load(_ completion: @escaping (Bool)->Void){
         if(Auth.auth().currentUser != nil){
@@ -49,6 +54,9 @@ class User: Person{
                     self.friendCode = p.friendCode
                     self.uid = p.uid
                     self.validateToken()
+                 //   userHandler.getSettings(){ settings in
+                   //     self.settings = settings
+                    //}
                     completion(true)//should doLoad()
                 }
             }

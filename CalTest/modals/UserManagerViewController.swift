@@ -9,8 +9,11 @@
 import UIKit
 import FirebaseAuth
 
-class UserManagerViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+class UserManagerViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
     var shouldCreateUser = false
+    var requiredFieldsBlank = true
+    var buttonLeft: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancel) )
+    var buttonRight: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done , target: self, action: #selector(didSave))
     
     override func viewDidLoad() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -19,11 +22,11 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
         
         self.title = "Your Details"
         
-        let buttonLeft = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancel) )
+        // buttonLeft = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancel) )
         
         navigationItem.setLeftBarButton(buttonLeft, animated: true)
         
-        let buttonRight = UIBarButtonItem(barButtonSystemItem: .done , target: self, action: #selector(didSave))
+       // buttonRight = UIBarButtonItem(barButtonSystemItem: .done , target: self, action: #selector(didSave))
         
         navigationItem.setRightBarButton(buttonRight, animated: true)
         if(me.email == ""){
@@ -35,15 +38,22 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
     @objc func didSave(){
         
         setUserDetails()
-       
-        if(shouldCreateUser){
-           userHandler.createUser(person: me)
-            presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        if(requiredFieldsBlank == true){
+            let alert = UIAlertController(title: "Missing Required Fields", message: "All fields are required before continuing", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Woops! I'll get right on that!", style: .default))
+            self.present(alert, animated: true){
+                return
+            }
+            
         }else{
-            userHandler.saveUser(person: me)
-            self.dismiss(animated: true, completion: nil)
+            if(shouldCreateUser){
+               userHandler.createUser(person: me)
+                presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+            }else{
+                userHandler.saveUser(person: me)
+                self.dismiss(animated: true, completion: nil)
+            }
         }
-        
         
     }
     
@@ -55,14 +65,30 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
         //get Forename
         var cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! FormTextCell
         me.first_name = cell.value.text!
-        
+        if(me.first_name == "" || me.first_name == " "){
+            requiredFieldsBlank = true
+            return
+        }else{
+            requiredFieldsBlank = false
+        }
         //get Surname
         cell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormTextCell
         me.last_name = cell.value.text!
-        
+        if(me.last_name == "" || me.last_name == " "){
+            requiredFieldsBlank = true
+            return
+        }else{
+            requiredFieldsBlank = false
+        }
         //get email
         cell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! FormTextCell
         me.email = cell.value.text!
+        if(me.email == "" || me.email == " "){
+            requiredFieldsBlank = true
+            return
+        }else{
+            requiredFieldsBlank = false
+        }
     }
     
     
@@ -112,6 +138,22 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
             pic.heightAnchor.constraint(equalToConstant: 200).isActive = true
             
             pic.image = me.picture
+            
+            let overlay = UILabel()
+            
+            pic.addSubview(overlay)
+            
+            overlay.translatesAutoresizingMaskIntoConstraints = false
+            
+            overlay.centerYAnchor.constraint(equalTo: pic.centerYAnchor, constant: 75).isActive = true
+            overlay.centerXAnchor.constraint(equalTo: pic.centerXAnchor).isActive = true
+            //overlay.heightAnchor.constraint(equalTo: ).isActive = true
+            overlay.widthAnchor.constraint(equalTo: pic.widthAnchor).isActive = true
+            
+            overlay.text = "Change Profile Pic"
+            overlay.textAlignment = .center
+            overlay.backgroundColor = .lightGray
+            overlay.backgroundColor = overlay.backgroundColor?.withAlphaComponent(0.5)
             
             return cell
         case 1:

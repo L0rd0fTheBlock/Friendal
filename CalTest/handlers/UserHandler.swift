@@ -201,4 +201,18 @@ class UserHandler: Handler{
             completion(snap!.count)
         }
     }
+    
+    func getSettings(completion: @escaping (UserSettings)->Void){
+        var shouldUpdate = false
+        db.collection("Settings").document(me.uid).getDocument(completion: { snap, err in
+            var settings = UserSettings()
+            let data = snap?.data()
+            if(data!["privacy"] != nil){
+                settings.defaultPrivacy = data!["privacy"] as! Bool
+            }else{
+                shouldUpdate = true
+            }
+            //guard settings.termsDate = data[""]
+        })
+    }
 }

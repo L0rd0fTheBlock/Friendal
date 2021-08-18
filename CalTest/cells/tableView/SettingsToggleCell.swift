@@ -32,7 +32,7 @@ class SettingsToggleCell: UITableViewCell {
         
         toggle.addTarget(self, action: #selector(didToggle), for: .touchUpInside)
         toggle.setOn(Settings.sharedInstance.getPrivacy(), animated: true)
-        addSubview(toggle)
+        contentView.addSubview(toggle)
         addSubview(title)
     }
     

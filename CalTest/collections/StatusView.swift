@@ -74,20 +74,7 @@ class StatusView: UICollectionView, UICollectionViewDelegate, UICollectionViewDa
                 cell.backgroundColor = .white
                 cell.message.text = statuses[indexPath.row - 1].message
                 cell.poster.text = statuses[indexPath.row - 1].poster?.name()
-                
-               // guard let link = statuses[indexPath.row - 1].link else{
-               //     return cell
-                    
-                //}
-                
-                //let url = URL(string: link)
-                
-               /* getDataFromUrl(url: url!, completion: { data, response, error in
-                    guard let data = data, error == nil else { return }
-                    DispatchQueue.main.async() {
-                        cell.picture.image = UIImage(data: data)!
-                    }
-                })*/
+                cell.picture.image = statuses[indexPath.row - 1].poster?.picture
                 
                 return cell
             }

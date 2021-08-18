@@ -18,7 +18,7 @@ class StatusHandler: Handler{
     func getStatus(forEvent: String, _ completion: @escaping([Status]) -> Void){
         var statuses = [Status]()
         //get all invites for the event
-        db.collection("Status").whereField("eventID", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
+        db.collection("Status").whereField("eventId", isEqualTo: forEvent).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -27,7 +27,7 @@ class StatusHandler: Handler{
                 }
                 for document in (querySnapshot?.documents)! {
                     let status = Status(document: document)
-                    status.getPerson(p: document.data()["userID"] as! String, completion: {() in
+                    status.getPerson(p: document.data()["sender"] as! String, completion: {() in
                         statuses.append(status)
                         completion(statuses)
                     })
@@ -38,7 +38,7 @@ class StatusHandler: Handler{
     }
     
     func submitStatus(forEvent: String, fromUser: String, withMessage: String, _ completion: @escaping()->Void){
-        let d = ["eventID": forEvent, "userID": fromUser, "message": withMessage]
+        let d = ["eventId": forEvent, "sender": fromUser, "message": withMessage]
         db.collection("Status").addDocument(data: d){(response) in
             completion()
         }

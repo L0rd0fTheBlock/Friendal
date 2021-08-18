@@ -170,6 +170,9 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func applyMonth(days : [CalendarDay]){
+        errorLabel.isHidden = false
+        errorLabel.text = "The calendar is loading."
+        
         let cal = CalendarHandler(self)
         dates = days
         if(shouldLoadMyCalendar){
@@ -394,6 +397,8 @@ extension CalendarViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CalendarViewCell
         
+        cell.eventCircle.isHidden = true
+        cell.dayCircle.isHidden = true
        // cell.date.layer.frame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height - 50)
         cell.date.layer.backgroundColor = UIColor.white.cgColor
         

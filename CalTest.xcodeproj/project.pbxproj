@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3747BE0AADE571F85F5BF94B /* Pods_CalTestTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CB9B1A02F5596A468EC310C /* Pods_CalTestTests.framework */; };
 		69139E8CA2D57F3383CDDFD4 /* Pods_CalTest_CalTestUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E3D06E11042B193401E715 /* Pods_CalTest_CalTestUITests.framework */; };
+		7D0C9F7726AECA870068E46D /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0C9F7626AECA860068E46D /* UserSettings.swift */; };
 		7D0F87CC2004244F00CB0058 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0F87CB2004244F00CB0058 /* Status.swift */; };
 		7D0F87D12004554A00CB0058 /* StatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0F87D02004554A00CB0058 /* StatusTableViewCell.swift */; };
 		7D0F87D4200465A100CB0058 /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0F87D3200465A100CB0058 /* StatusView.swift */; };
@@ -93,6 +94,7 @@
 		4F480677EC0C983002DA7A67 /* Pods-CalTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalTest.debug.xcconfig"; path = "Target Support Files/Pods-CalTest/Pods-CalTest.debug.xcconfig"; sourceTree = "<group>"; };
 		57E3D06E11042B193401E715 /* Pods_CalTest_CalTestUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalTest_CalTestUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CB9B1A02F5596A468EC310C /* Pods_CalTestTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalTestTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D0C9F7626AECA860068E46D /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		7D0F87CB2004244F00CB0058 /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		7D0F87D02004554A00CB0058 /* StatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTableViewCell.swift; sourceTree = "<group>"; };
 		7D0F87D3200465A100CB0058 /* StatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 				7D0F87CB2004244F00CB0058 /* Status.swift */,
 				7D4A89F926A60F8900ABF0FE /* Friend.swift */,
 				7D8D1E8026A8D69000F4A035 /* User.swift */,
+				7D0C9F7626AECA860068E46D /* UserSettings.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -817,6 +820,7 @@
 				7DCE3F741FD3176600322939 /* EventViewController.swift in Sources */,
 				7DCE3F6C1FD07A5600322939 /* NewRequestVC.swift in Sources */,
 				7D2A498E1FED498D00CDEEB3 /* Invitee.swift in Sources */,
+				7D0C9F7726AECA870068E46D /* UserSettings.swift in Sources */,
 				7DBDE528265AFE2200F4D630 /* LogoutButtonCell.swift in Sources */,
 				7D117BAB1FC45DAE009E5932 /* TimeTableViewCell.swift in Sources */,
 				7D4A89F626A5F74000ABF0FE /* StatusHandler.swift in Sources */,
@@ -1024,14 +1028,14 @@
 				CODE_SIGN_ENTITLEMENTS = CalTest/Friendal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 25;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 57WNKNHVA2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CalTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.6;
+				MARKETING_VERSION = 0.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.palendar;
 				PRODUCT_NAME = Palendar;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1048,13 +1052,13 @@
 				CODE_SIGN_ENTITLEMENTS = CalTest/Friendal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = 57WNKNHVA2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CalTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.6;
+				MARKETING_VERSION = 0.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.palendar;
 				PRODUCT_NAME = Palendar;
 				PROVISIONING_PROFILE_SPECIFIER = "";

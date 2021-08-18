@@ -29,10 +29,12 @@ class Event{
     var isPrivate: Bool = false//false = visible, true = "busy"
     var isUserInvited: Bool = false
     var isAllDay: Bool = true
+    var bridgesDays: Bool = false
     
     init(){
         id = "0"
         creator = Auth.auth().currentUser!.uid
+        bridgesDays = false
     }
     
     init(_ id: String, title: String, date: String, month: String, year: String, start: String, end: String, count: String = "0", creator: String, privacy: String, allDay: String) {
@@ -47,6 +49,7 @@ class Event{
         self.year = year
         
         self.count = count
+        self.bridgesDays = doesEventBridgeDays()
         //MARK: re-implement these functions
         setPrivacy(Int(privacy)!)
         setAllDay(Int(allDay)!)
@@ -75,12 +78,24 @@ class Event{
         self.month = d?["month"] as? String
         self.year = d?["year"] as? String
         
+        self.bridgesDays = doesEventBridgeDays()
         //MARK: re-implement these functions
         
         isInvitee()
         
     }
     
+    private func doesEventBridgeDays() -> Bool{
+        print("start: \(getStartDay()) \(getStartMonth()) \(getStartYear())")
+        print("end: \(getEndDay()) \(getEndMonth()) \(getEndYear())")
+        if(getStartDay() != getEndDay() || getStartMonth() != getEndMonth() || getStartYear() != getEndYear()){//if the event ends tomorrow then set the bottom anchor rather than the height
+            print("bridging Days")
+            return true
+        }else{
+            print("Not Bridging Days")
+            return false
+        }
+    }
     
     public func toArray() -> [String:Any]{
         var ev = [String:Any]()
@@ -138,7 +153,7 @@ class Event{
     }
     func getEndMonth() -> String{
         let split = end?.split(separator: "/")
-        return String(describing: split![0])
+        return String(describing: split![1])
     }
     func getEndYear() -> String{
         let split = end?.split(separator: "/")

@@ -93,9 +93,6 @@ class CalendarHandler: Handler{
             
             let day = CalendarDay(onDay: tDay, ofMonth: dateComponents.month!, ofYear: dateComponents.year!)
             month.append(day)
-            //getEvents(forDay: tDay, ofMonth: forMonth, inYear: ofYear, fromUser: Auth.auth().currentUser!.uid, withTDay: month.count)
-            
-            
             tDay += 1
         }
         completion(month)
