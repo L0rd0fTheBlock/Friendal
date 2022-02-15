@@ -133,13 +133,11 @@ class FriendsListViewController: UITableViewController {
         }
         
         friendHandler.getFriendRequests { requests in
-            print(requests.count)
             self.requests = requests.sorted(by: { person1, person2 in
                 let personName1 = person1.last_name + person1.first_name
                 let personName2 = person2.last_name + person2.first_name
                 return personName1.localizedCaseInsensitiveCompare(personName2) == .orderedAscending
             })
-            print(self.requests.count)
             self.tableView.reloadData()
         }
 
@@ -217,7 +215,6 @@ class FriendsListViewController: UITableViewController {
             
             return cell
         }else{
-            print("Creating cell for request")
                 let cell = tableView.dequeueReusableCell(withIdentifier: "friend", for: indexPath) as! FriendsListViewCell
 
                 

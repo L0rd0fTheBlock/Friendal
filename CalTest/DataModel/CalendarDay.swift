@@ -9,34 +9,73 @@
 import Foundation
 class CalendarDay{
     var events:[Event]
-    var date: Int
-    var month: Int
-    var year: Int
+    var date: Date
     var hasEvents: Bool
     var isToday = false
     
     
     
-    init(onDay: Int, ofMonth: Int = 0, ofYear: Int = 0) {
-        date = onDay
-        month = ofMonth
-        year = ofYear
+    init(forDate: Date = Date()) {
+        date = forDate
         hasEvents = false
         events = [Event]()
         setIsToday()
     }
     
     init() {
-        date = 0
-        month = 0
-        year = 0
+        date = Date()
         hasEvents = false
         events = [Event]()
         setIsToday()
     }
     
-    func getDate() -> String{
-        return String(date)
+    func getDay() -> String{
+        
+        let calendar = Calendar.current
+        
+        let dateString = "\(calendar.component(.day, from: date))"
+        
+        return dateString
+    }
+    
+    func getMonth() -> String{
+        
+        let calendar = Calendar.current
+        
+        let dateString = "\(calendar.component(.month, from: date))"
+        
+        return dateString
+    }
+    
+    func getMonthasInt() -> Int{
+        
+        let calendar = Calendar.current
+        
+        let dateString = calendar.component(.month, from: date)
+        
+        return dateString
+    }
+    
+    func getYear() -> String{
+        
+        let calendar = Calendar.current
+        
+        let dateString = "\(calendar.component(.year, from: date))"
+        
+        return dateString
+    }
+    
+    
+    func getFullDate() -> String{
+        
+        let calendar = Calendar.current
+        
+        return "\(calendar.component(.day, from: date))/\(calendar.component(.month, from: date))/\(calendar.component(.year, from: date))"
+    }
+    
+    func getDateAsDate() -> Date{
+        
+        return date
     }
     
     func doesHaveEvents() -> Bool{
@@ -51,13 +90,21 @@ class CalendarDay{
         let date = Date()
         let calendar = Calendar.current
 
+        let todaysDate = "\(calendar.component(.day, from: date))/\(calendar.component(.month, from: date))/\(calendar.component(.year, from: date))"
+        
+        /*
         if(String(month) == String(calendar.component(.month, from: date))){
             if(getDate() == String(calendar.component(.day, from: date))){
                 if(String(year) == String(calendar.component(.year, from: date))){
                     isToday = true
                 }
             }
+        }*/
+        
+        if(todaysDate == getDay()){
+            isToday = true
         }
+        
     }
     
     func countEvents() -> Int{
@@ -87,7 +134,9 @@ class CalendarDay{
     
     func monthAsString() ->String{
         
-        switch(month){
+        
+        
+        switch(getMonthasInt()){
         case 1:
             return "Jan"
         case 2:
@@ -115,25 +164,5 @@ class CalendarDay{
         }
     }
     
-    func getFullDate() -> String{
-        return String(date) + " " + monthAsString()
-    }
     
-    func getDateAsDate() -> Date{
-        
-        var dateComponents = DateComponents()
-        
-        dateComponents.month = month
-        dateComponents.day = date
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy"
-        dateComponents.year = Int(formatter.string(from: Date()))
-        
-        
-        // Create date from components
-        let userCalendar = Calendar.current // user calendar
-        let someDateTime = userCalendar.date(from: dateComponents)
-        return someDateTime!
-    }
 }

@@ -52,7 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
             let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { grant, err in
-            print("Permission granted: \(grant)")
                 guard grant else { return }
                 self.getNotificationSettings()
         }
@@ -89,23 +88,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
-   /* func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        // If you are receiving a notification message while your app is in the background,
-        // this callback will not be fired till the user taps on the notification launching the application.
-        // TODO: Handle data of notification
-        
-        // With swizzling disabled you must let Messaging know about the message, for Analytics
-        // Messaging.messaging().appDidReceiveMessage(userInfo)
-        
-        // Print message ID.
-        if let messageID = userInfo["gcmMessageIDKey"] {
-            print("Message ID: \(messageID)")
-        }
-        
-        // Print full message.
-        print(userInfo)
-    */
-    
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
@@ -116,13 +98,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Print message ID.
         if let messageID = userInfo["gcmMessageIDKey"] {
-            print("Message ID: \(messageID)")
         }
-        
-        
-        
-        // Print full message.
-        print(userInfo)
         
         completionHandler(UIBackgroundFetchResult.newData)
     }
@@ -136,7 +112,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
       let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
       let token = tokenParts.joined()
-      print("Device Token: \(token)")
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -169,7 +144,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func getNotificationSettings() {
       UNUserNotificationCenter.current().getNotificationSettings { settings in
-        print("Notification settings: \(settings)")
         guard settings.authorizationStatus == .authorized else { return }
         DispatchQueue.main.async {
           UIApplication.shared.registerForRemoteNotifications()
@@ -181,18 +155,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     //MARK: FIREBASE NOTIFICATION DELEGATE
 
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-      print("Firebase registration token: \(String(describing: fcmToken))")
-/*
-        userHandler.hasNotificationToken(matching: fcmToken!) { res in
-            if(!res){
-                print("Token does not exist, Registering")
-                userHandler.registerNotificationToken(token: fcmToken!)
-            }else{
-                print("Token Exists")
-            }
-        }
-*/
-       
         
       let dataDict: [String: String] = ["token": fcmToken ?? ""]
       NotificationCenter.default.post(

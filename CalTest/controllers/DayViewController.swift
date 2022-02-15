@@ -95,22 +95,25 @@ class DayViewController: UITableViewController {
         sortEventsByTime()
         for (index, event) in (today?.events.enumerated())!{
             
+            var adOverlap = 1
+            var adShift = 0
+            
             var overlap = 1
             var shift = 0
             let start = makeMinutes(from: event.getStartTime())
             let end = makeMinutes(from: event.getEndTime())
             let id = event.id
             
-            if(event.isAllDay){
-                overlap = calculateOverlapAllDay(id: event.id)
+            if(event.isAllDay || event.isBridge){
+                adOverlap = calculateOverlapAllDay(id: event.id)
                 if(index>0){
-                    shift = calculateShiftAllDay(index)
+                    adShift = calculateShiftAllDay(index)
                 }
-                if(overlap>1){
-                    events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
+                if(adOverlap>1){
+                    events.append(drawEvent(event, overlaps: adOverlap, shiftBy: adShift))
                     prevView = events.last!
                 }else{
-                    events.append(drawEvent(event, overlaps: overlap, shiftBy: shift))
+                    events.append(drawEvent(event, overlaps: adOverlap, shiftBy: adShift))
                 }
             }else{
                 overlap = calculateOverlap(start: start, end: end, id: id)
@@ -139,7 +142,6 @@ class DayViewController: UITableViewController {
         while !sorted {
             sorted = true
             for (index, event) in (sortedEvents.enumerated()){
-                print(sortedEvents.count)
                 if(index == 0){
                 }else{
                     let thisTime = event.getStartTime().split(separator: ":" )
@@ -196,7 +198,8 @@ class DayViewController: UITableViewController {
     }
     
     func drawEvent(_ event:Event, overlaps:Int, shiftBy:Int) -> EventContainerView{
-        if(event.isAllDay){
+        print("drawingEvent for: \(event.title)")
+        if(event.isAllDay || event.isBridge){
             return drawAllDayEvent(event, shiftBy, overlaps)
         }else{
         
@@ -215,7 +218,7 @@ class DayViewController: UITableViewController {
                eventView.translatesAutoresizingMaskIntoConstraints = false
             tableView.addSubview(eventView)
             //activate constriants
-            eventView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: startPoint).isActive = true
+                eventView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: startPoint).isActive = true
             //Calculate the left(leading) edge
             /*
              Events may overlap when more than one occupies the same time. in this case, we want to evenly divide the width of the view by the number of events and push subsequent events along the view. This is where shiftBy comes into play
@@ -233,7 +236,7 @@ class DayViewController: UITableViewController {
             }
             //calculate the rest of the constraints
             if(event.bridgesDays == true){//if the event ends tomorrow or later then set the bottom anchor rather than the height
-                if(today!.date == Int(event.getEndDay())! && today!.month == Int(event.getEndMonth())! && today!.year == Int(event.getEndYear())!){
+                if(today!.date == event.getEndDate()){
                    //this is today and the event should end as normal
                     print("Event ends today")
                     eventView.heightAnchor.constraint(equalToConstant: endpoint).isActive = true
@@ -242,6 +245,7 @@ class DayViewController: UITableViewController {
                     //Event does not end today and sould end at the bottom of the view
                     eventView.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: CGFloat(tableLength)).isActive = true
                 }
+                
             }else{
                 //just a normal day at the office, Nothing complex about this beautiful line of code.
                 //day ends on the same day as it starts -> Has not given me a headache (yet)

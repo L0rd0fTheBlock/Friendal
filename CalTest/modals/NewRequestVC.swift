@@ -49,7 +49,7 @@ class NewRequestVC: NewEventVC {
                 
                 calendarHandler.addEvent(event: event, completion: {(eventId) in
                     if(eventId == "Error"){
-                        print("Error")
+                        print("Failed to add Event due to error")
                     }else{
                         inviteHandler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!){
                             if(self.calendarVC != nil){
@@ -67,7 +67,7 @@ class NewRequestVC: NewEventVC {
             
             calendarHandler.addEvent(event: event, completion: {(eventId) in
                 if(eventId == "Error"){
-                    print("Error")
+                    print("Failed to add Event due to error")
                 }else{
                     inviteHandler.saveNewRequest(event: eventId, user: Settings.sharedInstance.selectedFriendId!, day: Int(event.date!)!, month: Int(event.month!)!, year: Int(event.year!)!){
                         self.calendarVC?.doLoad()

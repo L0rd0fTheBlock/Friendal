@@ -131,12 +131,12 @@ class EventViewController: UITableViewController {
         event?.month = String(describing: cal.component(.month, from: dat))
         event?.year = String(describing: cal.component(.year, from: dat))
         
-        event?.start = formatter.string(from: dat)
+        event?.start = dat
         
         let endCell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! FormDatePickerCell
         
         dat = endCell.value.date
-        event?.end = formatter.string(from: dat)
+        event?.end = dat
         
         let hideCell = tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as! NewEventToggleCell
         event?.isPrivate = hideCell.toggle.isOn
@@ -270,7 +270,7 @@ class EventViewController: UITableViewController {
                 cell.title.text = "Start: "
                 cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width - 60, height: cell.frame.height)
                 cell.value.textAlignment = .right
-                cell.value.text = event?.start
+                cell.value.text = event?.getStartDateString()
                 return cell
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
@@ -278,7 +278,7 @@ class EventViewController: UITableViewController {
                 cell.title.text = "End: "
                 cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width - 60, height: cell.frame.height)
                 cell.value.textAlignment = .right
-                cell.value.text = event?.end
+                cell.value.text = event?.getEndDateString()
     
                 return cell
             case 4:

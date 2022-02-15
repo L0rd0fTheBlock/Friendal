@@ -72,7 +72,6 @@ class NewEventVC: UITableViewController {
                 present(alert, animated: true, completion: nil)
             }else{
                 calendarHandler.addEvent(event: event){_ in
-                    print("event Added")
                     self.dayVC?.doLoad()
                     self.calendarVC?.doLoad()
                 }
@@ -154,7 +153,6 @@ class NewEventVC: UITableViewController {
                 cell.parent = self
                 return cell
             default:
-                print("error")
                 return UITableViewCell()
             }
         }
@@ -216,7 +214,6 @@ class NewEventVC: UITableViewController {
             cell.parent = self
             return cell
         default:
-            print("error")
             return UITableViewCell()
         }
     }
@@ -232,7 +229,7 @@ class NewEventVC: UITableViewController {
         let dat = cell1.value.date
         let cal = Calendar.current
         
-        event.start = String(describing: cal.component(.day, from: dat)) + "/" + String(describing: cal.component(.month, from: dat)) + "/" + String(describing: cal.component(.year, from: dat)) + " " + String(cal.component(.hour, from: dat)) + ":" + String(cal.component(.minute, from: dat))
+        event.start = dat
         
         let cell2 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! NewEventToggleCell
         
@@ -242,7 +239,7 @@ class NewEventVC: UITableViewController {
         
         event.setAllDay(cell3.toggle.isOn)
         
-        event.end = String(describing: cal.component(.day, from: dat)) + "/" + String(describing: cal.component(.month, from: dat)) + "/" + String(describing: cal.component(.year, from: dat)) + " " + "00" + ":" + "00"
+        event.end = dat
         
         return event
     }
@@ -263,12 +260,12 @@ class NewEventVC: UITableViewController {
         event.month = String(describing: cal.component(.month, from: dat))
         event.year = String(describing: cal.component(.year, from: dat))
         
-        event.start = formatter.string(from: dat)
+        event.start = dat
         
         let cell2 = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as! FormDatePickerCell
         dat = cell2.value.date
         
-        event.end = formatter.string(from: dat)
+        event.end = dat
         
         let cell3 = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as! NewEventToggleCell
         

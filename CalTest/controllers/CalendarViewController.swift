@@ -38,7 +38,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     
     override func viewDidLoad() {
-        print("View Loaded")
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapNewEventButton))
         
         navigationItem.setRightBarButton(button, animated: true)
@@ -68,12 +67,9 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        print("View will appear")
-        
         me.load { shouldLoad in
             
             if(shouldLoad){
-                print("should Load")
                 self.doLoad()
             }else{
                 self.showLoginScreen()
@@ -133,7 +129,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func doLoad(){
-        print("do Load")
         dates.removeAll()
         collectionView.reloadData()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
@@ -173,30 +168,89 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         errorLabel.isHidden = false
         errorLabel.text = "The calendar is loading."
         
-        let cal = CalendarHandler(self)
-        dates = days
-        if(shouldLoadMyCalendar){
-            for day in dates{
-                cal.getEvents(forDay: day.date, ofMonth: day.month, inYear: day.year, fromUser: Auth.auth().currentUser!.uid){(events: [Event]) in
-                    for event in events{
-                        day.addEvent(event: event)
-                    }
-                    self.collectionView.reloadData()
-                }
-            }
-        }else{
-            for day in dates{
-                cal.getEvents(forDay: day.date, ofMonth: day.month, inYear: day.year, fromUser: Settings.sharedInstance.selectedFriendId!){(events: [Event]) in
-                    for event in events{
-                        day.addEvent(event: event)
-                    }
-                    self.collectionView.reloadData()
-                }
-            }
-        }
+        //first iteration
         
-        collectionView.reloadData()
-        errorLabel.isHidden = true
+        dates = days //local variable of days parameter
+        
+        
+        if(shouldLoadMyCalendar){
+            firstIteration(forMyCalendar: shouldLoadMyCalendar) { bridgingEvents in
+                for day in self.dates{ //second iteration --- check if day falls between start and end dates of each bridging event
+                     for event in bridgingEvents{
+                         if(day.date > event.getStartDate() && day.date < event.getEndDate()){
+                            event.isBridge = true
+                             day.addEvent(event: event)
+                         }//end date check if statement
+                         
+                     }//end event loop
+                     self.collectionView.reloadData()
+                 }//end second iteration
+            }
+           
+            
+        }else{
+           /* for day in dates{
+                calendarHandler.getEvents(forDate: day.date, fromUser: Settings.sharedInstance.selectedFriendId!){(events: [Event]) in
+                    for event in events{
+
+                        //all events either started or ended on this day so must be added
+
+                        day.addEvent(event: event)
+
+                        if(event.bridgesDays){
+                            //event started or ended on another day
+                            bridgingEvents.append(event)
+                        }//end bridging day check
+
+                    }//end event loop
+                    self.collectionView.reloadData()
+                }//end completion handler
+            }//end first iteration
+
+            for day in dates{ //second iteration --- check if day falss between start and end dates of each bridging event
+                for event in bridgingEvents{
+                    if(day.date > event.getStartDate() && day.date < event.getEndDate()){
+                        day.addEvent(event: event)
+                    }//end date check if statement
+
+                }//end event loop
+                self.collectionView.reloadData()
+            }//end second iteration*/
+        }//end should load my calendar else statement
+        self.collectionView.reloadData()
+        self.errorLabel.isHidden = true
+    }//end class
+    
+    
+        func firstIteration(forMyCalendar: Bool, secondIteration: @escaping ([Event])-> Void){//First Iteration of the calendar
+            var bridgingEvents = [Event]()
+            for day in dates{ //first iteration --- get events and add them to the day ---- pass bridging events for second iteration
+                calendarHandler.getEvents(forDate: day.date, fromUser: me.uid){(events: [Event]) in
+                    print("\(events.count) events")
+                    for event in events{
+                        print("=====Event=====")
+                        print("title: \(event.title!)")
+                        //all events either started or ended on this day so must be added
+                        
+                        day.addEvent(event: event)
+                        
+                        if(event.bridgesDays){
+                            print("bridges days")
+                            //event started or ended on another day
+                            bridgingEvents.append(event)
+                        }else{
+                            print("Event: \(String(describing: event.title)) does not bridge days")
+                        }//end bridging day check
+                        print("===============")
+                    }//end event loop
+                    self.collectionView.reloadData()
+                    secondIteration(bridgingEvents) //pass the bridging events for the second iteration
+                }//end completion handler
+            }//end first iteration
+    }
+    
+    func loadBridgingEvents(forMyCalendar: Bool, completion: @escaping ()->Void){ //second Iteration
+        
     }
     
     
@@ -430,7 +484,7 @@ extension CalendarViewController: UICollectionViewDataSource{
         }else{
             cell.date.font = UIFont.systemFont(ofSize: cell.date.font.pointSize)
             let thisDay: CalendarDay = dates[indexPath.row-7]
-            cell.date.text = thisDay.getDate()
+            cell.date.text = thisDay.getDay()
             
             if(cell.date.text == "0"){
                 cell.date.text = " "
@@ -455,7 +509,7 @@ extension CalendarViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(indexPath.row > 6 && indexPath.row < collectionView.numberOfItems(inSection: 0)){
            let day = dates[indexPath.row-7]
-            if( day.getDate() != "0" && day.getDate() != " "){
+            if( day.getDay() != "0" && day.getDay() != " "){
                 showTimeline(ofDay: day)
                 
             }

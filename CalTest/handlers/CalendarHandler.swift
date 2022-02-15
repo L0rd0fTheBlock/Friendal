@@ -91,7 +91,11 @@ class CalendarHandler: Handler{
 
         while tDay<length+1{
             
-            let day = CalendarDay(onDay: tDay, ofMonth: dateComponents.month!, ofYear: dateComponents.year!)
+            dateComponents.day = tDay
+            
+            let thisDay = userCalendar.date(from: dateComponents)!
+            
+            let day = CalendarDay(forDate: thisDay)
             month.append(day)
             tDay += 1
         }
@@ -99,42 +103,81 @@ class CalendarHandler: Handler{
         
     }
     
-    
-    fileprivate func getUserEvents(_ fromUser: String, _ forDay: Int, _ ofMonth: Int, _ inYear: Int, _ completion: @escaping ([Event]) -> Void) {
+    fileprivate func getUserEvents(_ fromUser: String, _ forDate: Date, _ completion: @escaping ([Event]) -> Void) {
         var events = [Event]()
         
-        db.collection("Event")
-            .whereField("user", isEqualTo: fromUser)
-            .whereField("day", isEqualTo: String(forDay))
-            .whereField("month", isEqualTo: String(ofMonth))
-            .whereField("year", isEqualTo: String(inYear))
-            .getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        let event = Event(document: document)
-                        events.append(event)
+        var todayComponents = Calendar.current.dateComponents([.day, .month, .year, .hour, .minute, .second], from: forDate)
+        
+        todayComponents.setValue(00, for: .hour)
+        todayComponents.setValue(00, for: .minute)
+        todayComponents.setValue(01, for: .second)
+        
+        let today = Calendar.current.date(from: todayComponents)
+        
+        
+        //print(Calendar.current.date(from: todayComponents))
+        
+        var tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today!)!
+        
+        
+        
+        /*
+         
+         for each day named "today"
+            get all the events that start and end today
+            if the event "bridgesDays" (that's a property of Event on the app)
+               store the event in a "bridgingEvents" property
+             otherwise {Do normal event stuff}
+         After the loop
+
+         run the loop again
+            for each bridgingEvent named "bridgedEvent"
+               if today is between bridgedEvent's start and end date
+                  add a copy of the BridgedEvent to today's Events
+         
+         */
+        
+        db.collection("Event").whereField("user", isEqualTo: fromUser)
+            .whereField("start", isGreaterThanOrEqualTo: today)
+            .whereField("start", isLessThan: tomorrow).getDocuments { shapshotS, err in
+                
+                //print("start events: \(String(describing: shapshotS?.count))")
+                
+                self.db.collection("Event").whereField("end", isGreaterThanOrEqualTo: today)
+                    .whereField("end", isLessThan: tomorrow).getDocuments { snapshotE, err in
+                        
+                   // print("end Events: \(String(describing: snapshotE?.count))")
+                    if let err = err {
+                     //   print("Error getting documents: \(err)")
+                    } else {
+                        for document in shapshotS!.documents {
+                            let event = Event(document: document)
+                            events.append(event)
+                        }
+                        for document in snapshotE!.documents {
+                            let event = Event(document: document)
+                            if(event.start != forDate){
+                                events.append(event)
+                            }
+                        }
                     }
-                    
+                    completion(events)
                 }
-                completion(events)
             }
     }
     
-    func getEvents(forDay: Int, ofMonth: Int, inYear: Int, fromUser: String, completion: @escaping([Event]) -> Void){
+    func getEvents(forDate: Date, fromUser: String, completion: @escaping([Event]) -> Void){
        var events = [Event]()
-        
-        
-        getUserEvents(fromUser, forDay, ofMonth, inYear, {(userEvents) in
-            events.append(contentsOf: userEvents)
-            inviteHandler.getRequestEvents(forUser: fromUser, onDay: forDay, ofMonth: ofMonth, inYear: inYear) { invites in
-                events.append(contentsOf: invites)
+       // print("fordate: \(forDate)")
+            getUserEvents(fromUser, forDate, {(userEvents) in
+                events.append(contentsOf: userEvents)
+                /*inviteHandler.getRequestEvents(forUser: fromUser, onDate: forDate) { invites in
+                    events.append(contentsOf: invites)
+                    completion(events)
+                }*/
                 completion(events)
-            }
-        })
-        
-        
+                #warning("Re-implement Invited User Events")
+            })
     }
     
     func getEvent(withId: String, completion: @escaping(Event) -> Void){
@@ -284,4 +327,17 @@ class CalendarHandler: Handler{
         }
         return stat
     }
+    
+    func prefixedIntegerString(_ num: Int)-> String{
+        
+        if(num < 10){
+            return "0\(num)"
+            
+        }else{
+            return String(num)
+        }
+        
+        
+    }
+    
 }//end class

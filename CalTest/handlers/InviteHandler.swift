@@ -154,15 +154,14 @@ class InviteHandler: Handler{
         })
     }
     
-    func getRequestEvents(forUser: String, onDay: Int, ofMonth: Int, inYear: Int, completion: @escaping ([Event]) -> Void){
+    func getRequestEvents(forUser: String, onDate: Date, completion: @escaping ([Event]) -> Void){
         
         var events = [Event]()
-        
+        /*
         db.collection("Invite").whereField("target", isEqualTo: forUser)
             .whereField("response", isEqualTo: "going")
-            .whereField("day", isEqualTo: onDay)
-            .whereField("month", isEqualTo: ofMonth)
-            .whereField("year", isEqualTo: inYear)
+            .whereField("start", isLessThanOrEqualTo: onDate)
+            .whereField("end", isGreaterThanOrEqualTo: onDate)
             .getDocuments(completion: {(querySnapshot, err) in
             if(querySnapshot?.isEmpty == true){
                 completion([])
@@ -175,7 +174,8 @@ class InviteHandler: Handler{
                     })
                 }
             }
-        })
-        
+        })*/
+         completion(events)
     }
+       
 }

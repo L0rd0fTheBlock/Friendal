@@ -18,8 +18,8 @@ class Event{
     var date: String?
     var month: String?
     var year: String?
-    var start: String?
-    var end: String?
+    var start: Date?
+    var end: Date?
     var creator: String?
     var notes: String? = nil
     var count: String = "0"
@@ -30,6 +30,7 @@ class Event{
     var isUserInvited: Bool = false
     var isAllDay: Bool = true
     var bridgesDays: Bool = false
+    var isBridge = false
     
     init(){
         id = "0"
@@ -37,7 +38,7 @@ class Event{
         bridgesDays = false
     }
     
-    init(_ id: String, title: String, date: String, month: String, year: String, start: String, end: String, count: String = "0", creator: String, privacy: String, allDay: String) {
+    init(_ id: String, title: String, date: String, month: String, year: String, start: Date, end: Date, count: String = "0", creator: String, privacy: String, allDay: String) {
         self.id = id
         self.title = title
         self.date = date
@@ -63,8 +64,11 @@ class Event{
         let d = document.data()
         self.title = d!["title"] as? String
         
-        self.start = d!["start"] as? String
-        self.end = d!["end"] as? String
+        let stamp = d!["start"] as? Timestamp
+        let estamp = d!["end"] as? Timestamp
+        
+        self.start = stamp?.dateValue()
+        self.end = estamp?.dateValue()
         
         self.creator = d!["user"] as? String
         
@@ -86,8 +90,14 @@ class Event{
     }
     
     private func doesEventBridgeDays() -> Bool{
-        print("start: \(getStartDay()) \(getStartMonth()) \(getStartYear())")
-        print("end: \(getEndDay()) \(getEndMonth()) \(getEndYear())")
+        print("====Does \(title) bridge Days====")
+        
+        print("====start====")
+        print("day: \(getStartDay()), month: \(getStartMonth()), year: \(getStartYear())")
+        print("====end====")
+        print("day: \(getEndDay()), month: \(getEndMonth()), year: \(getEndYear())")
+        
+        
         if(getStartDay() != getEndDay() || getStartMonth() != getEndMonth() || getStartYear() != getEndYear()){//if the event ends tomorrow then set the bottom anchor rather than the height
             print("bridging Days")
             return true
@@ -95,6 +105,8 @@ class Event{
             print("Not Bridging Days")
             return false
         }
+        
+        print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
     }
     
     public func toArray() -> [String:Any]{
@@ -128,42 +140,44 @@ class Event{
     }
     
     func getStartDay() -> String{
-        let split = start?.split(separator: "/")
-        return String(describing: split![0])
+        
+        let calendar = Calendar.current
+        
+        return String(describing: calendar.component(.day, from: start!))
         
     }
     func getStartMonth() -> String{
-        let split = start?.split(separator: "/")
-        return String(describing: split![1])
+        let calendar = Calendar.current
+        
+        return String(describing: calendar.component(.month, from: start!))
     }
     func getStartYear() -> String{
-        let split = start?.split(separator: "/")
-        let yearTime = split![2].split(separator: " ") // without this split[2] will look like "YYYY HH:mm"
-        return String(describing: yearTime[0])
+        let calendar = Calendar.current
+        
+        return String(describing: calendar.component(.year, from: start!))
     }
     func getStartTime() -> String{
-        let split = start?.split(separator: "/")
-        let yearTime = split![2].split(separator: " ") // without this split[2] will look like "YYYY HH:mm"
-        return String(describing: yearTime[1])
+        let calendar = Calendar.current
+        let timeString = String(describing: calendar.component(.hour, from: start!)) + ":" + String(describing: calendar.component(.minute, from: start!))
+        return timeString
     }
    
     func getEndDay() -> String{
-        let split = end?.split(separator: "/")
-        return String(describing: split![0])
+        let calendar = Calendar.current
+        return String(describing: calendar.component(.day, from: end!))
     }
     func getEndMonth() -> String{
-        let split = end?.split(separator: "/")
-        return String(describing: split![1])
+        let calendar = Calendar.current
+        return String(describing: calendar.component(.month, from: end!))
     }
     func getEndYear() -> String{
-        let split = end?.split(separator: "/")
-        let yearTime = split![2].split(separator: " ") // without this split[2] will look like "YYYY HH:mm"
-        return String(describing: yearTime[0])
+        let calendar = Calendar.current
+        return String(describing: calendar.component(.year, from: end!))
     }
     func getEndTime() -> String{
-        let split = end?.split(separator: "/")
-        let yearTime = split![2].split(separator: " ") // without this split[2] will look like "YYYY HH:mm"
-        return String(describing: yearTime[1])
+        let calendar = Calendar.current
+        let timeString = String(describing: calendar.component(.hour, from: end!)) + ":" + String(describing: calendar.component(.minute, from: end!))
+        return timeString
     }
     
     func isInvitee(){
@@ -238,21 +252,25 @@ class Event{
     
     func getStartDate() -> Date{
         
-        let date = DateFormatter()
-        date.dateFormat = "dd/MM/yyyy HH:mm"
-        let r = date.date(from: start!)
-        
-        return r!
+        return start!
     }
     
     func getEndDate() -> Date{
         
-        let date = DateFormatter()
-        date.dateFormat = "dd/MM/yyyy HH:mm"
-        let r = date.date(from: end!)
-        return r!
+        return end!
     }
     
+    func getStartDateString() -> String{
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        return formatter.string(from: start!)
+    }
+    
+    func getEndDateString() -> String{
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        return formatter.string(from: end!)
+    }
     
     
     

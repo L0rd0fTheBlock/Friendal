@@ -164,8 +164,6 @@ class NewStatusViewCell: UICollectionViewCell, UITextViewDelegate {
     }
     
     @objc func didTapToClose(){
-        
-        print("tap")
         tutorialView.removeFromSuperview()
         UserDefaults.standard.set(true, forKey: "didCloseStatusTutorial")
    }
