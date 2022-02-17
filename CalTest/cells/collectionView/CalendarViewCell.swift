@@ -2,8 +2,8 @@
 //  CalendarViewCell.swift
 //  CalTest
 //
-//  Created by Jamie McAllister on 23/11/2017.
-//  Copyright © 2017 Jamie McAllister. All rights reserved.
+//  Created by MakeItForTheWeb Ltd. on 23/11/2017.
+//  Copyright © 2017 MakeItForTheWeb Ltd.. All rights reserved.
 //
 
 import UIKit
@@ -49,15 +49,15 @@ class CalendarViewCell: UICollectionViewCell {
         eventCircle.translatesAutoresizingMaskIntoConstraints = false
         
         dayCircle.isToday = true
-        dayCircle.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        dayCircle.centerYAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
+        dayCircle.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        dayCircle.centerYAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
         dayCircle.widthAnchor.constraint(equalToConstant: 20).isActive = true
         dayCircle.heightAnchor.constraint(equalToConstant: 20).isActive = true
         dayCircle.isHidden = true
         
         eventCircle.isToday = false
-        eventCircle.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        eventCircle.centerYAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20).isActive = true
+        eventCircle.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        eventCircle.centerYAnchor.constraint(equalTo: bottomAnchor, constant: -20).isActive = true
         eventCircle.widthAnchor.constraint(equalToConstant: 20).isActive = true
         eventCircle.heightAnchor.constraint(equalToConstant: 20).isActive = true
         eventCircle.isHidden = true

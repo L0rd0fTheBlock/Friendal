@@ -2,8 +2,8 @@
 //  CalendarNavigationController.swift
 //  CalTest
 //
-//  Created by Jamie McAllister on 02/12/2017.
-//  Copyright © 2017 Jamie McAllister. All rights reserved.
+//  Created by MakeItForTheWeb Ltd. on 02/12/2017.
+//  Copyright © 2017 MakeItForTheWeb Ltd.. All rights reserved.
 //
 
 import UIKit
@@ -11,8 +11,13 @@ import UIKit
 class CalendarNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationBar.barTintColor = .nav
+       // navigationBar.barTintColor = .nav
         navigationBar.tintColor = .white
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .nav
+        navigationBar.standardAppearance = appearance;
+        navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
         
         navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         // Do any additional setup after loading the view.

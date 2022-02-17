@@ -2,8 +2,8 @@
 //  LoginViewCell.swift
 //  CalTest
 //
-//  Created by Jamie McAllister on 18/02/2018.
-//  Copyright © 2018 Jamie McAllister. All rights reserved.
+//  Created by MakeItForTheWeb Ltd. on 18/02/2018.
+//  Copyright © 2018 MakeItForTheWeb Ltd.. All rights reserved.
 //
 
 import UIKit

@@ -472,13 +472,13 @@
 					};
 					7D5F5D941FC207A800129830 = {
 						CreatedOnToolsVersion = 9.1;
-						LastSwiftMigration = 1240;
+						LastSwiftMigration = 1320;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 7D5F5D801FC207A800129830;
 					};
 					7D5F5D9F1FC207A800129830 = {
 						CreatedOnToolsVersion = 9.1;
-						LastSwiftMigration = 1240;
+						LastSwiftMigration = 1320;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 7D5F5D801FC207A800129830;
 					};
@@ -1033,7 +1033,7 @@
 				DEVELOPMENT_TEAM = 57WNKNHVA2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CalTest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 0.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.palendar;
@@ -1056,7 +1056,7 @@
 				DEVELOPMENT_TEAM = 57WNKNHVA2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CalTest/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 0.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeitfortheweb.palendar;

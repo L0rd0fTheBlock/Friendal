@@ -2,8 +2,8 @@
 //  NotificationRequestViewCell.swift
 //  CalTest
 //
-//  Created by Jamie McAllister on 29/11/2017.
-//  Copyright © 2017 Jamie McAllister. All rights reserved.
+//  Created by MakeItForTheWeb Ltd. on 29/11/2017.
+//  Copyright © 2017 MakeItForTheWeb Ltd.. All rights reserved.
 //
 
 import UIKit

@@ -2,8 +2,8 @@
 //  TabBarController.swift
 //  CalTest
 //
-//  Created by Jamie McAllister on 26/11/2017.
-//  Copyright © 2017 Jamie McAllister. All rights reserved.
+//  Created by MakeItForTheWeb Ltd. on 26/11/2017.
+//  Copyright © 2017 MakeItForTheWeb Ltd. All rights reserved.
 //
 
 import UIKit
@@ -12,12 +12,23 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print("Tab bar view did load")
       //  hideKeyboardWhenTappedAround()
         
-        tabBar.barTintColor = .nav
+       // tabBar.barTintColor = .red//This in not going to work thanks to ios15 changes. Use tab bar appearance instead
+       
         //tabBar.tintColor = UIColor.orange
-        tabBar.unselectedItemTintColor = UIColor(rgb:0xE3E3E3)
+        tabBar.unselectedItemTintColor = .white
+        
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .nav
+        appearance.stackedLayoutAppearance.normal.iconColor = .white
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        appearance.stackedLayoutAppearance.selected.iconColor = .black
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+        tabBar.standardAppearance = appearance;
+        tabBar.scrollEdgeAppearance = tabBar.standardAppearance
         
         let myMonth = CalendarNavigationController(rootViewController: CalendarViewController())
         myMonth.title = "My Month"
@@ -35,7 +46,6 @@ class TabBarController: UITabBarController {
         let notification = CalendarNavigationController(rootViewController: NotificationViewController())
         notification.title = "Notifications"
         notification.tabBarItem.image = UIImage(named: "icon_notification")
-        
         viewControllers = [myMonth, friends, notification, more]
         
     }

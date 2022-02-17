@@ -2,8 +2,8 @@
 //  AdMobCollectionViewCell.swift
 //  CalTest
 //
-//  Created by Jamie McAllister on 11/01/2018.
-//  Copyright © 2018 Jamie McAllister. All rights reserved.
+//  Created by MakeItForTheWeb Ltd. on 11/01/2018.
+//  Copyright © 2018 MakeItForTheWeb Ltd.. All rights reserved.
 //
 
 import UIKit

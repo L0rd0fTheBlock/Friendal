@@ -2,8 +2,8 @@
 //  UserManagerViewController.swift
 //  CalTest
 //
-//  Created by Jamie McAllister on 03/05/2021.
-//  Copyright © 2021 Jamie McAllister. All rights reserved.
+//  Created by MakeItForTheWeb Ltd. on 03/05/2021.
+//  Copyright © 2021 MakeItForTheWeb Ltd.. All rights reserved.
 //
 
 import UIKit

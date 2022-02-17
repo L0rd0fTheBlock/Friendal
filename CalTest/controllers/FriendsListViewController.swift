@@ -2,8 +2,8 @@
 //  FriendsListViewController.swift
 //  CalTest
 //
-//  Created by Jamie McAllister on 27/11/2017.
-//  Copyright © 2017 Jamie McAllister. All rights reserved.
+//  Created by MakeItForTheWeb Ltd. on 27/11/2017.
+//  Copyright © 2017 MakeItForTheWeb Ltd.. All rights reserved.
 //
 
 import UIKit
@@ -27,7 +27,8 @@ class FriendsListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.title = "Friends"
+        //navigationController?.title = "Friends"
+        navigationItem.title = "Friends"
         
         tableView.delegate = self
         self.tableView.register(FriendsListViewCell.self, forCellReuseIdentifier: "friend")
