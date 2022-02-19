@@ -34,7 +34,9 @@ class FriendsListViewController: UITableViewController {
         self.tableView.register(FriendsListViewCell.self, forCellReuseIdentifier: "friend")
         
         tableView.rowHeight = 90
-
+        
+        
+        
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)
         errorLabel.textAlignment = .center
         errorLabel.numberOfLines = 0
@@ -247,6 +249,11 @@ class FriendsListViewController: UITableViewController {
         default:
             return "Friend Requests"
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+       // (view as! UITableViewHeaderFooterView).contentView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        (view as! UITableViewHeaderFooterView).textLabel?.textColor = UIColor.black
     }
     
     //MARK: Menu Actions

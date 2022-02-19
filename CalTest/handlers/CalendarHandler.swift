@@ -53,9 +53,17 @@ class CalendarHandler: Handler{
             }
         }else{
             if(thisMonth % 2 == 0){
-                length = 30
+                if(thisMonth >= 8){
+                    length = 31
+                }else{
+                    length = 30
+                }
             }else{
+                if(thisMonth >= 8){
+                    length = 30
+                }else{
                 length = 31
+                }
             }
         }
         /*
