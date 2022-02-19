@@ -53,7 +53,8 @@ class NewEventToggleCell: UITableViewCell {
             if(title.text == "All-Day" && toggle.isOn){
                 
                 p.hideEndTime(true)
-                parent?.tableView.reloadData()
+                
+                //parent?.tableView.reloadData()
             }else if(title.text == "All-Day" && !toggle.isOn){
                 p.hideEndTime(false)
             }
@@ -63,8 +64,10 @@ class NewEventToggleCell: UITableViewCell {
                 
                 p.hideEndTime(true)
                 parent?.tableView.reloadData()
+                toggle.setOn(true, animated: true)
             }else if(title.text == "All-Day" && !toggle.isOn){
                 p.hideEndTime(false)
+                toggle.setOn(false, animated: true)
             }
         }
         

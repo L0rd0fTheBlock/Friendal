@@ -10,6 +10,8 @@ import UIKit
 
 class FriendFinder{
     
+    var isTestMode = true
+    
     var sender: FriendsListViewController?
     
     var person = Person()
@@ -105,7 +107,7 @@ class FriendFinder{
                 self.person = p
                 self.nameLabel.text = self.person.name()
                 self.profilePic.image = self.person.picture
-                if(p.uid == me.uid){
+                if(p.uid == me.uid && self.isTestMode == false){
                     self.add.isEnabled = false
                 }
                 self.sender?.present(self.friendView, animated: true, completion: {

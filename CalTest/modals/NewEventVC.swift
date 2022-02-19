@@ -231,6 +231,9 @@ class NewEventVC: UITableViewController {
         
         let dat = cell1.value.date
         let cal = Calendar.current
+        event.date = String(describing: cal.component(.day, from: dat))
+        event.month = String(describing: cal.component(.month, from: dat))
+        event.year = String(describing: cal.component(.year, from: dat))
         
         event.start = String(describing: cal.component(.day, from: dat)) + "/" + String(describing: cal.component(.month, from: dat)) + "/" + String(describing: cal.component(.year, from: dat)) + " " + String(cal.component(.hour, from: dat)) + ":" + String(cal.component(.minute, from: dat))
         
@@ -255,9 +258,12 @@ class NewEventVC: UITableViewController {
         let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! FormTextCell
         event.title = cell.value.text //title
         
+        //get the start time
         let cell1 = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as! FormDatePickerCell
         
         var dat = cell1.value.date
+        
+        //breakdown the start date
         let cal = Calendar.current
         event.date = String(describing: cal.component(.day, from: dat))
         event.month = String(describing: cal.component(.month, from: dat))
@@ -283,6 +289,7 @@ class NewEventVC: UITableViewController {
     }
     
     func hideEndTime(_ should: Bool){
+        
         let path = IndexPath(row: 2, section: 0)
         if(should){
             isAllDay = should
