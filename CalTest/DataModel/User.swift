@@ -31,7 +31,6 @@ class User: Person{
            if let error = error {
              print("Error fetching FCM registration token: \(error)")
            } else if let token = token {
-             print("FCM registration token: \(token)")
             userHandler.hasNotificationToken(matching: token) { result in
                 if(!result){
                     userHandler.registerNotificationToken(token: token)

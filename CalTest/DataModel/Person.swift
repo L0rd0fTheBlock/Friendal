@@ -63,13 +63,20 @@ class Person{
     init(document: DocumentSnapshot){
         uid = document.documentID
         let d = document.data()
-        first_name = d!["forename"] as! String
-        last_name = d!["surname"] as! String
-        email = d!["email"] as! String
-        picture = UIImage(named: "default_profile")
-        friendCode = d!["code"] as! String
         
-        
+        if(d == nil){
+            first_name = "Deleted"
+            last_name = "User"
+            email = "Error"
+            friendCode = "Error"
+            picture = UIImage(named: "default_profile")
+        }else{
+            first_name = d!["forename"] as! String
+            last_name = d!["surname"] as! String
+            email = d!["email"] as! String
+            picture = UIImage(named: "default_profile")
+            friendCode = d!["code"] as! String
+        }
     }
     
     init() {

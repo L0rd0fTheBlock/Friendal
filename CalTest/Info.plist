@@ -45,7 +45,7 @@
 		<true/>
 	</dict>
 	<key>NSContactsUsageDescription</key>
-	<string>Your contacts' names and phone numbers are used to determine if they are existing users of Friendal. These users are then available on your friends list</string>
+	<string>Your contacts&apos; names and phone numbers are used to determine if they are existing users of Friendal. These users are then available on your friends list</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
@@ -67,5 +67,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 </dict>
 </plist>

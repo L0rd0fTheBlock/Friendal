@@ -139,7 +139,6 @@ class DayViewController: UITableViewController {
         while !sorted {
             sorted = true
             for (index, event) in (sortedEvents.enumerated()){
-                print(sortedEvents.count)
                 if(index == 0){
                 }else{
                     let thisTime = event.getStartTime().split(separator: ":" )
@@ -235,17 +234,14 @@ class DayViewController: UITableViewController {
             if(event.bridgesDays == true){//if the event ends tomorrow or later then set the bottom anchor rather than the height
                 if(today!.date == Int(event.getEndDay())! && today!.month == Int(event.getEndMonth())! && today!.year == Int(event.getEndYear())!){
                    //this is today and the event should end as normal
-                    print("Event ends today")
                     eventView.heightAnchor.constraint(equalToConstant: endpoint).isActive = true
                 }else{
-                    print("Event Does Not End Today")
                     //Event does not end today and sould end at the bottom of the view
                     eventView.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: CGFloat(tableLength)).isActive = true
                 }
             }else{
                 //just a normal day at the office, Nothing complex about this beautiful line of code.
                 //day ends on the same day as it starts -> Has not given me a headache (yet)
-                print("No bridging")
                 eventView.heightAnchor.constraint(equalToConstant: endpoint).isActive = true
             }
             eventView.widthAnchor.constraint(equalTo: tableView.widthAnchor, multiplier: 1/CGFloat(overlaps), constant: -30).isActive = true

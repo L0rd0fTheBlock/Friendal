@@ -38,7 +38,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     
     override func viewDidLoad() {
-        print("View Loaded")
+        
         let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapNewEventButton))
         
         navigationItem.setRightBarButton(button, animated: true)
@@ -68,12 +68,11 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        print("View will appear")
+
         
         me.load { shouldLoad in
             
             if(shouldLoad){
-                print("should Load")
                 self.doLoad()
             }else{
                 self.showLoginScreen()
@@ -133,7 +132,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func doLoad(){
-        print("do Load")
         dates.removeAll()
         collectionView.reloadData()
         errorLabel.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height - 100)

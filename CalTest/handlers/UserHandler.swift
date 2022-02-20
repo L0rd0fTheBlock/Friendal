@@ -52,7 +52,7 @@ class UserHandler: Handler{
         let data = withPicture.jpegData(compressionQuality: 1)
         picRef.putData(data!, metadata: nil) { (metadata, error) in
             guard metadata != nil else {
-            print("something apparently went wrong")
+                print("something apparently went wrong")
             return
           }
         }
@@ -70,7 +70,7 @@ class UserHandler: Handler{
                 fatalError("Unable to Retrieve documents to determine if user exists")
             } else {
                 if(querySnapshot?.data() == nil){
-                    print("User document does not exist, Instructing App to begin creation")
+                  //  print("User document does not exist, Instructing App to begin creation")
                     completion(false)
                 }else{
                     completion(true)

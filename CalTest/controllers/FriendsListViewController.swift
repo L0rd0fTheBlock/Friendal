@@ -25,6 +25,8 @@ class FriendsListViewController: UITableViewController {
     let menu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     let requestMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
+    var viewAction = UIAlertAction(title: "", style: .default)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //navigationController?.title = "Friends"
@@ -46,7 +48,7 @@ class FriendsListViewController: UITableViewController {
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         
-        let viewAction = UIAlertAction(title: "View", style: .default) { action in
+        viewAction = UIAlertAction(title: "View", style: .default) { action in
             self.view()
         }
         
@@ -136,13 +138,11 @@ class FriendsListViewController: UITableViewController {
         }
         
         friendHandler.getFriendRequests { requests in
-            print(requests.count)
             self.requests = requests.sorted(by: { person1, person2 in
                 let personName1 = person1.last_name + person1.first_name
                 let personName2 = person2.last_name + person2.first_name
                 return personName1.localizedCaseInsensitiveCompare(personName2) == .orderedAscending
             })
-            print(self.requests.count)
             self.tableView.reloadData()
         }
 
@@ -179,6 +179,11 @@ class FriendsListViewController: UITableViewController {
         switch indexPath.section {
         case 1:
             selectedFriend = indexPath.row
+            if(friends[indexPath.row].first_name == "Deleted"){
+                viewAction.isEnabled = false
+            }else{
+                viewAction.isEnabled = true
+            }
             present(menu, animated: true) {
                 
             }
@@ -220,7 +225,6 @@ class FriendsListViewController: UITableViewController {
             
             return cell
         }else{
-            print("Creating cell for request")
                 let cell = tableView.dequeueReusableCell(withIdentifier: "friend", for: indexPath) as! FriendsListViewCell
 
                 

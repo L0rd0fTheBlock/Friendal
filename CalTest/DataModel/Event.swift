@@ -86,13 +86,9 @@ class Event{
     }
     
     private func doesEventBridgeDays() -> Bool{
-        print("start: \(getStartDay()) \(getStartMonth()) \(getStartYear())")
-        print("end: \(getEndDay()) \(getEndMonth()) \(getEndYear())")
         if(getStartDay() != getEndDay() || getStartMonth() != getEndMonth() || getStartYear() != getEndYear()){//if the event ends tomorrow then set the bottom anchor rather than the height
-            print("bridging Days")
             return true
         }else{
-            print("Not Bridging Days")
             return false
         }
     }

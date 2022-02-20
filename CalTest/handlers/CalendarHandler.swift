@@ -167,7 +167,7 @@ class CalendarHandler: Handler{
                     if let err = err {
                         print("Error adding document: \(err)")
                     } else {
-                        print("Document added with ID: \(ref!.documentID)")
+                        //print("Document added with ID: \(ref!.documentID)")
                     }
                 }
     }
@@ -180,7 +180,7 @@ class CalendarHandler: Handler{
                         print("Error adding document: \(err)")
                         completion("Error")
                     } else {
-                        print("Document added with ID: \(ref!.documentID)")
+                       // print("Document added with ID: \(ref!.documentID)")
                         completion(ref!.documentID)
                     }
                 }

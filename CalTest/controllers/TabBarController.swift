@@ -12,7 +12,6 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Tab bar view did load")
       //  hideKeyboardWhenTappedAround()
         
        // tabBar.barTintColor = .red//This in not going to work thanks to ios15 changes. Use tab bar appearance instead

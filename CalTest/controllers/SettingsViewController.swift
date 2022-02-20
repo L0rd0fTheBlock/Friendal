@@ -69,7 +69,7 @@ class SettingsViewController: UITableViewController {
         case 0:
             return 2
         case 1:
-            return 2
+            return 1
         default:
             return 0
         }
@@ -79,7 +79,7 @@ class SettingsViewController: UITableViewController {
         switch section{
         case 0:
             return "My Account"
-        case 2:
+        case 1:
             return "Bugs and Feature Requests"
         default:
             return "Error"
@@ -131,11 +131,11 @@ class SettingsViewController: UITableViewController {
                     UIApplication.shared.open(url)
                 }
             
-            case 1:
+            /*case 1:
                 //open link to Discord server
                 if let url = URL(string: "https://discord.gg/NHFrrUbZ") {
                     UIApplication.shared.open(url)
-                }
+                }*/
             default:
                 print("Error: DidSelectRowAt impossible IndexPath: S-0-R->1")
             }
@@ -185,7 +185,7 @@ class SettingsViewController: UITableViewController {
             cell.value.isHidden = true
             cell.chevron.isHidden = true
             return cell
-        case 1:
+      /*  case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "text") as! TextTableViewCell
             cell.title.frame = CGRect(x: 30, y: cell.frame.height/5, width: cell.frame.width, height: cell.frame.height)
             cell.contentView.addSubview(cell.title)
@@ -193,7 +193,7 @@ class SettingsViewController: UITableViewController {
             cell.title.textColor = .blue
             cell.value.isHidden = true
             cell.chevron.isHidden = true
-            return cell
+            return cell*/
         default:
             return UITableViewCell()
         }

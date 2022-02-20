@@ -62,7 +62,6 @@ class FriendHandler: Handler{
         var requestList = [Friend]()
         db.collection("friends").whereField("target", isEqualTo: me.uid).whereField("accepted", isEqualTo: false).getDocuments { result, err in
             let docs = result!.documents
-            print(docs.count)
             for request in docs{
                 let data = request.data()
                 let uid = data["sender"] as! String

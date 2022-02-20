@@ -72,7 +72,6 @@ class NewEventVC: UITableViewController {
                 present(alert, animated: true, completion: nil)
             }else{
                 calendarHandler.addEvent(event: event){_ in
-                    print("event Added")
                     self.dayVC?.doLoad()
                     self.calendarVC?.doLoad()
                 }
@@ -207,6 +206,7 @@ class NewEventVC: UITableViewController {
 
             let cell: NewEventToggleCell = tableView.dequeueReusableCell(withIdentifier: "toggle", for: indexPath) as! NewEventToggleCell
             cell.title.text = "Hide Event"
+            print("Event Privacy should be: " + String(describing: Settings.sharedInstance.getPrivacy()))
             cell.toggle.setOn(Settings.sharedInstance.getPrivacy(), animated: true)
             cell.parent = self
             return cell

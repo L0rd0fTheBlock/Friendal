@@ -181,7 +181,7 @@ class EventViewController: UITableViewController {
         //MARK: customize cell sizes for map and address(?)
     if(!isEdit){
     switch indexPath.row{
-        case 5:
+        case 4:
             return CGFloat(200)
         default:
             return tableView.rowHeight
@@ -253,26 +253,26 @@ class EventViewController: UITableViewController {
     
     func getDisplayCell(indexPath: IndexPath) -> UITableViewCell{
         switch indexPath.row{
-            case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
+          //4  case 0:
+                /*let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
                 cell.title.frame = CGRect(x: 30, y: 20, width: cell.frame.width, height: cell.frame.height)
                 cell.title.font = UIFont.boldSystemFont(ofSize: 30)
                 cell.title.text = event?.title
-                return cell
-            case 1:
+                return cell*/
+            case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
                 cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
                 cell.title.text = ""
                 return cell
-            case 2:
+            case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
                 cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width - 35, height: cell.frame.height)
                 cell.title.text = "Start: "
                 cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width - 60, height: cell.frame.height)
                 cell.value.textAlignment = .right
-                cell.value.text = event?.start
+                cell.value.text = dateStringFrom(date: event!.start ?? "")
                 return cell
-            case 3:
+            case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "eventItem", for: indexPath) as! TextTableViewCell
                 cell.title.frame = CGRect(x: 30, y: 10, width: cell.frame.width, height: cell.frame.height)
                 cell.title.text = "End: "
@@ -281,13 +281,13 @@ class EventViewController: UITableViewController {
                 cell.value.text = event?.end
     
                 return cell
-            case 4:
+            case 3:
                 let cell = UITableViewCell(style: .value1, reuseIdentifier: "selectcell")
                 cell.textLabel?.text = "Invitees "
                 cell.detailTextLabel?.text = "\(count) Going"
                 cell.accessoryType = .disclosureIndicator
                 return cell
-            case 5:
+            case 4:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "status") as! StatusTableViewCell
                 cell.collectionView.event = self.event
                 cell.collectionView.doLoad()
@@ -302,7 +302,7 @@ class EventViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         if(!isEdit){
-            if(indexPath.row == 4){
+            if(indexPath.row == 3){
                 return true
             }else{
                 return false
@@ -337,6 +337,11 @@ class EventViewController: UITableViewController {
             }
         }
         event?.setAllDay(should)
+    }
+    
+    func dateStringFrom(date: String) -> String{
+        print(date)
+        return ""
     }
     
     func dateString(_ date:String) ->String{

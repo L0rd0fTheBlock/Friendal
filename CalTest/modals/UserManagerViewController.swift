@@ -152,8 +152,8 @@ class UserManagerViewController: UITableViewController, UIImagePickerControllerD
             
             overlay.text = "Change Profile Pic"
             overlay.textAlignment = .center
-            overlay.backgroundColor = .lightGray
-            overlay.backgroundColor = overlay.backgroundColor?.withAlphaComponent(0.5)
+            //overlay.backgroundColor = .lightGray
+            //overlay.backgroundColor = overlay.backgroundColor?.withAlphaComponent(0.5)
             
             return cell
         case 1:
