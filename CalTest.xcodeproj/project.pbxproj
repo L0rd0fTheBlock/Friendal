@@ -44,6 +44,7 @@
 		7D5F5D8F1FC207A800129830 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D5F5D8D1FC207A800129830 /* LaunchScreen.storyboard */; };
 		7D5F5D9A1FC207A800129830 /* CalTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5F5D991FC207A800129830 /* CalTestTests.swift */; };
 		7D5F5DA51FC207A800129830 /* CalTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5F5DA41FC207A800129830 /* CalTestUITests.swift */; };
+		7D6AE2C627C6B2FF007C9914 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6AE2C527C6B2FD007C9914 /* Extensions.swift */; };
 		7D74E0C51FC7888D00DB91AF /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D74E0C41FC7888D00DB91AF /* CalendarViewCell.swift */; };
 		7D7DEB891FC23AAA00F5443D /* CalendarHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7DEB881FC23AAA00F5443D /* CalendarHandler.swift */; };
 		7D7E8D232680E409008FED25 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D7E8D222680E409008FED25 /* GoogleService-Info.plist */; };
@@ -135,6 +136,7 @@
 		7D5F5DA01FC207A800129830 /* CalTestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalTestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D5F5DA41FC207A800129830 /* CalTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalTestUITests.swift; sourceTree = "<group>"; };
 		7D5F5DA61FC207A800129830 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7D6AE2C527C6B2FD007C9914 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7D74E0C41FC7888D00DB91AF /* CalendarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewCell.swift; sourceTree = "<group>"; };
 		7D7DEB881FC23AAA00F5443D /* CalendarHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHandler.swift; sourceTree = "<group>"; };
 		7D7E8D222680E409008FED25 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -295,10 +297,11 @@
 				7DCE27B51FC30E24000981A9 /* DataModel */,
 				7D5F5D8B1FC207A800129830 /* Assets.xcassets */,
 				7D5F5D8D1FC207A800129830 /* LaunchScreen.storyboard */,
+				7DC80BEA265D6B6E00C8378C /* Circle.swift */,
+				7D6AE2C527C6B2FD007C9914 /* Extensions.swift */,
 				7D5ACE0E267CC35700C5CD75 /* Theme.swift */,
 				7D5F5D901FC207A800129830 /* Info.plist */,
 				7D7E8D222680E409008FED25 /* GoogleService-Info.plist */,
-				7DC80BEA265D6B6E00C8378C /* Circle.swift */,
 			);
 			path = CalTest;
 			sourceTree = "<group>";
@@ -827,6 +830,7 @@
 				7D4A89F426A5F29F00ABF0FE /* FriendHandler.swift in Sources */,
 				7D4A89EE26A5D23300ABF0FE /* UserHandler.swift in Sources */,
 				7D3127C31FF98B65009752F0 /* SettingsToggleCell.swift in Sources */,
+				7D6AE2C627C6B2FF007C9914 /* Extensions.swift in Sources */,
 				7DAA49DE1FCCC2990056E033 /* NewEventVC.swift in Sources */,
 				7DAA49E51FCCCEAB0056E033 /* FormDatePickerCell.swift in Sources */,
 				7DCE3F721FD305D500322939 /* CalendarNavigationController.swift in Sources */,
