@@ -10,7 +10,7 @@ import UIKit
 
 class FriendFinder{
     
-    var isTestMode = true
+    var isTestMode = false
     
     var sender: FriendsListViewController?
     

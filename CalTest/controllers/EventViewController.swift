@@ -278,7 +278,7 @@ class EventViewController: UITableViewController {
                 cell.title.text = "End: "
                 cell.value.frame = CGRect(x: 30, y: 10, width: cell.frame.width - 60, height: cell.frame.height)
                 cell.value.textAlignment = .right
-                cell.value.text = event?.end
+            cell.value.text = dateStringFrom(date: event!.end ?? "")
     
                 return cell
             case 3:
@@ -339,12 +339,32 @@ class EventViewController: UITableViewController {
         event?.setAllDay(should)
     }
     
+    
+    
     func dateStringFrom(date: String) -> String{
-        print(date)
-        return ""
+        if(date != ""){
+            let dayMonth = date.split(separator: "/")
+            let yearTime = dayMonth[2].split(separator: " ")
+            return getDayfrom(dateString: date) + " " + dayString(String(dayMonth[0])) + " " + monthString(String(dayMonth[1])) + ", " + yearTime[0] + " at " + yearTime[1]
+        }else{
+            return "An Error has occured!"
+        }
     }
     
-    func dateString(_ date:String) ->String{
+    func getDayfrom(dateString: String) -> String{
+        
+        //get the date from the string
+        //get the day from the date and return
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy HH:mm"
+        let date = formatter.date(from: dateString)!
+        formatter.dateFormat = "EEEE"
+        return formatter.string(from: date)
+        
+    }
+    
+    
+    func monthString(_ date:String) ->String{
         if(date.first == "0"){
         switch date{
             case "01":
@@ -400,16 +420,16 @@ class EventViewController: UITableViewController {
         }
     }
     
-    func daySuffix(_ day:String) -> String{
-        switch day{
+    func dayString(_ day:String) -> String{
+        switch day.last{
         case "1":
-            return "st"
+            return day + "st"
         case "2":
-            return "nd"
+            return day + "nd"
         case "3":
-            return "rd"
+            return day + "rd"
         default:
-            return "th"
+            return day + "th"
         }
     }
     
@@ -431,17 +451,4 @@ class EventViewController: UITableViewController {
         }
     }
     
-}
-
-
-extension UIViewController {
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
 }

@@ -184,10 +184,11 @@ class FriendsListViewController: UITableViewController {
             }else{
                 viewAction.isEnabled = true
             }
+            Settings.sharedInstance.selectedFriendId = friends[indexPath.row].uid
             present(menu, animated: true) {
                 
             }
-            Settings.sharedInstance.selectedFriendId = friends[indexPath.row].uid
+            
             break
         case 2:
             selectedFriend = indexPath.row

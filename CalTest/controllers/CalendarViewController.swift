@@ -69,16 +69,18 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         
 
-        
-        me.load { shouldLoad in
-            
-            if(shouldLoad){
-                self.doLoad()
-            }else{
-                self.showLoginScreen()
+        if(shouldLoadMyCalendar){
+            me.load { shouldLoad in
+                
+                if(shouldLoad){
+                    self.doLoad()
+                }else{
+                    self.showLoginScreen()
+                }
             }
+        }else{
+            doLoad()
         }
-        doLoad()
         //MARK: Uncomment this line to debug login features
         //do{ try Auth.auth().signOut() }catch{}
         super.viewDidLoad()
@@ -91,7 +93,7 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
             }else{
                 if(!self.shouldLoadMyCalendar){
                  //   AppEventsLogger.log("Viewed Friend Calendar")
-                    return false
+                    return true
                 }else{
                  //   AppEventsLogger.log("viewed Own Calendar")
                     return false
@@ -146,10 +148,6 @@ class CalendarViewController: UIViewController, UIGestureRecognizerDelegate {
         
         let cal = CalendarHandler(self)
 
-      //  var user: String = (AccessToken.current?.userId)!
-        if(!shouldLoadMyCalendar){
-           // user = Settings.sharedInstance.selectedFriendId!
-        }
         
         navigationItem.title = monthAsString(month) + " " + String(self.year)
         if(shouldLoadMyCalendar){

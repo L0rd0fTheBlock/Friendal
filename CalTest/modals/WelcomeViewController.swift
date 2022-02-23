@@ -25,7 +25,7 @@ class WelcomeViewController: UIViewController, UICollectionViewDelegate, UIColle
         layout.minimumLineSpacing = 0
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.isPagingEnabled = true
-        cv.bounces = false
+        cv.bounces = true
         cv.backgroundColor = .white
         return cv
     }()
