@@ -1,4 +1,4 @@
-###Welcome to the Palendar documentation!###
+#Welcome to the Palendar documentation!
 
 Here you will find everything you could possibly want to know about Friendal.
 
